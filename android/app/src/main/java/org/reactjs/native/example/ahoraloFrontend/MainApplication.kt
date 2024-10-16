@@ -1,4 +1,4 @@
-package com.pricetrackerfrontend
+package com.ahoraloFrontend
 
 import android.app.Application
 import com.facebook.react.PackageList

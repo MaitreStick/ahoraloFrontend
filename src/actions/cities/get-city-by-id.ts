@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { City } from "../../domain/entities/city";
-import { PricetrackerCity } from "../../infrastructure/interfaces/pricetracker-products.response";
+import { AhoraloCity } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { CityMapper } from "../../infrastructure/mappers/city.mapper";
 
 const emptyCity: City = {
@@ -15,9 +15,9 @@ export const getCityById = async (cityId: string):Promise<City> => {
     if( cityId === 'new' ) return emptyCity;
 
     try {
-        const { data } = await pricetrackerApi.get<PricetrackerCity>(`/cities/${cityId}`);
+        const { data } = await ahoraloApi.get<AhoraloCity>(`/cities/${cityId}`);
 
-        return CityMapper.PricetrackerCityToEntity(data);
+        return CityMapper.AhoraloCityToEntity(data);
     } catch (error) {
         console.error(error);
         throw new Error(`Error al obtener la ciudad con id: ${cityId}`);

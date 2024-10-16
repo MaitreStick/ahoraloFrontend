@@ -43,7 +43,7 @@ export const CompanyScreenTabAdmin = () => {
 
   return (
     <>
-      <MainLayout title="PriceTracker - Empresas" subTitle="Panel Administrativo" showBackAction={false}>
+      <MainLayout title="Ahoralo - Empresas" subTitle="Panel Administrativo" showBackAction={false}>
         <CompanyList
           companies={data?.pages.flat() ?? []}
           fetchNextPage={fetchNextPage}

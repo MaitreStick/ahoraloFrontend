@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { City } from "../../domain/entities/city";
 
 
@@ -23,7 +23,7 @@ const updateCity = async (city: Partial<City>) => {
     const { id, ...rest } = city;
 
     try {
-        const { data } = await pricetrackerApi.patch(`/cities/${id}`, {
+        const { data } = await ahoraloApi.patch(`/cities/${id}`, {
             ...rest
         });
         return data.city;
@@ -44,7 +44,7 @@ const createCity = async (city: Partial<City>) => {
 
     try {
 
-        const { data } = await pricetrackerApi.post('/cities', {
+        const { data } = await ahoraloApi.post('/cities', {
             ...rest
         });
 

@@ -1,13 +1,13 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Prodcomcity } from "../../domain/entities/prodcomcity";
-import { PricetrackerProdcomcity } from "../../infrastructure/interfaces/pricetracker-products.response";
+import { AhoraloProdcomcity } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { ProdComcityMapper } from "../../infrastructure/mappers/prodcomcity.mapper";
 
 
 export const searchProductsByTerm = async (term: string, cityId: string | null, companyId: string | null, page: number = 0, limit: number = 10): Promise<Prodcomcity[]> => {
   try {
     const offset = page * limit;
-    const { data } = await pricetrackerApi.get<PricetrackerProdcomcity[]>(`/prodcomcity/search`, {
+    const { data } = await ahoraloApi.get<AhoraloProdcomcity[]>(`/prodcomcity/search`, {
       params: {
         term,
         cityId,
@@ -16,7 +16,7 @@ export const searchProductsByTerm = async (term: string, cityId: string | null, 
         offset,
       },
     });
-    const prodcomcities = data.map(ProdComcityMapper.PricetrackerProdcomcityToEntity);
+    const prodcomcities = data.map(ProdComcityMapper.AhoraloProdcomcityToEntity);
     return prodcomcities;
   } catch (error) {
     console.log(error);

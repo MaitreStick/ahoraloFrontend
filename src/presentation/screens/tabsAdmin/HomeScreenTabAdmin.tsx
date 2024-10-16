@@ -84,7 +84,7 @@ export const HomeScreenTabAdmin = () => {
 
   return (
     <>
-      <MainLayout title="PriceTracker - Productos" subTitle="Panel Administrativo" showBackAction={false}>
+      <MainLayout title="Ahoralo - Productos" subTitle="Panel Administrativo" showBackAction={false}>
         <ProductListAdmin
           prodcomcities={data?.pages.flat() ?? []}
           fetchNextPage={fetchNextPage}

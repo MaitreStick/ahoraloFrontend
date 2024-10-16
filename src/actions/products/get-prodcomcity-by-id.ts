@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Prodcomcity } from "../../domain/entities/prodcomcity";
-import { PricetrackerProdcomcity } from "../../infrastructure/interfaces/pricetracker-products.response";
+import { AhoraloProdcomcity } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { ProdComcityMapper } from "../../infrastructure/mappers/prodcomcity.mapper";
 
 const emptyProdcomcity: Prodcomcity = {
@@ -36,9 +36,9 @@ export const getProdComCityByIds = async (comcityId: string, productId: string )
     if( comcityId === 'new' && productId === 'new' ) return emptyProdcomcity;
 
     try {
-        const { data } = await pricetrackerApi.get<PricetrackerProdcomcity>(`/prodcomcity/${comcityId}/${productId}`);
+        const { data } = await ahoraloApi.get<AhoraloProdcomcity>(`/prodcomcity/${comcityId}/${productId}`);
 
-        return ProdComcityMapper.PricetrackerProdcomcityToEntity(data);
+        return ProdComcityMapper.AhoraloProdcomcityToEntity(data);
     } catch (error) {
         console.error(error);
         throw new Error(`Error al obtener el prodcomcity con comcityId ${comcityId} y productId ${productId}`);

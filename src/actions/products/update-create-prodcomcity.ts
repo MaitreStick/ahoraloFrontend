@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Prodcomcity } from '../../domain/entities/prodcomcity';
 
 
@@ -43,7 +43,7 @@ const uploadImage = async (image: string) => {
         name: image.split('/').pop()
     });
 
-    const { data } = await pricetrackerApi.post<string>('/files/upload', formData, {
+    const { data } = await ahoraloApi.post<string>('/files/upload', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -62,7 +62,7 @@ const updateProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
 
     try {
         const checkedImages = await prepareImages(images);
-        const { data } = await pricetrackerApi.patch(`/prodcomcity/${id}`, {
+        const { data } = await ahoraloApi.patch(`/prodcomcity/${id}`, {
             comcity: rest.comcity?.id,
             product: {
                 id: product?.id,
@@ -98,7 +98,7 @@ const createProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
         const checkedImages = await prepareImages(images);
         console.log({ checkedImages })
 
-        const { data } = await pricetrackerApi.post('/prodcomcity', {
+        const { data } = await ahoraloApi.post('/prodcomcity', {
             comcity: {
                 city: {
                     name: rest.comcity?.city.name,

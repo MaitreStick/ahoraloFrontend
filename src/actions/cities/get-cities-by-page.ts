@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { City } from "../../domain/entities/city";
-import type { PricetrackerCity } from "../../infrastructure/interfaces/pricetracker-products.response";
+import type { AhoraloCity } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { CityMapper } from "../../infrastructure/mappers/city.mapper";
 
 
@@ -10,9 +10,9 @@ export const getCitiesByPage = async (page: number, limit: number = 20): Promise
 
     try {
         
-        const { data } = await pricetrackerApi.get<PricetrackerCity[]>(`/cities?offset=${ page * 10 }&limit=${limit}`);
+        const { data } = await ahoraloApi.get<AhoraloCity[]>(`/cities?offset=${ page * 10 }&limit=${limit}`);
 
-        const cities = data.map( CityMapper.PricetrackerCityToEntity );
+        const cities = data.map( CityMapper.AhoraloCityToEntity );
         return cities;
 
     } catch (error) {

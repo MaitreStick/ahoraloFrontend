@@ -40,7 +40,6 @@ export const styles:Styles = StyleSheet.create({
         alignSelf: 'center',
     },
     informationText: {
-        height: 50,
         backgroundColor: colors.background,
     },
     input: {

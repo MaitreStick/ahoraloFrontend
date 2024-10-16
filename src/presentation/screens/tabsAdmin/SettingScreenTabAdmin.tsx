@@ -21,10 +21,6 @@ export const SettingScreenTabAdmin = () => {
     navigation.navigate('ComingSoonScreen');
   };
 
-  // const handleSuggestProduct = () => {
-  //   navigation.navigate('ProfileScreen');
-  // };
-
   const handleLegalDocuments = () => {
     navigation.navigate('ComingSoonScreen');
   };
@@ -46,12 +42,6 @@ export const SettingScreenTabAdmin = () => {
       iconName: 'file-text-outline',
       onPress: generateReport,
     },
-    // {
-    //   title: 'Sugerir Producto',
-    //   description: 'Sugerir un producto para agregar',
-    //   iconName: 'cube-outline',
-    //   onPress: handleSuggestProduct,
-    // },
     {
       title: 'Cerrar Sesión',
       description: 'Salir de tu cuenta',

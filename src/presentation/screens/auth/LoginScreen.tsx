@@ -1,4 +1,4 @@
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
+import { Button, Input, Layout, Text, Divider } from '@ui-kitten/components';
 import {Alert, Image, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import { MyIcon } from '../../components/ui/MyIcon';
@@ -86,7 +86,7 @@ export const LoginScreen = ({ navigation }:Props) => {
             <Layout style={[styles.background, { paddingTop: height * 0.06 }]}>
             <Layout style={[styles.layoutTitle]}>
             <Text category="h1"
-            >PriceTracker</Text>
+            >Ahoralo</Text>
             </Layout>
             <Image
               source={ require('../../../assets/CartMan.png') }
@@ -142,7 +142,7 @@ export const LoginScreen = ({ navigation }:Props) => {
           </Layout>
   
           {/* Information to create and account */}
-          <Layout style={[styles.informationText]} />
+          <Layout style={[styles.informationText, {height: height * 0.02}]} />
   
           <Layout style={[styles.layoutQuestion]}>
             <Text>¿No tienes cuenta?</Text>

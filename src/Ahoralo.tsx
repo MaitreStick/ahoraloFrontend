@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient()
 
-export const PriceTracker = () => {
+export const Ahoralo = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <IconRegistry icons={EvaIconsPack} />

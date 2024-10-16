@@ -34,9 +34,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
     set({ token: resp.token });
     await StorageAdapter.setItem('token', resp.token);
-  
+
     await get().checkStatus();
-  
+
     return true;
   },
 
@@ -78,7 +78,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         return;
       }
     }
-  
+
     const resp = await authCheckStatus();
     if (!resp) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });

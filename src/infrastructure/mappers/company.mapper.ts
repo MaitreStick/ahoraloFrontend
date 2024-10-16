@@ -1,14 +1,14 @@
 import { Company } from "../../domain/entities/company"
-import type { PricetrackerCompany } from "../interfaces/pricetracker-products.response"
+import type { AhoraloCompany } from "../interfaces/ahoralo-products.response"
 
 
 
 export class CompanyMapper {
 
-    static PricetrackerCompanyToEntity( pricetrackerCompany: PricetrackerCompany): Company {
+    static AhoraloCompanyToEntity( ahoraloCompany: AhoraloCompany): Company {
         return {
-            id: pricetrackerCompany.id,
-            name: pricetrackerCompany.name
+            id: ahoraloCompany.id,
+            name: ahoraloCompany.name
         }
     }
 

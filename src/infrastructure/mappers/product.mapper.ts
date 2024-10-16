@@ -1,18 +1,17 @@
-import { Prodcomcity } from "../../domain/entities/prodcomcity"
 import type { Product } from "../../domain/entities/product"
-import type { PricetrackerProdcomcity, PricetrackerProduct } from "../interfaces/pricetracker-products.response"
+import type { AhoraloProduct } from "../interfaces/ahoralo-products.response"
 
 
 
 export class ProductMapper {
 
-    static PricetrackerProductToEntity( pricetrackerProduct: PricetrackerProduct): Product {
+    static AhoraloProductToEntity( ahoraloProduct: AhoraloProduct): Product {
         return {
-            id: pricetrackerProduct.id,
-            title: pricetrackerProduct.title,
-            slug: pricetrackerProduct.slug,
-            tags: pricetrackerProduct.tags,
-            images: pricetrackerProduct.images.map( 
+            id: ahoraloProduct.id,
+            title: ahoraloProduct.title,
+            slug: ahoraloProduct.slug,
+            tags: ahoraloProduct.tags,
+            images: ahoraloProduct.images.map( 
                 image => `${ image }`
             )
         }

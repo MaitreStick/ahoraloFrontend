@@ -1,11 +1,10 @@
 
-import axios from 'axios';
-import { pricetrackerApi } from '../../config/api/pricetrackerApi';
+import { ahoraloApi } from '../../config/api/ahoraloApi';
 import { User } from '../../domain/entities/user';
 import type { AuthResponse } from '../../infrastructure/interfaces/auth.responses';
 
 
-const returnUserToken = ( data: AuthResponse ) => {
+const returnUserToken = (data: AuthResponse) => {
 
   const user: User = {
     id: data.id,
@@ -23,7 +22,7 @@ const returnUserToken = ( data: AuthResponse ) => {
 
 export const validateGoogleToken = async (token: string, email: string, name: string | null) => {
   try {
-    const { data } = await pricetrackerApi.post<AuthResponse>('/auth/validate-google-token', {
+    const { data } = await ahoraloApi.post<AuthResponse>('/auth/validate-google-token', {
       token,
       email,
       name,
@@ -44,7 +43,7 @@ export const authLogin = async (email: string, password: string) => {
 
 
   try {
-    const { data } = await pricetrackerApi.post<AuthResponse>('/auth/login', {
+    const { data } = await ahoraloApi.post<AuthResponse>('/auth/login', {
       email,
       password,
     });
@@ -58,13 +57,13 @@ export const authLogin = async (email: string, password: string) => {
   }
 };
 
-export const authRegister = async (email: string, password: string, fullName:string) => {
+export const authRegister = async (email: string, password: string, fullName: string) => {
 
   email = email.toLowerCase();
 
 
   try {
-    const { data } = await pricetrackerApi.post<AuthResponse>('/auth/register', {
+    const { data } = await ahoraloApi.post<AuthResponse>('/auth/register', {
       email,
       password,
       fullName,
@@ -81,7 +80,7 @@ export const authRegister = async (email: string, password: string, fullName:str
 
 export const authCheckStatus = async () => {
   try {
-    const { data } = await pricetrackerApi.get<AuthResponse>('/auth/check-status');
+    const { data } = await ahoraloApi.get<AuthResponse>('/auth/check-status');
     return returnUserToken(data);
   } catch (error) {
     return null;

@@ -1,15 +1,15 @@
 import { City } from "../../domain/entities/city"
-import type { PricetrackerCity } from "../interfaces/pricetracker-products.response"
+import type { AhoraloCity } from "../interfaces/ahoralo-products.response"
 
 
 
 export class CityMapper {
 
-    static PricetrackerCityToEntity( pricetrackerCity: PricetrackerCity): City {
+    static AhoraloCityToEntity( ahoraloCity: AhoraloCity): City {
         return {
-            id: pricetrackerCity.id,
-            name: pricetrackerCity.name,
-            nameDep: pricetrackerCity.nameDep
+            id: ahoraloCity.id,
+            name: ahoraloCity.name,
+            nameDep: ahoraloCity.nameDep
         }
     }
 

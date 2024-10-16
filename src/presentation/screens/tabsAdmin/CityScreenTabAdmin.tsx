@@ -42,7 +42,7 @@ export const CityScreenTabAdmin = () => {
 
   return (
     <>
-      <MainLayout title="PriceTracker - Ciudades" subTitle="Panel Administrativo" showBackAction={false}>
+      <MainLayout title="Ahoralo - Ciudades" subTitle="Panel Administrativo" showBackAction={false}>
         <CityList
           cities={data?.pages.flat() ?? []}
           fetchNextPage={fetchNextPage}

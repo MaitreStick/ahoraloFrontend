@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Ocr } from "../../domain/entities/ocr";
-import { PriceTrackerOcrResponse } from "../../infrastructure/interfaces/pricetracker-products.response";
+import { AhoraloOcrResponse } from "../../infrastructure/interfaces/ahoralo-products.response";
 
 export const processImageWithOCR = async (image: string, comcityId: string): Promise<Ocr> => {
     try {
@@ -14,7 +14,7 @@ export const processImageWithOCR = async (image: string, comcityId: string): Pro
 
         formData.append('comcity', comcityId);
 
-        const { data } = await pricetrackerApi.post<PriceTrackerOcrResponse>(
+        const { data } = await ahoraloApi.post<AhoraloOcrResponse>(
             `/files/uploadOcrImage`,
             formData,
             {

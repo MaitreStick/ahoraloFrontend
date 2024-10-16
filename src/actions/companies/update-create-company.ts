@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Company } from "../../domain/entities/company";
 
 
@@ -17,7 +17,7 @@ const updateCompany = async (company: Partial<Company>) => {
   const { id, ...rest } = company;
 
   try {
-    const { data } = await pricetrackerApi.patch(`/companies/${id}`, rest);
+    const { data } = await ahoraloApi.patch(`/companies/${id}`, rest);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -32,7 +32,7 @@ const createCompany = async (company: Partial<Company>) => {
   const { id, ...rest } = company;
 
   try {
-    const { data } = await pricetrackerApi.post('/companies', rest);
+    const { data } = await ahoraloApi.post('/companies', rest);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {

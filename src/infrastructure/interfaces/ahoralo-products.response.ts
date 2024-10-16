@@ -1,13 +1,13 @@
-export interface PricetrackerProduct {
+export interface AhoraloProduct {
     id:          string;
     title:       string;
     slug:        string;
     tags:        string[];
     images:      string[];
-    user:        PricetrackerUser;
+    user:        AhoraloUser;
 }
 
-export interface PricetrackerUser {
+export interface AhoraloUser {
     id:       string;
     email:    string;
     fullName: string;
@@ -15,18 +15,18 @@ export interface PricetrackerUser {
     roles:    string[];
 }
 
-export interface PricetrackerCity {
+export interface AhoraloCity {
   id: string;
   name: string;
   nameDep: string;
 }
 
-export interface PricetrackerCompany {
+export interface AhoraloCompany {
   id: string;
   name: string;
 }
 
-export interface PricetrackerComcity {
+export interface AhoraloComcity {
     id: string;
     city: {
       id: string;
@@ -39,7 +39,7 @@ export interface PricetrackerComcity {
     };
 }
 
-export interface PricetrackerProdcomcity {
+export interface AhoraloProdcomcity {
   id: string;
   comcity: {
     id: string;
@@ -69,7 +69,7 @@ export interface PricetrackerProdcomcity {
   date: string;
 }
 
-export interface PriceTrackerOcrResponse {
+export interface AhoraloOcrResponse {
   company: string;
   products: {
       code: number;

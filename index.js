@@ -5,6 +5,6 @@
 import {AppRegistry} from 'react-native';
 
 import {name as appName} from './app.json';
-import { PriceTracker } from './src/PriceTracker';
+import { Ahoralo } from './src/Ahoralo';
 
-AppRegistry.registerComponent(appName, () => PriceTracker);
+AppRegistry.registerComponent(appName, () => Ahoralo);

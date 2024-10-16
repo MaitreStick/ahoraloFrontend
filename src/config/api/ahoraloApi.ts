@@ -13,7 +13,7 @@ export const API_URL =
 
 
 
-const pricetrackerApi = axios.create({
+const ahoraloApi = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ useAuthStore.subscribe((state) => {
   currentToken = state.token;
 });
 
-pricetrackerApi.interceptors.request.use(
+ahoraloApi.interceptors.request.use(
   (config) => {
     if (currentToken) {
       config.headers['Authorization'] = `Bearer ${currentToken}`;
@@ -42,5 +42,5 @@ pricetrackerApi.interceptors.request.use(
 
 
 export {
-  pricetrackerApi,
+  ahoraloApi,
 }

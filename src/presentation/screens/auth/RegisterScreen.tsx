@@ -121,7 +121,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
         </Layout>
 
         {/* Information to log in */}
-        <Layout style={[styles.informationText]} />
+        <Layout style={[styles.informationText, {height: height * 0.02}]} />
 
         <Layout style={[styles.layoutQuestion]} >
           <Text>¿Ya tienes cuenta?</Text>
@@ -141,7 +141,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
         title={alertTitle}
         message={alertMessage}
         onConfirm={handleAlertConfirm}
-        confirmText="Aceptar" // Opcional, ya que tiene un valor por defecto
+        confirmText="Aceptar" 
       />
 
       <Toast

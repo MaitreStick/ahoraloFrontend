@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import type { Company } from "../../domain/entities/company";
-import type { PricetrackerCompany } from "../../infrastructure/interfaces/pricetracker-products.response";
+import type { AhoraloCompany } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { CompanyMapper } from "../../infrastructure/mappers/company.mapper";
 
 
@@ -10,9 +10,9 @@ export const getCompaniesByPage = async (page: number, limit: number = 20): Prom
 
     try {
         
-        const { data } = await pricetrackerApi.get<PricetrackerCompany[]>(`/companies?offset=${ page * 10 }&limit=${limit}`);
+        const { data } = await ahoraloApi.get<AhoraloCompany[]>(`/companies?offset=${ page * 10 }&limit=${limit}`);
 
-        const companies = data.map( CompanyMapper.PricetrackerCompanyToEntity );
+        const companies = data.map( CompanyMapper.AhoraloCompanyToEntity );
         return companies;
 
     } catch (error) {

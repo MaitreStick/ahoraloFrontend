@@ -1,21 +1,21 @@
 import { Comcity } from "../../domain/entities/comcity"
-import type { PricetrackerComcity } from "../interfaces/pricetracker-products.response"
+import type { AhoraloComcity } from "../interfaces/ahoralo-products.response"
 
 
 
 export class ComcityMapper {
 
-    static PricetrackerComcityToEntity( pricetrackerComcity: PricetrackerComcity): Comcity {
+    static AhoraloComcityToEntity( ahoraloComcity: AhoraloComcity): Comcity {
         return {
-            id: pricetrackerComcity.id,
+            id: ahoraloComcity.id,
             city: {
-                id: pricetrackerComcity.city.id,
-                name: pricetrackerComcity.city.name,
-                nameDep: pricetrackerComcity.city.nameDep
+                id: ahoraloComcity.city.id,
+                name: ahoraloComcity.city.name,
+                nameDep: ahoraloComcity.city.nameDep
             },
             company: {
-                id: pricetrackerComcity.company.id,
-                name: pricetrackerComcity.company.name,
+                id: ahoraloComcity.company.id,
+                name: ahoraloComcity.company.name,
             }
         }
     }

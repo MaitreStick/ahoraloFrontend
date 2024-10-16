@@ -1,6 +1,6 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import type { Product } from "../../domain/entities/product";
-import type { PricetrackerProduct } from "../../infrastructure/interfaces/pricetracker-products.response";
+import type { AhoraloProduct } from "../../infrastructure/interfaces/ahoralo-products.response";
 import { ProductMapper } from "../../infrastructure/mappers/product.mapper";
 
 
@@ -10,9 +10,9 @@ export const getProductsByPage = async (page: number, limit: number = 20): Promi
 
     try {
         
-        const { data } = await pricetrackerApi.get<PricetrackerProduct[]>(`/products?offset=${ page * 10 }&limit=${limit}`);
+        const { data } = await ahoraloApi.get<AhoraloProduct[]>(`/products?offset=${ page * 10 }&limit=${limit}`);
 
-        const products = data.map( ProductMapper.PricetrackerProductToEntity );
+        const products = data.map( ProductMapper.AhoraloProductToEntity );
         return products;
 
     } catch (error) {

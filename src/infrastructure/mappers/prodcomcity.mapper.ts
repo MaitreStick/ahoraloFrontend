@@ -1,38 +1,38 @@
 import { Prodcomcity } from "../../domain/entities/prodcomcity"
-import type { PricetrackerProdcomcity} from "../interfaces/pricetracker-products.response"
+import type { AhoraloProdcomcity} from "../interfaces/ahoralo-products.response"
 
 
 
 export class ProdComcityMapper {
 
-    static PricetrackerProdcomcityToEntity( pricetrackerProdcomcity: PricetrackerProdcomcity): Prodcomcity {
+    static AhoraloProdcomcityToEntity( ahoraloProdcomcity: AhoraloProdcomcity): Prodcomcity {
         return {
-            id: pricetrackerProdcomcity.id,
+            id: ahoraloProdcomcity.id,
             comcity: {
-                id: pricetrackerProdcomcity.comcity.id,
+                id: ahoraloProdcomcity.comcity.id,
                 city: {
-                    id: pricetrackerProdcomcity.comcity.city.id,
-                    name: pricetrackerProdcomcity.comcity.city.name,
-                    nameDep: pricetrackerProdcomcity.comcity.city.nameDep,
+                    id: ahoraloProdcomcity.comcity.city.id,
+                    name: ahoraloProdcomcity.comcity.city.name,
+                    nameDep: ahoraloProdcomcity.comcity.city.nameDep,
                 },
                 company: {
-                    id: pricetrackerProdcomcity.comcity.company.id,
-                    name: pricetrackerProdcomcity.comcity.company.name
+                    id: ahoraloProdcomcity.comcity.company.id,
+                    name: ahoraloProdcomcity.comcity.company.name
                 },
-                user: pricetrackerProdcomcity.comcity.user,
+                user: ahoraloProdcomcity.comcity.user,
             },
             product: {
-                id: pricetrackerProdcomcity.product.id,
-                title: pricetrackerProdcomcity.product.title,
-                slug: pricetrackerProdcomcity.product.slug,
-                tags: pricetrackerProdcomcity.product.tags,
-                code: pricetrackerProdcomcity.product.code,
-                images: pricetrackerProdcomcity.product.images.map(
+                id: ahoraloProdcomcity.product.id,
+                title: ahoraloProdcomcity.product.title,
+                slug: ahoraloProdcomcity.product.slug,
+                tags: ahoraloProdcomcity.product.tags,
+                code: ahoraloProdcomcity.product.code,
+                images: ahoraloProdcomcity.product.images.map(
                     image => `${ image.url }`
                 )
             },
-            price: pricetrackerProdcomcity.price,
-            date: pricetrackerProdcomcity.date,
+            price: ahoraloProdcomcity.price,
+            date: ahoraloProdcomcity.date,
         }
     }
 

@@ -36,7 +36,7 @@ export const NotificationScreen = ({ navigation }: Props) => {
 
       {/* Information */}
       <Text category="h4" style={{ marginTop: height * 0.01, padding: width * 0.03, justifyContent: 'center', textAlign: 'center', }}>
-        Te enviaremos descuentos y noticias sobre PriceTracker
+        Te enviaremos descuentos y noticias sobre Ahoralo
       </Text>
 
       {/* Information */}

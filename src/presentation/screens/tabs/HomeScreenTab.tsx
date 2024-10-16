@@ -72,7 +72,7 @@ export const HomeScreenTab = () => {
 
   return (
     <>
-      <MainLayout title="PriceTracker - Productos" showBackAction={false}>
+      <MainLayout title="Ahoralo - Productos" showBackAction={false}>
         <ProductList
           prodcomcities={data?.pages.flat() ?? []}
           fetchNextPage={fetchNextPage}

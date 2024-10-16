@@ -1,10 +1,10 @@
-import { pricetrackerApi } from "../../config/api/pricetrackerApi";
+import { ahoraloApi } from "../../config/api/ahoraloApi";
 import { Comcity } from "../../domain/entities/comcity";
-import { PricetrackerComcity } from "../../infrastructure/interfaces/pricetracker-products.response";
+import { AhoraloComcity } from "../../infrastructure/interfaces/ahoralo-products.response";
 
 export const getComcityByCityAndCompany = async (companyId: string, cityId: string): Promise<Comcity> => {
   try {
-    const { data } = await pricetrackerApi.get<PricetrackerComcity>(`/comcity/by-company-and-city`, {
+    const { data } = await ahoraloApi.get<AhoraloComcity>(`/comcity/by-company-and-city`, {
       params: {
         companyId,
         cityId,
