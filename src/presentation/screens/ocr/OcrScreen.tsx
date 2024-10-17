@@ -13,6 +13,8 @@ import { MyIcon } from '../../components/ui/MyIcon';
 import { MainLayout } from '../../layouts/MainLayout';
 import { processImageWithOCR } from '../../../actions/ocr/processImageWithOCR';
 import { getComcityByCityAndCompany } from '../../../actions/comcities/getComcityByCityAndCompany';
+import { CustomAlert } from '../../components/ui/CustomAlert';
+import { Toast } from '../../components/ui/Toast';
 
 type Props = StackScreenProps<RootStackParams, 'OcrScreen'>;
 
@@ -23,8 +25,25 @@ export const OcrScreen = ({ route }: Props) => {
     const [selectedCompanyName, setSelectedCompanyName] = useState('');
     const [companySearch, setCompanySearch] = useState<string>('');
     const [isCompanyModalVisible, setCompanyModalVisible] = useState(false);
+    const [toastVisible, setToastVisible] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
     const navigation = useNavigation();
+
+    const handleAlertConfirm = () => {
+        setAlertVisible(false);
+    };
+
+    const showToast = () => {
+        setToastVisible(true);
+      };
+    
+      const hideToast = () => {
+        setToastVisible(false);
+      };
+    
 
     const toggleCompanyModal = useCallback(() => {
         setCompanyModalVisible((prev) => !prev);
@@ -71,28 +90,31 @@ export const OcrScreen = ({ route }: Props) => {
 
     const handleProcessImage = async () => {
         if (!selectedCompanyId) {
-            Alert.alert('Empresa no seleccionada', 'Por favor, seleccione una empresa antes de continuar.');
+            setAlertTitle('Empresa no seleccionada');
+            setAlertMessage('Por favor, selecciona una empresa.');
+            setAlertVisible(true);
             return;
         }
-    
+
         try {
-            // Obtener comcityId
             const comcityData = await getComcityByCityAndCompany(selectedCompanyId, selectedCityId);
             const comcityId = comcityData.id;
-    
+
             if (!comcityId) {
                 throw new Error('No se encontró comcity para la ciudad y empresa seleccionadas.');
             }
-    
-            const ocrResult = await processImageWithOCR(picture, comcityId);
-    
-            console.log('Resultado del OCR:', ocrResult);
-    
+
+            await processImageWithOCR(picture, comcityId);
+
+            showToast();
+
             navigation.goBack();
-    
+
         } catch (error) {
             console.error('Error al procesar la imagen:', error);
-            Alert.alert('Error', 'Ocurrió un error al procesar la imagen. Por favor, inténtalo de nuevo.');
+            setAlertTitle('Error');
+            setAlertMessage('Ocurrió un error al procesar la imagen. Por favor, inténtalo de nuevo.');
+            setAlertVisible(true);
         }
     };
 
@@ -103,15 +125,15 @@ export const OcrScreen = ({ route }: Props) => {
             <Input value={selectedCityName} disabled style={styles.input} />
 
             <Text category='label' style={styles.label}>Empresa</Text>
-            <Input 
-            style={styles.input} 
-            placeholder='Seleccionar Empresa'
-            disabled 
-            accessoryRight={() => (
-                <TouchableOpacity onPress={toggleCompanyModal}>
-                  <MyIcon name="chevron-down-outline" />
-                </TouchableOpacity>
-              )}
+            <Input
+                style={styles.input}
+                placeholder='Seleccionar Empresa'
+                disabled
+                accessoryRight={() => (
+                    <TouchableOpacity onPress={toggleCompanyModal}>
+                        <MyIcon name="chevron-down-outline" />
+                    </TouchableOpacity>
+                )}
             >
                 {selectedCompanyName}
             </Input>
@@ -161,6 +183,18 @@ export const OcrScreen = ({ route }: Props) => {
             </Modal>
 
             <Button onPress={handleProcessImage} style={styles.button}>Enviar mi aporte</Button>
+            <CustomAlert
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                onConfirm={handleAlertConfirm}
+                confirmText="Aceptar"
+            />
+            <Toast
+                visible={toastVisible}
+                message="Gracias por tu aporte"
+                onHide={hideToast}
+            />
         </MainLayout>
     );
 };
@@ -169,7 +203,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, padding: 16 },
     title: { textAlign: 'center', marginBottom: 16 },
     image: { width: '100%', height: 350, marginBottom: 16 },
-    label: {  marginHorizontal: 10 },
+    label: { marginHorizontal: 10 },
     input: { marginVertical: 5, marginHorizontal: 10 },
     button: { marginTop: 16 },
     modalOverlay: {

@@ -56,7 +56,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
       showToast();
       setTimeout(() => {
         navigation.replace('LoginScreen');
-      }, 3000);
+      }, 2000);
       return;
     }
 

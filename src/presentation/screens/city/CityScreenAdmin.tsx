@@ -12,6 +12,7 @@ import { updateCreateCity } from '../../../actions/cities/update-create-city';
 import { FAB } from '../../components/ui/FAB';
 import { useNavigation } from '@react-navigation/native';
 import { deleteCityById } from '../../../actions/cities/delete-city';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
 interface Props extends StackScreenProps<RootStackParams, 'CityScreenAdmin'> { }
 
@@ -19,12 +20,19 @@ export const CityScreenAdmin = ({ route }: Props) => {
   const cityIdRef = useRef(route.params.cityId);
   const queryClient = useQueryClient();
   const { height } = Dimensions.get('window');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
   const navigation = useNavigation();
 
   const [isFabOpen, setIsFabOpen] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const isNewCity = cityIdRef.current === 'new';
+
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+  };
 
   const { data: city } = useQuery({
     queryKey: ['city', cityIdRef.current],
@@ -43,8 +51,8 @@ export const CityScreenAdmin = ({ route }: Props) => {
           queryKey: ['cities', 'infinite'],
           exact: false,
         });
-        queryClient.invalidateQueries({ 
-          queryKey: ['city', data.id] 
+        queryClient.invalidateQueries({
+          queryKey: ['city', data.id]
         });
       } catch (error) {
         console.error('Error in onSuccess handler:', error);
@@ -52,7 +60,9 @@ export const CityScreenAdmin = ({ route }: Props) => {
 
     },
     onError: () => {
-      Alert.alert('Error', 'No se pudo guardar la ciudad. Inténtalo de nuevo.');
+      setAlertTitle('Error');
+      setAlertMessage('No se pudo guardar la ciudad. Inténtalo de nuevo.');
+      setAlertVisible(true);
     },
   });
 
@@ -67,7 +77,9 @@ export const CityScreenAdmin = ({ route }: Props) => {
     },
     onError: (error: any) => {
       console.error('Error al eliminar la ciudad:', error);
-      Alert.alert('Error', 'No se pudo eliminar la ciudad. Inténtalo de nuevo.');
+      setAlertTitle('Error');
+      setAlertMessage('No se pudo eliminar la ciudad. Inténtalo de nuevo.');
+      setAlertVisible(true);
     },
   });
 
@@ -176,6 +188,13 @@ export const CityScreenAdmin = ({ route }: Props) => {
               />
             </Animated.View>
           )}
+          <CustomAlert
+            visible={alertVisible}
+            title={alertTitle}
+            message={alertMessage}
+            onConfirm={handleAlertConfirm}
+            confirmText="Aceptar"
+          />
         </MainLayout>
       )}
     </Formik>

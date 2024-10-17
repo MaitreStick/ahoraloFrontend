@@ -32,11 +32,10 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       set({ status: 'unauthenticated', token: undefined, user: undefined });
       return false;
     }
-    set({ token: resp.token });
     await StorageAdapter.setItem('token', resp.token);
-
+    console.log('Token almacenado:', resp.token); 
+    set({ token: resp.token });
     await get().checkStatus();
-
     return true;
   },
 
@@ -67,24 +66,24 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   checkStatus: async () => {
-    let { token } = get();
+    const token = await StorageAdapter.getItem('token');
+    console.log('Token recuperado en checkStatus:', token); 
+  
     if (!token) {
-      const storedToken = await StorageAdapter.getItem('token');
-      token = storedToken !== null ? storedToken : undefined;
-      if (token) {
-        set({ token });
-      } else {
-        set({ status: 'unauthenticated', token: undefined, user: undefined });
-        return;
-      }
-    }
-
-    const resp = await authCheckStatus();
-    if (!resp) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
       return;
     }
-    set({ status: 'authenticated', token: resp.token, user: resp.user });
+  
+    set({ token });
+  
+    const resp = await authCheckStatus();
+    console.log('Respuesta de authCheckStatus:', resp); 
+    if (!resp) {
+      await StorageAdapter.removeItem('token');
+      set({ status: 'unauthenticated', token: undefined, user: undefined });
+      return;
+    }
+    set({ status: 'authenticated', user: resp.user });
   },
 
 

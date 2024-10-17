@@ -12,6 +12,7 @@ import { getCompanyById } from '../../../actions/companies/get-company-by-id';
 import { Company } from '../../../domain/entities/company';
 import { updateCreateCompany } from '../../../actions/companies/update-create-company';
 import { deleteCompanyById } from '../../../actions/companies/delete-company';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
 interface Props extends StackScreenProps<RootStackParams, 'CompanyScreenAdmin'> { }
 
@@ -19,12 +20,19 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
   const companyIdRef = useRef(route.params.companyId);
   const queryClient = useQueryClient();
   const { height } = Dimensions.get('window');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
   const navigation = useNavigation();
 
   const [isFabOpen, setIsFabOpen] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const isNewCompany = companyIdRef.current === 'new';
+
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+  };
 
   const { data: company } = useQuery({
     queryKey: ['company', companyIdRef.current],
@@ -53,7 +61,9 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
 
     },
     onError: () => {
-      Alert.alert('Error', 'No se pudo guardar la empresa. Inténtalo de nuevo.');
+      setAlertTitle('Error');
+      setAlertMessage('No se pudo guardar la empresa. Inténtalo de nuevo.');
+      setAlertVisible(true);
     },
   });
 
@@ -68,7 +78,9 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
     },
     onError: (error: any) => {
       console.error('Error al eliminar el producto:', error);
-      Alert.alert('Error', 'No se pudo eliminar la empresa. Inténtalo de nuevo.');
+      setAlertTitle('Error');
+      setAlertMessage('No se pudo eliminar la empresa. Inténtalo de nuevo.');
+      setAlertVisible(true);
     },
   });
 
@@ -171,6 +183,13 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
               />
             </Animated.View>
           )}
+          <CustomAlert
+            visible={alertVisible}
+            title={alertTitle}
+            message={alertMessage}
+            onConfirm={handleAlertConfirm}
+            confirmText="Aceptar"
+          />
         </MainLayout>
       )}
     </Formik>

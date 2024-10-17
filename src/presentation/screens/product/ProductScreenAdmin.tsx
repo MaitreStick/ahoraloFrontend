@@ -17,6 +17,7 @@ import { CameraAdapter } from "../../../config/adapters/camera-adapter"
 import { FAB } from "../../components/ui/FAB"
 import { deleteProdcomcityById } from "../../../actions/products/delete-prodcomcity";
 import { useNavigation } from "@react-navigation/native";
+import { CustomAlert } from "../../components/ui/CustomAlert";
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreenAdmin'> { }
 
@@ -25,12 +26,19 @@ export const ProductScreenAdmin = ({ route }: Props) => {
     const comcityIdRef = useRef(route.params.comcityId);
     const queryClient = useQueryClient();
     const { height } = Dimensions.get('window');
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
     const navigation = useNavigation();
 
     const [isFabOpen, setIsFabOpen] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
 
     const isNewProduct = productIdRef.current === 'new' && comcityIdRef.current === 'new';
+
+    const handleAlertConfirm = () => {
+        setAlertVisible(false);
+    };
 
     const { data: prodcomcity } = useQuery({
         queryKey: ['prodcomcity', comcityIdRef.current, productIdRef.current],
@@ -79,7 +87,9 @@ export const ProductScreenAdmin = ({ route }: Props) => {
         },
         onError: (error: any) => {
             console.error('Error al eliminar el producto:', error);
-            Alert.alert('Error', 'No se pudo eliminar el producto. Inténtalo de nuevo.');
+            setAlertTitle('Error');
+            setAlertMessage('No se pudo eliminar el producto. Inténtalo de nuevo.');
+            setAlertVisible(true);
         },
     });
 
@@ -243,6 +253,14 @@ export const ProductScreenAdmin = ({ route }: Props) => {
                             />
                         </Animated.View>
                     )}
+
+                    <CustomAlert
+                        visible={alertVisible}
+                        title={alertTitle}
+                        message={alertMessage}
+                        onConfirm={handleAlertConfirm}
+                        confirmText="Aceptar"
+                    />
 
                 </MainLayout>
             )

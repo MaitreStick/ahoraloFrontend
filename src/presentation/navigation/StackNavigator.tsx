@@ -17,6 +17,7 @@ import { DevelopersScreen } from '../screens/developers/DevelopersScreen';
 import { ComingSoonScreen } from '../components/ui/ComingSoonScreen';
 import { ProductScreen } from '../screens/product/ProductScreen';
 import { OcrScreen } from '../screens/ocr/OcrScreen';
+import { ActivityIndicator, View } from 'react-native';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -46,26 +47,18 @@ const fadeAnimation: StackCardStyleInterpolator = ({ current }) => {
 };
 
 export const StackNavigator = () => {
-  const { checkStatus, status, user } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
+  const { status, user } = useAuthStore();
+  const { hasCompletedOnboarding } = useOnboardingStore();
 
-  useEffect(() => {
-    checkStatus();
-  }, []);
+  console.log('Status:', status);
+  console.log('User:', user);
 
-  useEffect(() => {
-    const checkOnboarding = async () => {
-      const completed = await checkOnboardingStatus();
-      setHasCompletedOnboarding(completed);
-      setIsLoading(false);
-    };
-
-    checkOnboarding();
-  }, []);
-
-  if (isLoading || hasCompletedOnboarding === null || status === 'checking' || (status === 'authenticated' && (!user || !user.roles))) {
-    return <LoadingScreen />;
+  if (hasCompletedOnboarding === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (

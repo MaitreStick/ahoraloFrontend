@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { HomeScreenTab } from '../screens/tabs/HomeScreenTab';
 import { SettingScreenTab } from '../screens/tabs/SettingsScreenTab';
+import { BasketScreenTab } from '../screens/tabs/BasketScreenTab';
 
 export type RootTabParams = {
   HomeScreenTabAdmin: undefined;
@@ -18,6 +19,7 @@ export type RootTabParams = {
   SettingsScreenTabAdmin: undefined;
   HomeScreenTab: undefined;
   SettingsScreenTab: undefined;
+  BasketScreenTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParams>();
@@ -79,8 +81,8 @@ export const BottomTabNavigator = () => {
           <Tab.Screen
             name="SettingsScreenTabAdmin"
             options={{
-              title: 'Más',
-              tabBarIcon: () => <MyIcon name="options-2-outline" />,
+              title: 'Configuración',
+              tabBarIcon: () => <MyIcon name="settings-outline" />,
             }}
             component={SettingScreenTabAdmin}
           />
@@ -91,16 +93,24 @@ export const BottomTabNavigator = () => {
           <Tab.Screen
             name="HomeScreenTab"
             options={{
-              title: 'Productos',
-              tabBarIcon: () => <MyIcon name="cube-outline" />,
+              title: 'Inicio',
+              tabBarIcon: () => <MyIcon name="home-outline" />,
             }}
             component={HomeScreenTab}
           />
           <Tab.Screen
+            name="BasketScreenTab"
+            options={{
+              title: 'Canasta',
+              tabBarIcon: () => <MyIcon name="shopping-bag-outline" />,
+            }}
+            component={BasketScreenTab}
+          />
+          <Tab.Screen
             name="SettingsScreenTab"
             options={{
-              title: 'Más',
-              tabBarIcon: () => <MyIcon name="options-2-outline" />,
+              title: 'Configuración',
+              tabBarIcon: () => <MyIcon name="settings-outline" />,
             }}
             component={SettingScreenTab}
           />
