@@ -50,9 +50,6 @@ export const StackNavigator = () => {
   const { status, user } = useAuthStore();
   const { hasCompletedOnboarding } = useOnboardingStore();
 
-  console.log('Status:', status);
-  console.log('User:', user);
-
   if (hasCompletedOnboarding === null) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

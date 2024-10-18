@@ -33,7 +33,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       return false;
     }
     await StorageAdapter.setItem('token', resp.token);
-    console.log('Token almacenado:', resp.token); 
     set({ token: resp.token });
     await get().checkStatus();
     return true;
@@ -67,7 +66,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   checkStatus: async () => {
     const token = await StorageAdapter.getItem('token');
-    console.log('Token recuperado en checkStatus:', token); 
   
     if (!token) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
@@ -77,7 +75,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     set({ token });
   
     const resp = await authCheckStatus();
-    console.log('Respuesta de authCheckStatus:', resp); 
     if (!resp) {
       await StorageAdapter.removeItem('token');
       set({ status: 'unauthenticated', token: undefined, user: undefined });

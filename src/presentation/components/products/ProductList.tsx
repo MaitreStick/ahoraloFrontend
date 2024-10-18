@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl } from "react-native-gesture-handler";
 import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { Alert, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
 import { MyIcon } from "../ui/MyIcon";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
@@ -53,6 +53,8 @@ export const ProductList = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const queryClient = useQueryClient();
+
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const toggleCityModal = useCallback(() => {
@@ -205,7 +207,7 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCityName}
         </Button>
@@ -215,9 +217,19 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCompanyName}
+        </Button>
+        <Button
+          onPress={handleOcrClick}
+          appearance="filled"
+          status="primary"
+          size="small"
+          accessoryRight={<MyIcon name="camera-outline" white />}
+          style={[localStyles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
+        >
+          Escanear Factura
         </Button>
       </View>
 
@@ -342,7 +354,7 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCityName}
         </Button>
@@ -352,7 +364,7 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCompanyName}
         </Button>
@@ -482,13 +494,10 @@ const localStyles = StyleSheet.create({
     borderColor: 'white',
     marginRight: 10,
     borderRadius: 15,
-    width: 120,
   },
   buttonOCR: {
     flex: 1,
     alignSelf: 'flex-start',
-    // borderColor: '#3F51B5',
-    // backgroundColor: '#3F51B5',
     marginRight: 10,
     borderRadius: 15,
     color: 'white',

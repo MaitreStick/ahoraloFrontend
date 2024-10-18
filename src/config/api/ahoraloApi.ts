@@ -1,7 +1,6 @@
 import { STAGE, API_URL as PROD_URL, API_URL_IOS, API_URL_ANDROID } from '@env';
 import axios from 'axios';
 import { Platform } from 'react-native';
-import { useAuthStore } from '../../presentation/store/auth/useAuthStore';
 import { StorageAdapter } from '../adapters/storage-adapter';
 
 
@@ -26,10 +25,7 @@ ahoraloApi.interceptors.request.use(
     const token = await StorageAdapter.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log('Interceptor: Token incluido en la solicitud:', token);
-    } else {
-      console.log('Interceptor: No se encontró token');
-    }
+    } 
     return config;
   },
   (error) => {

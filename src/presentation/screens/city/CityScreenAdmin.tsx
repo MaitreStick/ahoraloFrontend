@@ -160,14 +160,12 @@ export const CityScreenAdmin = ({ route }: Props) => {
             <Layout style={{ height: 200 }} />
           </ScrollView>
 
-          {/* Botón flotante principal */}
           <FAB
             iconName={isFabOpen ? 'close-outline' : 'plus-outline'}
             onPress={toggleFab}
             style={[styles.fabMain, { bottom: height * 0.05 }]}
           />
 
-          {/* Botón para guardar */}
           <Animated.View style={[fabSaveStyle]}>
             <FAB
               iconName="save-outline"
@@ -177,7 +175,6 @@ export const CityScreenAdmin = ({ route }: Props) => {
             />
           </Animated.View>
 
-          {/* Botón para eliminar (solo si no es una nueva ciudad) */}
           {!isNewCity && (
             <Animated.View style={[fabDeleteStyle]}>
               <FAB

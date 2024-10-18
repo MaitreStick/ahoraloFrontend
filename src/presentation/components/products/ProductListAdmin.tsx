@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl } from "react-native-gesture-handler";
 import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
 import { MyIcon } from "../ui/MyIcon";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
@@ -49,6 +49,8 @@ export const ProductListAdmin = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const queryClient = useQueryClient();
+
+  const { width } = useWindowDimensions();
 
   const toggleCityModal = useCallback(() => {
     setCityModalVisible((prev) => !prev);
@@ -190,7 +192,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCityName}
         </Button>
@@ -200,7 +202,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCompanyName}
         </Button>
@@ -327,7 +329,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCityName}
         </Button>
@@ -337,7 +339,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button]}
+          style={[localStyles.button,{width: width * 0.25}]}
         >
           {selectedCompanyName}
         </Button>
@@ -457,7 +459,6 @@ const localStyles = StyleSheet.create({
     borderColor: 'white',
     marginRight: 10,
     borderRadius: 15,
-    width: 120,
   },
   modalOverlay: {
     flex: 1,

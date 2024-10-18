@@ -81,10 +81,8 @@ export const authRegister = async (email: string, password: string, fullName: st
 export const authCheckStatus = async () => {
   try {
     const { data } = await ahoraloApi.get<AuthResponse>('/auth/check-status');
-    console.log('authCheckStatus éxito:', data);
     return returnUserToken(data);
   } catch (error) {
-    console.log('authCheckStatus error:', error);
     return null;
   }
 };

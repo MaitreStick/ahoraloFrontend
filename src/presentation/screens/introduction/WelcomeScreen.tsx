@@ -14,23 +14,19 @@ export const WelcomeScreen = ({ navigation }:Props) => {
 
     return (
         <Layout style={[styles.generalContainer]}>
-            {/* Image */}
             <Image
                 source={ require('../../../assets/shoppingCart.png') }
                 style={[styles.Image, {width: width * 0.8, height: height * 0.5}]}
             />
 
-            {/* Information */}
             <Text category="h3" style={{marginTop: height * 0.05, justifyContent: 'center', textAlign: 'center',}}>
                 Nunca pagues de más otra vez!
             </Text>
 
-            {/* Information */}
             <Text category="p1" style={{marginTop: height * 0.06, textAlign: 'center'}}>
                 Compra inteligente, ahorra hoy!
             </Text>
 
-            {/* Button */}  
             <Button 
                 accessoryRight={ <MyIcon name="arrow-forward-outline" white /> }
                 style={[ styles.welcomeButton, {borderRadius: 15, backgroundColor: colors.primary, borderColor: colors.primary, marginTop: height * 0.05}]}

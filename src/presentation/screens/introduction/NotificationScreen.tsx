@@ -28,23 +28,19 @@ export const NotificationScreen = ({ navigation }: Props) => {
 
   return (
     <Layout style={[styles.generalContainer]}>
-      {/* Image */}
       <Image
         source={require('../../../assets/discount.png')}
         style={[styles.Image, { width: width * 0.8, height: height * 0.48, padding: height * 0.2 }]}
       />
 
-      {/* Information */}
       <Text category="h4" style={{ marginTop: height * 0.01, padding: width * 0.03, justifyContent: 'center', textAlign: 'center', }}>
         Te enviaremos descuentos y noticias sobre Ahoralo
       </Text>
 
-      {/* Information */}
       <Text category="p1" style={{ marginTop: height * 0.07, textAlign: 'center' }}>
         Permitenos enviarte notificaciones
       </Text>
 
-      {/* Button */}
       <Button
         accessoryRight={<MyIcon name="bell-outline" white />}
         style={[styles.welcomeButton, { borderRadius: 15, backgroundColor: colors.primary, borderColor: colors.primary, marginTop: height * 0.05 }]}

@@ -25,7 +25,6 @@ export const Ahoralo = () => {
 
     useEffect(() => {
         const initializeApp = async () => {
-            console.log('Iniciando checkStatus');
             await checkStatus();
             const completed = await checkOnboardingStatus();
             setHasCompletedOnboarding(completed);
