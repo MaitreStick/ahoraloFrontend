@@ -3,9 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Select image/video from photos</string>
+	<string>Esta aplicación necesita acceso a la biblioteca de fotos para seleccionar imágenes de productos.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Capture Image</string>
+	<string>Esta aplicación necesita acceso a la cámara para tomar fotos de facturas.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Esta aplicación necesita acceso a la ubicación para mostrar comercios cercanos</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>Esta aplicación necesita acceso a la ubicación para mostrar comercios cercanos</string>
+	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Esta aplicación necesita acceso a la ubicación para mostrar comercios cercanos</string>
 
 
 	<key>CFBundleDevelopmentRegion</key>
