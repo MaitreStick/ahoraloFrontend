@@ -1,4 +1,5 @@
-import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text } from '@ui-kitten/components';
+import { Modal, View, StyleSheet, TouchableOpacity, Appearance } from 'react-native';
 
 interface CustomAlertProps {
   visible: boolean;
@@ -35,6 +36,8 @@ export const CustomAlert: React.FC<CustomAlertProps> = ({
   );
 };
 
+const colorScheme = Appearance.getColorScheme();
+
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
@@ -52,10 +55,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: colorScheme === 'dark' ? '#242222' : '#242222',
   },
   message: {
     fontSize: 16,
     marginBottom: 20,
+    color: colorScheme === 'dark' ? '#242222' : '#242222',
   },
   button: {
     alignSelf: 'flex-end',

@@ -72,7 +72,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     setIsPosting(false);
 
     if (wasSuccessful) {
-      showToast();
+      showToast();  
     } else {
       setAlertTitle('Inicio de sesión fallido');
       setAlertMessage('Usuario o contraseña incorrectos');

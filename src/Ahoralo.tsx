@@ -57,7 +57,5 @@ export const Ahoralo = () => {
         </QueryClientProvider>
     )
 }
-function checkStatus() {
-    throw new Error('Function not implemented.');
-}
+
 
