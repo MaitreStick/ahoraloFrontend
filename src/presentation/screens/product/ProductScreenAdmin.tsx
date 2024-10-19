@@ -153,7 +153,7 @@ export const ProductScreenAdmin = ({ route }: Props) => {
         >
             {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
                 <MainLayout
-                    title={truncateText(values.product.title, 20)}
+                    title={truncateText(values.product.title, 25)}
                     subTitle={`Precio: ${values.price}`}
                     rightAction={async () => {
                         const photos = await CameraAdapter.getPicturesFromLibrary();

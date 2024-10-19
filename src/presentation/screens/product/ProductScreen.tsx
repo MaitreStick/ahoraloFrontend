@@ -39,12 +39,12 @@ export const ProductScreen = ({ route }: Props) => {
         );
     }
 
-    const { product, price, comcity } = prodcomcity;
-    const { width, height } = Dimensions.get('window');
+    const { product, price } = prodcomcity;
+    const { width } = Dimensions.get('window');
 
     return (
         <MainLayout
-            title={truncateText(product.title, 20)}
+            title={truncateText(product.title, 25)}
             subTitle={`${price}`}
         >
             <ScrollView
@@ -71,7 +71,7 @@ export const ProductScreen = ({ route }: Props) => {
 
                 </Layout >
             </ScrollView>
-            <Layout style={{flex:1.5}}>
+            <Layout style={{ flex:1.5 }}>
             <TopTabNavigator prodcomcity={prodcomcity} />
             </Layout>
         </MainLayout>
