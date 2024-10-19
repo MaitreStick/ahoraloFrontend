@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl } from "react-native-gesture-handler";
 import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { Alert, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, Alert, Animated, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
 import { MyIcon } from "../ui/MyIcon";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
@@ -30,6 +30,8 @@ interface Props {
   onProductSearch: (searchProduct: string | null) => void;
   isFetching: boolean;
   isLoading: boolean;
+  showCityHighlight: boolean;
+  highlightAnim: Animated.Value;
 }
 
 export const ProductList = ({
@@ -44,6 +46,8 @@ export const ProductList = ({
   onProductSearch,
   isFetching,
   isLoading,
+  showCityHighlight,
+  highlightAnim,
 }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [citySearch, setCitySearch] = useState<string>('');
@@ -154,7 +158,7 @@ export const ProductList = ({
     }
     const picture = await CameraAdapter.takePicture();
     navigation.navigate('OcrScreen', { picture, selectedCityId, selectedCityName });
-  };  
+  };
 
   const allCompaniesOption = {
     id: null,
@@ -186,141 +190,9 @@ export const ProductList = ({
 
   if (isLoading) {
     return (
-      <>
-      <View style={localStyles.searchContainer}>
-        <Input
-          placeholder="Buscar Producto"
-          value={searchTerm}
-          onChangeText={handleSearchTermChange}
-          style={localStyles.searchInput}
-          accessoryRight={() => (
-            <TouchableOpacity onPress={handleSearchClick}>
-              <MyIcon name="search-outline" />
-            </TouchableOpacity>
-          )}
-        />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
-      <View style={localStyles.buttonContainer}>
-        <Button
-          onPress={toggleCityModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
-        >
-          {selectedCityName}
-        </Button>
-        <Button
-          onPress={toggleCompanyModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
-        >
-          {selectedCompanyName}
-        </Button>
-        <Button
-          onPress={handleOcrClick}
-          appearance="filled"
-          status="primary"
-          size="small"
-          accessoryRight={<MyIcon name="camera-outline" white />}
-          style={[localStyles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
-        >
-          Escanear Factura
-        </Button>
-      </View>
-
-      <Modal
-        visible={isCompanyModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCompanyModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Empresa"
-            onChangeText={debouncedSetCompanySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {companyNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No se encontraron empresas</Text>
-            </Layout>
-          ) : (
-            <List
-              data={companyNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-companies'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCompanySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <Modal
-        visible={isCityModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCityModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCityModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Ciudad"
-            onChangeText={debouncedSetCitySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {cityNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No cities found</Text>
-            </Layout>
-          ) : (
-            <List
-              data={cityNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-cities'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCitySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <FullScreenLoader />
-    </>
     );
   }
 
@@ -354,7 +226,11 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
+          style={[
+            localStyles.button,
+            { width: width * 0.25 },
+            showCityHighlight && { backgroundColor: colors.primary, borderColor: colors.primary },
+          ]}
         >
           {selectedCityName}
         </Button>
@@ -364,7 +240,7 @@ export const ProductList = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
+          style={[localStyles.button, { width: width * 0.25 }]}
         >
           {selectedCompanyName}
         </Button>

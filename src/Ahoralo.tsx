@@ -6,13 +6,13 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from './presentation/navigation/StackNavigator';
-import { AuthProvider } from './providers/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from './presentation/store/auth/useAuthStore';
 import { checkOnboardingStatus } from './presentation/helpers/checkOnboardingStatus';
 import { ActivityIndicator, View } from 'react-native';
 import { useOnboardingStore } from './presentation/store/onboarding/useOnboardingStore';
+import { PermissionsChecker } from './providers/PermissionChecker';
 
 
 const queryClient = new QueryClient()
@@ -49,9 +49,9 @@ export const Ahoralo = () => {
                 {...eva} theme={eva.light}
             >
                 <NavigationContainer>
-                    <AuthProvider>
+                    <PermissionsChecker>
                         <StackNavigator />
-                    </AuthProvider>
+                    </PermissionsChecker>
                 </NavigationContainer>
             </ApplicationProvider>
         </QueryClientProvider>

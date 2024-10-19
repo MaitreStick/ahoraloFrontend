@@ -1,5 +1,4 @@
 import { StackCardStyleInterpolator, createStackNavigator } from '@react-navigation/stack';
-import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { ProductScreenAdmin } from '../screens/product/ProductScreenAdmin';
@@ -9,8 +8,6 @@ import { CityScreenAdmin } from '../screens/city/CityScreenAdmin';
 import { CompanyScreenAdmin } from '../screens/company/CompanyScreenAdmin';
 import { BottomTabNavigator } from './BottomTabNavigator';
 import { useAuthStore } from '../store/auth/useAuthStore';
-import { useEffect, useState } from 'react';
-import { checkOnboardingStatus } from '../helpers/checkOnboardingStatus';
 import { useOnboardingStore } from '../store/onboarding/useOnboardingStore';
 import { ProfileScreen } from '../screens/settings/ProfileScreen';
 import { DevelopersScreen } from '../screens/developers/DevelopersScreen';
@@ -18,6 +15,7 @@ import { ComingSoonScreen } from '../components/ui/ComingSoonScreen';
 import { ProductScreen } from '../screens/product/ProductScreen';
 import { OcrScreen } from '../screens/ocr/OcrScreen';
 import { ActivityIndicator, View } from 'react-native';
+import { Prodcomcity } from '../../domain/entities/prodcomcity';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -27,7 +25,7 @@ export type RootStackParams = {
   WelcomeScreen: undefined;
   NotificationScreen: undefined;
   ProductScreenAdmin: { productId: string, comcityId: string };
-  ProductScreen: { productId: string, comcityId: string };
+  ProductScreen: { prodcomcity: Prodcomcity };
   CityScreenAdmin: { cityId: string };
   CompanyScreenAdmin: { companyId: string };
   ProfileScreen: undefined;

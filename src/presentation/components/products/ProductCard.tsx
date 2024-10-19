@@ -17,8 +17,7 @@ export const ProductCard = ({ prodcomcity }:Props) => {
         <Card
             style={[stylesCard.cardComponent]}
             onPress={() => navigation.navigate('ProductScreen', {
-                comcityId: prodcomcity.comcity.id,
-                productId: prodcomcity.product.id
+                prodcomcity: prodcomcity
             })}
         >
             <Layout style={[stylesCard.cardInternalWrapper]}>

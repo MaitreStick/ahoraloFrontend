@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl } from "react-native-gesture-handler";
 import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
 import { MyIcon } from "../ui/MyIcon";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
@@ -135,10 +135,10 @@ export const ProductListAdmin = ({
 
   const handleSearchClick = () => {
     if (searchTerm.trim() === '') {
-      onProductSearch(null); 
+      onProductSearch(null);
     } else {
       onProductSearch(searchTerm);
-    } 
+    }
   };
 
   const allCompaniesOption = {
@@ -171,132 +171,10 @@ export const ProductListAdmin = ({
 
   if (isLoading) {
     return (
-      <>
-      <View style={localStyles.searchContainer}>
-        <Input
-          placeholder="Buscar Producto"
-          value={searchTerm}
-          onChangeText={handleSearchTermChange}
-          style={localStyles.searchInput}
-          accessoryRight={() => (
-            <TouchableOpacity onPress={handleSearchClick}>
-              <MyIcon name="search-outline" />
-            </TouchableOpacity>
-          )}
-        />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
-      <View style={localStyles.buttonContainer}>
-        <Button
-          onPress={toggleCityModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
-        >
-          {selectedCityName}
-        </Button>
-        <Button
-          onPress={toggleCompanyModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
-        >
-          {selectedCompanyName}
-        </Button>
-      </View>
-
-      <Modal
-        visible={isCompanyModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCompanyModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Empresa"
-            onChangeText={debouncedSetCompanySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {companyNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No se encontraron empresas</Text>
-            </Layout>
-          ) : (
-            <List
-              data={companyNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-companies'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCompanySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <Modal
-        visible={isCityModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCityModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCityModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Ciudad"
-            onChangeText={debouncedSetCitySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {cityNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No cities found</Text>
-            </Layout>
-          ) : (
-            <List
-              data={cityNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-cities'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCitySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <FullScreenLoader />
-    </>
-    );
+    );;
   }
 
   if (prodcomcities.length === 0) {
@@ -329,7 +207,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
+          style={[localStyles.button, { width: width * 0.25 }]}
         >
           {selectedCityName}
         </Button>
@@ -339,7 +217,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button,{width: width * 0.25}]}
+          style={[localStyles.button, { width: width * 0.25 }]}
         >
           {selectedCompanyName}
         </Button>
