@@ -77,3 +77,11 @@ export interface AhoraloOcrResponse {
   }[];
   text: string;
 }
+
+export interface LowestPriceByTag {
+  companyId: string;
+  companyName: string;
+  productId: string;
+  productTitle: string;
+  lowestPrice: number;
+}

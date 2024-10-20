@@ -21,7 +21,7 @@ const Tab = createMaterialTopTabNavigator<RootTopTabParams>();
 
 
 
-export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) =>  {
+export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) => {
     return (
         <Tab.Navigator
             sceneContainerStyle={{ backgroundColor: colors.background }}
@@ -44,14 +44,14 @@ export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) =>  {
                 options={{
                     title: 'Precio más bajo',
                 }}
-                component={LowestPriceTab}
+                children={() => <LowestPriceTab prodcomcity={prodcomcity} />}
             />
             <Tab.Screen
                 name="NearLocationTab"
                 options={{
                     title: 'Lugar más cercano',
                 }}
-                component={NearLocationTab}
+            children={() => <NearLocationTab/>}
             />
         </Tab.Navigator>
     );
