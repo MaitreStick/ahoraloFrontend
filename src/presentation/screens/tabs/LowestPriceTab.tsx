@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Layout, Text, Spinner, Card, Divider, ListItem, List } from '@ui-kitten/components';
+import { Layout, Text, Spinner, ListItem, List } from '@ui-kitten/components';
 import { fetchLowestPricesByTags } from '../../../actions/products/fetch-lowest-prices-by-tags';
 import { Prodcomcity } from '../../../domain/entities/prodcomcity';
 import { LowestPriceByTag } from '../../../infrastructure/interfaces/ahoralo-products.response';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { BarChart } from 'react-native-chart-kit';
 
