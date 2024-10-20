@@ -16,7 +16,6 @@ interface TopTabNavigatorProps {
 
 
 
-// export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) => {
 const Tab = createMaterialTopTabNavigator<RootTopTabParams>();
 
 

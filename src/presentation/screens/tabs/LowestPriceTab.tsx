@@ -86,7 +86,6 @@ export const LowestPriceTab = ({ prodcomcity }: Props) => {
     );
   };
 
-  // Preparar los datos para la gráfica
   const chartData = {
     labels: sortedData.map((item) => item.companyName),
     datasets: [
