@@ -5,6 +5,7 @@ interface Props {
   name: string;
   color?: string;
   white?: boolean;
+  fill?: string;
 }
 
 export const MyIcon = ({name, color, white = false}: Props) => {
