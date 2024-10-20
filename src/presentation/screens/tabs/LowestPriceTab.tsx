@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Layout, Text, Spinner, ListItem, List } from '@ui-kitten/components';
 import { fetchLowestPricesByTags } from '../../../actions/products/fetch-lowest-prices-by-tags';
 import { Prodcomcity } from '../../../domain/entities/prodcomcity';
@@ -16,12 +16,19 @@ interface Props {
 
 export const LowestPriceTab = ({ prodcomcity }: Props) => {
   const tags = prodcomcity.product.tags;
+  const cityId = prodcomcity.comcity.city.id;
+
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery<LowestPriceByTag[], Error>({
     queryKey: ['lowestPricesByTags', tags],
-    queryFn: () => fetchLowestPricesByTags(tags),
+    queryFn: () => fetchLowestPricesByTags(tags, cityId),
     enabled: !!tags && tags.length > 0,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['lowestPricesByTags', tags] });
+  }, [tags, queryClient]);
 
   if (isLoading) {
     return (

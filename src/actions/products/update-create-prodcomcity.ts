@@ -58,7 +58,6 @@ const updateProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
 
     const { id, product, ...rest } = prodcomcity;
     const images = product?.images || [];
-    console.log(images)
 
     try {
         const checkedImages = await prepareImages(images);
