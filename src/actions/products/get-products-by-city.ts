@@ -6,6 +6,8 @@ import { ProdComcityMapper } from "../../infrastructure/mappers/prodcomcity.mapp
 
 export const getProductsByCity = async (cityId: string, page: number = 0, limit: number = 10): Promise<Prodcomcity[]> => {
     try {
+        const url = `/prodcomcity/city/${cityId}?page=${page}`;
+        console.log('Solicitando productos por ciudad:', url);
         const offset = page * limit;
         const { data } = await ahoraloApi.get<AhoraloProdcomcity[]>(`/prodcomcity/by-city/${cityId}`, {
             params: {
@@ -13,10 +15,15 @@ export const getProductsByCity = async (cityId: string, page: number = 0, limit:
                 offset,
             },
         });
-        const prodcomcities = data.map( ProdComcityMapper.AhoraloProdcomcityToEntity );
+        const prodcomcities = data.map(ProdComcityMapper.AhoraloProdcomcityToEntity);
         return prodcomcities;
-    } catch (error) {
-        console.log(error);
-        throw new Error('Error getting products by city');
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.warn('No se encontraron productos para la ciudad seleccionada.');
+            return [];
+        } else {
+            console.error('Error en getProductsByCity:', error);
+            throw error;
+        }
     }
-}
+};

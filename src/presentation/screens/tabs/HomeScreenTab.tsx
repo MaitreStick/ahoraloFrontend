@@ -8,10 +8,13 @@ import { Prodcomcity } from '../../../domain/entities/prodcomcity';
 import { getProductsByCityAndCompany } from '../../../actions/products/get-products-by-city-and-company';
 import { getProductsByCompany } from '../../../actions/products/get-products-by-company';
 import { searchProductsByTerm } from '../../../actions/products/search-products-by-term';
-import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../../config/theme/ColorsTheme';
 import { usePermissionStore } from '../../store/permissions/usePermissionStore';
 import { useCityStore } from '../../store/location/useCityStore';
+import { getCurrentLocation, reverseGeocodeLocation } from '../../../actions/location/location';
+import { fetchAllCities } from '../../../actions/cities/fetch-all-cities';
+import { City } from '../../../domain/entities/city';
 
 
 export const HomeScreenTab = () => {
@@ -67,13 +70,120 @@ export const HomeScreenTab = () => {
 
   const handleAutomaticSelection = async () => {
     setShowCitySelectionModal(false);
-    requestLocationPermission();
+
+    const startTime = Date.now();
+
+    try {
+      console.log('Inicio de la selección automática');
+
+      const permissionStatus = await requestLocationPermission();
+
+      if (permissionStatus !== 'granted') {
+        Alert.alert(
+          'Permiso denegado',
+          'No se pudo obtener el permiso para acceder a la ubicación. Por favor, selecciona tu ciudad manualmente.',
+        );
+        return;
+      }
+
+      const location = await getCurrentLocation();
+
+      const cityName = await reverseGeocodeLocation(location);
+
+      if (!cityName) {
+        Alert.alert(
+          'No se pudo determinar la ciudad',
+          'No se pudo obtener la ciudad a partir de tu ubicación. Por favor, selecciona tu ciudad manualmente.',
+        );
+        return;
+      }
+
+      const matchingCity = await findCityByName(cityName);
+
+      if (matchingCity) {
+        setSelectedCity(matchingCity.id, matchingCity.name);
+        queryClient.invalidateQueries({
+          queryKey: ['prodcomcities', 'infinite'],
+          exact: false,
+        });
+      } else {
+        Alert.alert(
+          'Ciudad no encontrada',
+          `No pudimos encontrar la ciudad "${cityName}" en nuestra base de datos. Por favor, selecciona tu ciudad manualmente.`,
+        );
+      }
+    } catch (error) {
+      console.error('Error en la selección automática de ciudad:', error);
+      Alert.alert(
+        'Error',
+        'Ocurrió un error al obtener tu ubicación. Por favor, selecciona tu ciudad manualmente.',
+      );
+    }
   };
-  
+
+
+  const findCityByName = async (cityName: string): Promise<City | null> => {
+    try {
+      const normalizedCityName = normalizeString(cityName);
+
+      const citiesData = await fetchAllCities(0, 1000, '');
+
+      const cities = citiesData.flat(); 
+
+      const normalizedCities = cities.map(city => ({
+        ...city,
+        normalizedName: normalizeString(city.name),
+      }));
+
+      const cityNameWords = normalizedCityName.split(' ');
+
+      for (const word of cityNameWords) {
+        const matchingCity = normalizedCities.find(
+          city => city.normalizedName === word
+        );
+
+        if (matchingCity) {
+          console.log(matchingCity);
+          return matchingCity;
+        }
+      }
+
+      const matchingCity = normalizedCities.find(
+        city => normalizedCityName.includes(city.normalizedName)
+      );
+
+      if (matchingCity) {
+        return matchingCity;
+      }
+
+      const matchingCityReverse = normalizedCities.find(
+        city => city.normalizedName.includes(normalizedCityName)
+      );
+
+      if (matchingCityReverse) {
+        return matchingCityReverse;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error al buscar la ciudad por nombre:', error);
+      return null;
+    }
+  };
+
+  const normalizeString = (str: string): string => {
+    return str
+      .normalize('NFD') // Descompone caracteres Unicode
+      .replace(/[\u0300-\u036f]/g, '') // Elimina marcas diacríticas
+      .toLowerCase();
+  };
+
   const onCitySelect = (cityId: string | null, cityName: string) => {
     setSelectedCity(cityId, cityName);
+    console.log('Ciudad seleccionada:', { cityId, cityName });
     queryClient.removeQueries({ queryKey: ['prodcomcities', 'infinite'] });
   };
+
 
   const onCompanySelect = (companyId: string | null, companyName: string) => {
     setSelectedCompanyId(companyId);
@@ -117,7 +227,6 @@ export const HomeScreenTab = () => {
     },
     initialPageParam: 0,
     staleTime: 1000 * 60 * 60,
-    enabled: isCityLoaded,
   });
 
 

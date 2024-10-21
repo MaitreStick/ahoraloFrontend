@@ -37,8 +37,6 @@ interface Props {
 export const ProductList = ({
   prodcomcities,
   fetchNextPage,
-  // selectedCityId,
-  // selectedCityName,
   selectedCompanyId,
   selectedCompanyName,
   onCitySelect,

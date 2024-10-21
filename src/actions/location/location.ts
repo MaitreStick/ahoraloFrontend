@@ -43,3 +43,28 @@ export const watchCurrentLocation = (
 export const clearWatchLocation = (watchId: number) => {
     Geolocation.clearWatch(watchId);
 }
+
+
+export const reverseGeocodeLocation = async (location: Location): Promise<string | null> => {
+    const { latitude, longitude } = location;
+  
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+      );
+  
+      if (!response.ok) {
+        console.error('Error al realizar la solicitud de geocodificación inversa');
+        return null;
+      }
+  
+      const data = await response.json();
+  
+      const city = data.address.city || data.address.town || data.address.village;
+  
+      return city || null;
+    } catch (error) {
+      console.error('Error en la geocodificación inversa:', error);
+      return null;
+    }
+  };
