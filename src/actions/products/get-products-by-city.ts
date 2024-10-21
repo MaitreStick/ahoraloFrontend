@@ -6,8 +6,6 @@ import { ProdComcityMapper } from "../../infrastructure/mappers/prodcomcity.mapp
 
 export const getProductsByCity = async (cityId: string, page: number = 0, limit: number = 10): Promise<Prodcomcity[]> => {
     try {
-        const url = `/prodcomcity/city/${cityId}?page=${page}`;
-        console.log('Solicitando productos por ciudad:', url);
         const offset = page * limit;
         const { data } = await ahoraloApi.get<AhoraloProdcomcity[]>(`/prodcomcity/by-city/${cityId}`, {
             params: {

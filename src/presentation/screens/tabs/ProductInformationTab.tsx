@@ -5,7 +5,14 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { MyIcon } from '../../components/ui/MyIcon';
 
 export const ProductInformationTab = ({ prodcomcity }: { prodcomcity: Prodcomcity }) => {
-    const { product, comcity, price } = prodcomcity;
+    const { product, comcity, price, date } = prodcomcity;
+
+    const dateObj = new Date(date);
+    let hours = dateObj.getHours();
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12 || 12; 
+    const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')} a las ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
 
     return (
         <Layout style={styles.container}>
@@ -28,6 +35,11 @@ export const ProductInformationTab = ({ prodcomcity }: { prodcomcity: Prodcomcit
                         Precio:
                     </Text>
                     <Text style={styles.value}>${price}</Text>
+
+                    <Text category="s1" style={styles.label}>
+                        Última actualización:
+                    </Text>
+                    <Text style={styles.value}>{formattedDate}</Text>
                 </Card>
 
                 <Card style={styles.card} status="info">
