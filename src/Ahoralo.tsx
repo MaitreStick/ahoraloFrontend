@@ -14,7 +14,6 @@ import { ActivityIndicator, View } from 'react-native';
 import { useOnboardingStore } from './presentation/store/onboarding/useOnboardingStore';
 import { PermissionsChecker } from './providers/PermissionChecker';
 
-
 const queryClient = new QueryClient()
 
 export const Ahoralo = () => {
