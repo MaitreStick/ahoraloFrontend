@@ -11,15 +11,16 @@ import { searchProductsByTerm } from '../../../actions/products/search-products-
 import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../../config/theme/ColorsTheme';
 import { usePermissionStore } from '../../store/permissions/usePermissionStore';
+import { useCityStore } from '../../store/location/useCityStore';
 
 
 export const HomeScreenTab = () => {
 
-  const [selectedCityId, setSelectedCityId] = useState<string | null>(null);
-  const [selectedCityName, setSelectedCityName] = useState('Ciudad');
+  const { selectedCityId, selectedCityName, setSelectedCity, loadSelectedCity } = useCityStore();
+
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [selectedCompanyName, setSelectedCompanyName] = useState('Empresa');
-  const [searchProduct, setSearchProduct] = useState<string | null>(null);;
+  const [searchProduct, setSearchProduct] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
   const { requestLocationPermission } = usePermissionStore();
@@ -28,9 +29,21 @@ export const HomeScreenTab = () => {
   const [showCityHighlight, setShowCityHighlight] = useState(false);
   const highlightAnim = useRef(new Animated.Value(0)).current;
 
+  const [isCityLoaded, setIsCityLoaded] = useState(false);
+
   useEffect(() => {
-    setShowCitySelectionModal(true);
+    const loadCity = async () => {
+      await loadSelectedCity();
+      setIsCityLoaded(true);
+    };
+    loadCity();
   }, []);
+
+  useEffect(() => {
+    if (isCityLoaded && !selectedCityId) {
+      setShowCitySelectionModal(true);
+    }
+  }, [isCityLoaded, selectedCityId]);
 
   const handleManualSelection = () => {
     setShowCitySelectionModal(false);
@@ -56,10 +69,9 @@ export const HomeScreenTab = () => {
     setShowCitySelectionModal(false);
     requestLocationPermission();
   };
-
+  
   const onCitySelect = (cityId: string | null, cityName: string) => {
-    setSelectedCityId(cityId);
-    setSelectedCityName(cityName);
+    setSelectedCity(cityId, cityName);
     queryClient.removeQueries({ queryKey: ['prodcomcities', 'infinite'] });
   };
 
@@ -105,7 +117,13 @@ export const HomeScreenTab = () => {
     },
     initialPageParam: 0,
     staleTime: 1000 * 60 * 60,
+    enabled: isCityLoaded,
   });
+
+
+  if (!isCityLoaded) {
+    return null;
+  }
 
   return (
     <>

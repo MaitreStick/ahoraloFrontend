@@ -15,6 +15,7 @@ import { colors } from "../../../config/theme/ColorsTheme";
 import { CameraAdapter } from "../../../config/adapters/camera-adapter";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigation/StackNavigator";
+import { useCityStore } from "../../store/location/useCityStore";
 
 
 interface Props {
@@ -36,8 +37,8 @@ interface Props {
 export const ProductList = ({
   prodcomcities,
   fetchNextPage,
-  selectedCityId,
-  selectedCityName,
+  // selectedCityId,
+  // selectedCityName,
   selectedCompanyId,
   selectedCompanyName,
   onCitySelect,
@@ -54,6 +55,7 @@ export const ProductList = ({
   const [isCityModalVisible, setCityModalVisible] = useState(false);
   const [isCompanyModalVisible, setCompanyModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const { selectedCityId, selectedCityName } = useCityStore();
 
   const queryClient = useQueryClient();
 

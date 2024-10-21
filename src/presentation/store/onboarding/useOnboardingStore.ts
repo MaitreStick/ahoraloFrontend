@@ -12,7 +12,7 @@ type OnboardingState = {
 
 
 
-export const useOnboardingStore = create<OnboardingState>((set) => ({
+export const useOnboardingStore = create<OnboardingState>()((set) => ({
 
   hasCompletedOnboarding: null,
 
