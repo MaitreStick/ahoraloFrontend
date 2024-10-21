@@ -4,6 +4,8 @@ import { FadeInImage } from '../ui/FadeInImage';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { Prodcomcity } from '../../../domain/entities/prodcomcity';
+import { FAB } from '../ui/FAB';
+import { colors } from '../../../config/theme/ColorsTheme';
 
 interface Props {
     prodcomcity: Prodcomcity;
@@ -44,19 +46,24 @@ export const ProductCard = ({ prodcomcity }:Props) => {
                     </Layout>
                     <Layout style={[stylesCard.LayoutText]}>
                         <Text
-                        style={{ textAlign: 'center' }}
+                        style={{ textAlign: 'center', fontWeight: 'bold' }}
                         >
-                           { prodcomcity.price }
+                           ${ prodcomcity.price }
                         </Text>
                     </Layout>
                     <Layout style={[stylesCard.LayoutText]}>
                         <Text
                         style={{ textAlign: 'center' }}
                         >
-                             { prodcomcity.comcity.city.name }
+                             { prodcomcity.comcity.company.name }
                         </Text>
                     </Layout>
                 </Layout>
+                <FAB
+                iconName='plus-outline'
+                onPress={() => console.log('Agregar al carrito')}
+                style={{ position: 'absolute', bottom: 0, right: 0, height:10, width: 10, backgroundColor: colors.primary, borderColor: colors.primary }}
+                />
             </Layout>
 
         </Card>
