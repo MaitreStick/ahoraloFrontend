@@ -7,9 +7,9 @@ export const fetchLowestPricesByTags = async (tags: string[], cityId: string): P
   }
 
   try {
-    const tagsParam = tags.join(',');
-    const { data } = await ahoraloApi.get<LowestPriceByTag[]>(
-      `/prodcomcity/lowest-prices-by-tags?tags=${tagsParam}&cityId=${cityId}`
+    const { data } = await ahoraloApi.post<LowestPriceByTag[]>(
+      `/prodcomcity/lowest-prices-by-tags`,
+      { tags, cityId }
     );
     return data;
   } catch (error) {
