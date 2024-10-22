@@ -70,9 +70,6 @@ export const HomeScreenTab = () => {
 
   const handleAutomaticSelection = async () => {
     setShowCitySelectionModal(false);
-
-    const startTime = Date.now();
-
     try {
       console.log('Inicio de la selección automática');
 

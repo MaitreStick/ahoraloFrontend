@@ -16,6 +16,7 @@ import { ProductScreen } from '../screens/product/ProductScreen';
 import { OcrScreen } from '../screens/ocr/OcrScreen';
 import { ActivityIndicator, View } from 'react-native';
 import { Prodcomcity } from '../../domain/entities/prodcomcity';
+import { LegalScreen } from '../screens/legalDocuments/legalScreen';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -30,6 +31,7 @@ export type RootStackParams = {
   CompanyScreenAdmin: { companyId: string };
   ProfileScreen: undefined;
   DevelopersScreen: undefined;
+  LegalScreen: undefined;
   ComingSoonScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
   MapScreen: { warehouse: {
@@ -90,6 +92,7 @@ export const StackNavigator = () => {
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
+            <Stack.Screen name="LegalScreen" component={LegalScreen} />
           </>
         ) : (
           // Rutas para usuarios regulares
@@ -97,6 +100,7 @@ export const StackNavigator = () => {
             <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
             <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
+            <Stack.Screen name="LegalScreen" component={LegalScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="OcrScreen" component={OcrScreen} />
           </>

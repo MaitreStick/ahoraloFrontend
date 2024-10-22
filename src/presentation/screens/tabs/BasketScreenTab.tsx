@@ -31,7 +31,7 @@ export const BasketScreenTab = () => {
             }
             accessoryRight={() => (
                 <TouchableOpacity onPress={() => removeItem(item.product.id)}>
-                    <MyIcon name="trash-2-outline" color="color-danger-500" />
+                    <MyIcon name="checkmark-outline" color="color-success-500" />
                 </TouchableOpacity>
             )}
             style={styles.listItem}

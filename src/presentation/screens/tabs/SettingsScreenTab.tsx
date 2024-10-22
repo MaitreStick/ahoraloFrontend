@@ -13,10 +13,6 @@ export const SettingScreenTab = () => {
     await logout();
   };
 
-  const handleProfile = () => {
-    navigation.navigate('ComingSoonScreen');
-  };
-
   const handleSuggestProduct = () => {
     navigation.navigate('ComingSoonScreen');
   };
@@ -30,7 +26,7 @@ export const SettingScreenTab = () => {
   };  
 
   const handleLegalDocuments = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('LegalScreen');
   };
 
   const handleDevelopers = () => {
@@ -38,12 +34,6 @@ export const SettingScreenTab = () => {
   };
 
   const settingsOptions = [
-    {
-      title: 'Perfil',
-      description: 'Ver y editar tu perfil',
-      iconName: 'person-outline',
-      onPress: handleProfile,
-    },
     {
       title: 'Sugerir Producto',
       description: 'Sugerir un producto para agregar',

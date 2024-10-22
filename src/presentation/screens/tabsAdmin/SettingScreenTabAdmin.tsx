@@ -13,16 +13,12 @@ export const SettingScreenTabAdmin = () => {
     await logout();
   };
 
-  const handleProfile = () => {
-    navigation.navigate('ComingSoonScreen');
-  };
-
   const generateReport = () => {
     navigation.navigate('ComingSoonScreen');
   };
 
   const handleLegalDocuments = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('LegalScreen');
   };
 
   const handleDevelopers = () => {
@@ -30,12 +26,6 @@ export const SettingScreenTabAdmin = () => {
   };
 
   const settingsOptions = [
-    {
-      title: 'Perfil',
-      description: 'Ver y editar tu perfil',
-      iconName: 'person-outline',
-      onPress: handleProfile,
-    },
     {
       title: 'Reporte Auditoría',
       description: 'Generar un reporte de auditoría',

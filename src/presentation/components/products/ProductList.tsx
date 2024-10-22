@@ -16,6 +16,7 @@ import { CameraAdapter } from "../../../config/adapters/camera-adapter";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigation/StackNavigator";
 import { useCityStore } from "../../store/location/useCityStore";
+import { requestCameraPermission } from "../../../actions/permissions/camera";
 
 
 interface Props {
@@ -153,6 +154,15 @@ export const ProductList = ({
 
     if (!selectedCityId) {
       Alert.alert('Selecciona una ciudad', 'Por favor selecciona una ciudad antes de escanear la factura');
+      return;
+    }
+    const permissionStatus = await requestCameraPermission();
+
+    if (permissionStatus !== 'granted') {
+      Alert.alert(
+        'Permiso denegado',
+        'No se pudo obtener el permiso para acceder a la cámara del dispositivo.',
+      );
       return;
     }
     const picture = await CameraAdapter.takePicture();

@@ -18,6 +18,7 @@ import { FAB } from "../../components/ui/FAB"
 import { deleteProdcomcityById } from "../../../actions/products/delete-prodcomcity";
 import { useNavigation } from "@react-navigation/native";
 import { CustomAlert } from "../../components/ui/CustomAlert";
+import { requestStoragePermission } from "../../../actions/permissions/storage";
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreenAdmin'> { }
 
@@ -156,6 +157,15 @@ export const ProductScreenAdmin = ({ route }: Props) => {
                     title={truncateText(values.product.title, 25)}
                     subTitle={`Precio: ${values.price}`}
                     rightAction={async () => {
+                        const permissionStatus = await requestStoragePermission();
+
+                        if (permissionStatus !== 'granted') {
+                            Alert.alert(
+                                'Permiso denegado',
+                                'No se pudo obtener el permiso para acceder al almacenamiento del dispositivo.',
+                            );
+                            return;
+                        }
                         const photos = await CameraAdapter.getPicturesFromLibrary();
                         setFieldValue('product.images', [...values.product.images, ...photos]);
                     }}
