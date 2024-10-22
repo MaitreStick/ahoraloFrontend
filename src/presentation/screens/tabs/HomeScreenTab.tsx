@@ -173,14 +173,13 @@ export const HomeScreenTab = () => {
 
   const normalizeString = (str: string): string => {
     return str
-      .normalize('NFD') // Descompone caracteres Unicode
-      .replace(/[\u0300-\u036f]/g, '') // Elimina marcas diacríticas
+      .normalize('NFD') 
+      .replace(/[\u0300-\u036f]/g, '') 
       .toLowerCase();
   };
 
   const onCitySelect = (cityId: string | null, cityName: string) => {
     setSelectedCity(cityId, cityName);
-    console.log('Ciudad seleccionada:', { cityId, cityName });
     queryClient.removeQueries({ queryKey: ['prodcomcities', 'infinite'] });
   };
 
