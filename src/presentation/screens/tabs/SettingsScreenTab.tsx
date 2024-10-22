@@ -14,15 +14,15 @@ export const SettingScreenTab = () => {
   };
 
   const handleSuggestProduct = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('SuggestProductScreen');
   };
 
   const handleSuggestCity = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('SuggestCityScreen');
   };
 
   const handleSuggestCompany = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('SuggestCompanyScreen');
   };  
 
   const handleLegalDocuments = () => {

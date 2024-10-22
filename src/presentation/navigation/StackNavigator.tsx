@@ -17,6 +17,9 @@ import { OcrScreen } from '../screens/ocr/OcrScreen';
 import { ActivityIndicator, View } from 'react-native';
 import { Prodcomcity } from '../../domain/entities/prodcomcity';
 import { LegalScreen } from '../screens/legalDocuments/legalScreen';
+import { SuggestProductScreen } from '../screens/product/ProductSuggestion';
+import { SuggestCityScreen } from '../screens/city/CitySuggestion';
+import { SuggestCompanyScreen } from '../screens/company/CompanySuggestion';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -33,6 +36,9 @@ export type RootStackParams = {
   DevelopersScreen: undefined;
   LegalScreen: undefined;
   ComingSoonScreen: undefined;
+  SuggestProductScreen: undefined;
+  SuggestCityScreen: undefined;
+  SuggestCompanyScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
   MapScreen: { warehouse: {
       companyId: string;
@@ -103,6 +109,9 @@ export const StackNavigator = () => {
             <Stack.Screen name="LegalScreen" component={LegalScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="OcrScreen" component={OcrScreen} />
+            <Stack.Screen name="SuggestProductScreen" component={SuggestProductScreen} />
+            <Stack.Screen name="SuggestCityScreen" component={SuggestCityScreen} />
+            <Stack.Screen name="SuggestCompanyScreen" component={SuggestCompanyScreen} />
           </>
         )
       ) : (
