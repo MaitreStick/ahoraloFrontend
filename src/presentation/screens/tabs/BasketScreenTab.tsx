@@ -48,7 +48,7 @@ export const BasketScreenTab = () => {
             <Layout style={styles.container}>
                 {items.length === 0 ? (
                     <Layout style={styles.emptyContainer}>
-                        <Text category="h6">El carrito está vacío</Text>
+                        <Text category="h6">La canasta está vacía</Text>
                     </Layout>
                 ) : (
                     <>
@@ -61,7 +61,7 @@ export const BasketScreenTab = () => {
                         <Layout style={styles.footer}>
                             <Text category="h6">Total: ${total.toFixed(2)}</Text>
                             <Button style={styles.button} onPress={clearBasket}>
-                                Vaciar Carrito
+                                Vaciar Canasta
                             </Button>
                         </Layout>
                     </>
