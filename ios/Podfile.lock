@@ -1025,7 +1025,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context (4.10.5):
+  - react-native-safe-area-context (4.11.1):
     - React-Core
   - React-nativeconfig (0.74.2)
   - React-NativeModulesApple (0.74.2):
@@ -1256,11 +1256,11 @@ PODS:
     - React-logger (= 0.74.2)
     - React-perflogger (= 0.74.2)
     - React-utils (= 0.74.2)
-  - RNCAsyncStorage (1.23.1):
+  - RNCAsyncStorage (1.24.0):
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
-  - RNGestureHandler (2.17.0):
+  - RNGestureHandler (2.20.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1284,9 +1284,9 @@ PODS:
   - RNGoogleSignin (12.2.1):
     - GoogleSignIn (~> 7.1)
     - React-Core
-  - RNPermissions (5.0.0):
+  - RNPermissions (5.0.1):
     - React-Core
-  - RNScreens (3.32.0):
+  - RNScreens (3.34.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1573,7 +1573,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: c3afe5472ef870d98a4b28415fc0b928161ee5f7
   react-native-maps: d7c0974353b8a495642d7ce3b80f239fc6b87bfb
   react-native-pager-view: bc6cf48ea4f08ea5c5a74e19c6579e9b86d8729c
-  react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
+  react-native-safe-area-context: 5141f11858b033636f1788b14f32eaba92cee810
   React-nativeconfig: 9f223cd321823afdecf59ed00861ab2d69ee0fc1
   React-NativeModulesApple: ff7efaff7098639db5631236cfd91d60abff04c0
   React-perflogger: 32ed45d9cee02cf6639acae34251590dccd30994
@@ -1597,12 +1597,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 56b642bf605ba5afa500d35790928fc1d51565ad
   React-utils: 4476b7fcbbd95cfd002f3e778616155241d86e31
   ReactCommon: ecad995f26e0d1e24061f60f4e5d74782f003f12
-  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
-  RNGestureHandler: 45a92e7dca8326094bf59160576692ab271182d3
+  RNGestureHandler: 28078232f2868d3dcb4d4b6c8ab8691700187664
   RNGoogleSignin: 08dc4ba7eac2096c7fecfe109f0950fa4683c803
-  RNPermissions: f938ec821ccd90f0ba6bbb5f4402f0752cb1ee01
-  RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
+  RNPermissions: 349c9d84e69b85fd257786921fd77d247099552f
+  RNScreens: aa943ad421c3ced3ef5a47ede02b0cbfc43a012e
   RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: ae3c32c514802d30f687a04a6a35b348506d411f

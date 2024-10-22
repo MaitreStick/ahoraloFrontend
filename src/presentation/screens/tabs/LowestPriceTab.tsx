@@ -7,14 +7,16 @@ import { LowestPriceByTag } from '../../../infrastructure/interfaces/ahoralo-pro
 import { StyleSheet, Dimensions } from 'react-native';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { BarChart } from 'react-native-chart-kit';
+import { colors } from '../../../config/theme/ColorsTheme';
 
 const screenWidth = Dimensions.get('window').width;
 
 interface Props {
   prodcomcity: Prodcomcity;
+  onDataLoaded: (data: LowestPriceByTag[]) => void;
 }
 
-export const LowestPriceTab = ({ prodcomcity }: Props) => {
+export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
   const tags = prodcomcity.product.tags;
   const cityId = prodcomcity.comcity.city.id;
 
@@ -27,8 +29,15 @@ export const LowestPriceTab = ({ prodcomcity }: Props) => {
   });
 
   useEffect(() => {
+    if (data) {
+      onDataLoaded(data);
+    }
+  }, [data, onDataLoaded]);
+
+  useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['lowestPricesByTags', tags] });
   }, [tags, queryClient]);
+
 
   if (isLoading) {
     return (
@@ -119,7 +128,7 @@ export const LowestPriceTab = ({ prodcomcity }: Props) => {
               backgroundGradientFrom: '#ffffff',
               backgroundGradientTo: '#ffffff',
               decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
+              color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               style: {
                 borderRadius: 16,
@@ -179,7 +188,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   highlightedText: {
-    color: '#4CAF50',
+    color: colors.primary,
     fontWeight: 'bold',
   },
   chartTitle: {

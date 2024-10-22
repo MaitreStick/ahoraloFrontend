@@ -4,6 +4,8 @@ import { LowestPriceTab } from '../screens/tabs/LowestPriceTab';
 import { NearLocationTab } from '../screens/tabs/NearLocationTab';
 import { colors } from '../../config/theme/ColorsTheme';
 import { Prodcomcity } from '../../domain/entities/prodcomcity';
+import { useState } from 'react';
+import { LowestPriceByTag } from '../../infrastructure/interfaces/ahoralo-products.response';
 
 export type RootTopTabParams = {
     ProductInformationTab: { prodcomcity: Prodcomcity };
@@ -21,6 +23,9 @@ const Tab = createMaterialTopTabNavigator<RootTopTabParams>();
 
 
 export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) => {
+
+    const [lowestPriceData, setLowestPriceData] = useState<LowestPriceByTag[]>([]);
+
     return (
         <Tab.Navigator
             sceneContainerStyle={{ backgroundColor: colors.background }}
@@ -43,14 +48,19 @@ export const TopTabNavigator = ({ prodcomcity }: TopTabNavigatorProps) => {
                 options={{
                     title: 'Precio más bajo',
                 }}
-                children={() => <LowestPriceTab prodcomcity={prodcomcity} />}
+                children={() => <LowestPriceTab
+                    prodcomcity={prodcomcity}
+                    onDataLoaded={(data) => setLowestPriceData(data)}
+                  />}
             />
             <Tab.Screen
                 name="NearLocationTab"
                 options={{
                     title: 'Lugar más cercano',
                 }}
-            children={() => <NearLocationTab/>}
+            children={() => <NearLocationTab
+                lowestPriceData={lowestPriceData}
+              />}
             />
         </Tab.Navigator>
     );

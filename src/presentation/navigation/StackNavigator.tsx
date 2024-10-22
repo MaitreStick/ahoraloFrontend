@@ -16,7 +16,6 @@ import { ProductScreen } from '../screens/product/ProductScreen';
 import { OcrScreen } from '../screens/ocr/OcrScreen';
 import { ActivityIndicator, View } from 'react-native';
 import { Prodcomcity } from '../../domain/entities/prodcomcity';
-import { MapScreen } from '../screens/maps/MapScreen';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -33,7 +32,12 @@ export type RootStackParams = {
   DevelopersScreen: undefined;
   ComingSoonScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
-  MapScreen: undefined;
+  MapScreen: { warehouse: {
+      companyId: string;
+      companyName: string;
+      name: string;
+      id: string; latitude: number; longitude: number 
+} };
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -95,7 +99,6 @@ export const StackNavigator = () => {
             <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="OcrScreen" component={OcrScreen} />
-            <Stack.Screen name="MapScreen" component={MapScreen} />
           </>
         )
       ) : (
