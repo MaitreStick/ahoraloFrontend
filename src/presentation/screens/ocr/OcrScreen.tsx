@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Image, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { Layout, Text, Button, Input, List, ListItem } from '@ui-kitten/components';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
@@ -15,6 +15,7 @@ import { processImageWithOCR } from '../../../actions/ocr/processImageWithOCR';
 import { getComcityByCityAndCompany } from '../../../actions/comcities/getComcityByCityAndCompany';
 import { CustomAlert } from '../../components/ui/CustomAlert';
 import { Toast } from '../../components/ui/Toast';
+import { Ocr } from '../../../domain/entities/ocr';
 
 type Props = StackScreenProps<RootStackParams, 'OcrScreen'>;
 
@@ -29,7 +30,8 @@ export const OcrScreen = ({ route }: Props) => {
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertTitle, setAlertTitle] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
-
+    const [ocrResult, setOcrResult] = useState<Ocr | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false);
     const navigation = useNavigation();
 
     const handleAlertConfirm = () => {
@@ -38,12 +40,12 @@ export const OcrScreen = ({ route }: Props) => {
 
     const showToast = () => {
         setToastVisible(true);
-      };
-    
-      const hideToast = () => {
+    };
+
+    const hideToast = () => {
         setToastVisible(false);
-      };
-    
+    };
+
 
     const toggleCompanyModal = useCallback(() => {
         setCompanyModalVisible((prev) => !prev);
@@ -96,6 +98,8 @@ export const OcrScreen = ({ route }: Props) => {
             return;
         }
 
+        setIsProcessing(true);
+
         try {
             const comcityData = await getComcityByCityAndCompany(selectedCompanyId, selectedCityId);
             const comcityId = comcityData.id;
@@ -104,17 +108,22 @@ export const OcrScreen = ({ route }: Props) => {
                 throw new Error('No se encontró comcity para la ciudad y empresa seleccionadas.');
             }
 
-            await processImageWithOCR(picture, comcityId);
+            const ocrData = await processImageWithOCR(picture, comcityId);
+
+            setOcrResult(ocrData);
 
             showToast();
 
-            navigation.goBack();
+            // No navegamos hacia atrás para mostrar los resultados
+            // navigation.goBack();
 
         } catch (error) {
             console.error('Error al procesar la imagen:', error);
             setAlertTitle('Error');
             setAlertMessage('Ocurrió un error al procesar la imagen. Por favor, inténtalo de nuevo.');
             setAlertVisible(true);
+        } finally {
+            setIsProcessing(false);
         }
     };
 
@@ -182,7 +191,42 @@ export const OcrScreen = ({ route }: Props) => {
                 </View>
             </Modal>
 
-            <Button onPress={handleProcessImage} style={styles.button}>Enviar mi aporte</Button>
+            <Button onPress={handleProcessImage} style={styles.button} disabled={isProcessing}>
+                {isProcessing ? 'Procesando...' : 'Enviar mi aporte'}
+            </Button>
+
+            {isProcessing && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
+            )}
+
+            {ocrResult && (
+                <View style={styles.resultsContainer}>
+                    {ocrResult.products.length > 0 ? (
+                        <>
+                            <Text style={styles.resultsTitle}>Productos actualizados:</Text>
+                            <FlatList
+                                data={ocrResult.products}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item }) => (
+                                    <View style={styles.productItem}>
+                                        <Text style={styles.productCode}>Código: {item.code}</Text>
+                                        <Text style={styles.productPrice}>Precio: ${item.price}</Text>
+                                    </View>
+                                )}
+                            />
+                        </>
+                    ) : (
+                        <Text style={styles.noProductsText}>
+                            No se pudo actualizar la información.
+                        </Text>
+                    )}
+
+                    <Button onPress={() => navigation.goBack()} style={styles.backButton}>
+                        Volver
+                    </Button>
+                </View>
+            )}
+
             <CustomAlert
                 visible={alertVisible}
                 title={alertTitle}
@@ -200,12 +244,10 @@ export const OcrScreen = ({ route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16 },
-    title: { textAlign: 'center', marginBottom: 16 },
     image: { width: '100%', height: 350, marginBottom: 16 },
     label: { marginHorizontal: 10 },
     input: { marginVertical: 5, marginHorizontal: 10 },
-    button: { marginTop: 16 },
+    button: { marginTop: 16, marginHorizontal: 16 },
     modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -239,5 +281,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
+    },
+    resultsContainer: {
+        marginTop: 20,
+        paddingHorizontal: 16,
+    },
+    resultsTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    noProductsText: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginVertical: 20,
+    },
+    productItem: {
+        marginBottom: 10,
+    },
+    productCode: {
+        fontSize: 16,
+    },
+    productPrice: {
+        fontSize: 16,
+    },
+    backButton: {
+        marginTop: 20,
+        marginHorizontal: 16,
     },
 });
