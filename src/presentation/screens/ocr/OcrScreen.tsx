@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { View, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { useState, useCallback } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { Layout, Text, Button, Input, List, ListItem } from '@ui-kitten/components';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';

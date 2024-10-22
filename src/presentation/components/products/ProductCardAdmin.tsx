@@ -45,16 +45,16 @@ export const ProductCardAdmin = ({ prodcomcity }:Props) => {
                     </Layout>
                     <Layout style={[stylesCard.LayoutText]}>
                         <Text
-                        style={{ textAlign: 'center' }}
+                        style={{ textAlign: 'center', fontWeight: 'bold' }}
                         >
-                           { prodcomcity.price }
+                           ${ prodcomcity.price }
                         </Text>
                     </Layout>
                     <Layout style={[stylesCard.LayoutText]}>
                         <Text
                         style={{ textAlign: 'center' }}
                         >
-                             { prodcomcity.comcity.city.name }
+                             { prodcomcity.comcity.company.name }
                         </Text>
                     </Layout>
                 </Layout>
