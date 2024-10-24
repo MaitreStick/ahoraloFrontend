@@ -20,6 +20,7 @@ import { LegalScreen } from '../screens/legalDocuments/legalScreen';
 import { SuggestProductScreen } from '../screens/product/ProductSuggestion';
 import { SuggestCityScreen } from '../screens/city/CitySuggestion';
 import { SuggestCompanyScreen } from '../screens/company/CompanySuggestion';
+import AuditLogsScreen from '../screens/reports/AuditLogScreen';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -39,6 +40,7 @@ export type RootStackParams = {
   SuggestProductScreen: undefined;
   SuggestCityScreen: undefined;
   SuggestCompanyScreen: undefined;
+  AuditLogsScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
   MapScreen: { warehouse: {
       companyId: string;
@@ -99,6 +101,7 @@ export const StackNavigator = () => {
             <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="LegalScreen" component={LegalScreen} />
+            <Stack.Screen name="AuditLogsScreen" component={AuditLogsScreen} />
           </>
         ) : (
           // Rutas para usuarios regulares

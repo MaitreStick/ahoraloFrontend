@@ -6,6 +6,7 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { SettingsSectionCard } from '../../components/settings/SettingsSectionCard';
 
 export const SettingScreenTabAdmin = () => {
+  const { user } = useAuthStore(); // Obtener el usuario autenticado
   const logout = useAuthStore((state) => state.logout);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
@@ -14,7 +15,7 @@ export const SettingScreenTabAdmin = () => {
   };
 
   const generateReport = () => {
-    navigation.navigate('ComingSoonScreen');
+    navigation.navigate('AuditLogsScreen');
   };
 
   const handleLegalDocuments = () => {
@@ -26,12 +27,14 @@ export const SettingScreenTabAdmin = () => {
   };
 
   const settingsOptions = [
-    {
-      title: 'Reporte Auditoría',
-      description: 'Generar un reporte de auditoría',
-      iconName: 'file-text-outline',
-      onPress: generateReport,
-    },
+    ...(user?.roles.includes('super-user') ? [
+      {
+        title: 'Reporte Auditoría',
+        description: 'Generar un reporte de auditoría',
+        iconName: 'file-text-outline',
+        onPress: generateReport,
+      },
+    ] : []),
     {
       title: 'Cerrar Sesión',
       description: 'Salir de tu cuenta',
