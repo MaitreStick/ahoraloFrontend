@@ -12,6 +12,7 @@ export const SettingScreenTabAdmin = () => {
 
   const handleLogout = async () => {
     await logout();
+    navigation.navigate('LoginScreen');
   };
 
   const generateReport = () => {

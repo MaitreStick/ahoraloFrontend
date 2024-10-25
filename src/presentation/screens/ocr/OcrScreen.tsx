@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, useWindowDimensions } from 'react-native';
 import { Layout, Text, Button, Input, List, ListItem } from '@ui-kitten/components';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
@@ -33,6 +33,8 @@ export const OcrScreen = ({ route }: Props) => {
     const [ocrResult, setOcrResult] = useState<Ocr | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const navigation = useNavigation();
+
+    const { height } = useWindowDimensions();
 
     const handleAlertConfirm = () => {
         setAlertVisible(false);
@@ -221,6 +223,8 @@ export const OcrScreen = ({ route }: Props) => {
                     <Button onPress={() => navigation.goBack()} style={styles.backButton}>
                         Volver
                     </Button>
+
+                    <Layout style={{ flex: 1, height: height * 0.15, backgroundColor: "white" }}/>
                 </View>
             )}
 

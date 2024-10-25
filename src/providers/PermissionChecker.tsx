@@ -1,9 +1,9 @@
-import {PropsWithChildren, useEffect} from 'react';
-import {AppState} from 'react-native';
+import { PropsWithChildren, useEffect } from 'react';
+import { AppState } from 'react-native';
 import { usePermissionStore } from '../presentation/store/permissions/usePermissionStore';
 
-export const PermissionsChecker = ({children}: PropsWithChildren) => {
-  const {checkLocationPermission} = usePermissionStore();
+export const PermissionsChecker = ({ children }: PropsWithChildren) => {
+  const { checkLocationPermission } = usePermissionStore();
 
   useEffect(() => {
     checkLocationPermission();

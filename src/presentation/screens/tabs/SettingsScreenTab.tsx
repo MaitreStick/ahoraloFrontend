@@ -11,6 +11,7 @@ export const SettingScreenTab = () => {
 
   const handleLogout = async () => {
     await logout();
+    navigation.navigate('LoginScreen');
   };
 
   const handleSuggestProduct = () => {
