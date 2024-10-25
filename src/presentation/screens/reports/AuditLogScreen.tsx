@@ -6,6 +6,7 @@ import { fetchAuditLogs } from '../../../actions/auditLogs/FetchAuditLogsParams'
 import { AuditLog } from '../../../infrastructure/interfaces/audit.response';
 import { Input } from '@ui-kitten/components';
 import { MyIcon } from '../../components/ui/MyIcon';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
 export const AuditLogsScreen = () => {
     const [logs, setLogs] = useState<AuditLog[]>([]);
@@ -16,6 +17,13 @@ export const AuditLogsScreen = () => {
     const [loading, setLoading] = useState(false);
     const [showUserModal, setShowUserModal] = useState(false);
     const [showActionModal, setShowActionModal] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertConfirm = () => {
+        setAlertVisible(false);
+    };
 
     useEffect(() => {
         loadLogs();
@@ -28,7 +36,7 @@ export const AuditLogsScreen = () => {
 
         const uniqueUserIds = [...new Set(logsData.map((log) => log.user_id))];
         setUserIds(uniqueUserIds);
-        
+
         setLoading(false);
     };
 
@@ -46,7 +54,9 @@ export const AuditLogsScreen = () => {
 
     const handleExport = async (format: 'csv' | 'json') => {
         await exportAuditLogs({ format, ...filters });
-        Alert.alert('Éxito', `Registros exportados en formato ${format.toUpperCase()} y enviados por correo.`);
+        setAlertTitle('Éxito');
+        setAlertMessage('Registros exportados en formato ${format.toUpperCase()} y enviados por correo.');
+        setAlertVisible(true);
     };
 
     const toggleUserModal = useCallback(() => {
@@ -178,6 +188,13 @@ export const AuditLogsScreen = () => {
                     ))}
                 </View>
             </Modal>
+            <CustomAlert
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                onConfirm={handleAlertConfirm}
+                confirmText="Aceptar"
+            />
         </MainLayout>
     );
 };

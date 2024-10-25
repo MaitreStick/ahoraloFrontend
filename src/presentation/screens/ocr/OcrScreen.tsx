@@ -114,9 +114,6 @@ export const OcrScreen = ({ route }: Props) => {
 
             showToast();
 
-            // No navegamos hacia atrás para mostrar los resultados
-            // navigation.goBack();
-
         } catch (error) {
             console.error('Error al procesar la imagen:', error);
             setAlertTitle('Error');

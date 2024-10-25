@@ -1,5 +1,5 @@
-import { Button, Input, Layout, Text, Divider } from '@ui-kitten/components';
-import { Alert, Image, useWindowDimensions } from 'react-native';
+import { Button, Input, Layout, Text } from '@ui-kitten/components';
+import { Image, useWindowDimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -72,7 +72,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     setIsPosting(false);
 
     if (wasSuccessful) {
-      showToast();  
+      showToast();
     } else {
       setAlertTitle('Inicio de sesión fallido');
       setAlertMessage('Usuario o contraseña incorrectos');
@@ -111,7 +111,6 @@ export const LoginScreen = ({ navigation }: Props) => {
   return (
     <Layout style={[styles.generalContainer]}>
       <ScrollView style={[styles.scrollView]}>
-        {/* Title & Image */}
         <Layout style={[styles.background, { paddingTop: height * 0.06 }]}>
           <Layout style={[styles.layoutTitle]}>
             <Text category="h1"
@@ -125,7 +124,6 @@ export const LoginScreen = ({ navigation }: Props) => {
           <Text category="p2">Por favor, ingrese para continuar</Text>
         </Layout>
 
-        {/* Inputs */}
         <Layout style={[styles.layoutForm]}>
           <Input
             placeholder="Correo electrónico"
@@ -149,10 +147,8 @@ export const LoginScreen = ({ navigation }: Props) => {
         </Layout>
 
 
-        {/* Space */}
         <Layout style={[styles.layoutSpace]} />
 
-        {/* Button */}
         <Layout style={[styles.generalContainer]} >
           <Button
             disabled={isPosting}
@@ -170,7 +166,6 @@ export const LoginScreen = ({ navigation }: Props) => {
           </Layout>
         </Layout>
 
-        {/* Information to create and account */}
         <Layout style={[styles.informationText, { height: height * 0.02 }]} />
 
         <Layout style={[styles.layoutQuestion]}>

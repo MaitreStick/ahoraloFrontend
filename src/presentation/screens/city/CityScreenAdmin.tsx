@@ -13,6 +13,7 @@ import { FAB } from '../../components/ui/FAB';
 import { useNavigation } from '@react-navigation/native';
 import { deleteCityById } from '../../../actions/cities/delete-city';
 import { CustomAlert } from '../../components/ui/CustomAlert';
+import { Toast } from '../../components/ui/Toast';
 
 interface Props extends StackScreenProps<RootStackParams, 'CityScreenAdmin'> { }
 
@@ -20,6 +21,7 @@ export const CityScreenAdmin = ({ route }: Props) => {
   const cityIdRef = useRef(route.params.cityId);
   const queryClient = useQueryClient();
   const { height } = Dimensions.get('window');
+  const [toastVisible, setToastVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
@@ -29,6 +31,14 @@ export const CityScreenAdmin = ({ route }: Props) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const isNewCity = cityIdRef.current === 'new';
+  
+  const showToast = () => {
+    setToastVisible(true);
+  };
+
+  const hideToast = () => {
+    setToastVisible(false);
+  };
 
   const handleAlertConfirm = () => {
     setAlertVisible(false);
@@ -47,6 +57,8 @@ export const CityScreenAdmin = ({ route }: Props) => {
     onSuccess: (data: City) => {
 
       try {
+        showToast();
+
         queryClient.invalidateQueries({
           queryKey: ['cities', 'infinite'],
           exact: false,
@@ -191,6 +203,11 @@ export const CityScreenAdmin = ({ route }: Props) => {
             message={alertMessage}
             onConfirm={handleAlertConfirm}
             confirmText="Aceptar"
+          />
+          <Toast
+            visible={toastVisible}
+            message="Proceso Exitoso"
+            onHide={hideToast}
           />
         </MainLayout>
       )}

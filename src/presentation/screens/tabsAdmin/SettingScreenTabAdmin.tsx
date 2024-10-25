@@ -6,7 +6,7 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { SettingsSectionCard } from '../../components/settings/SettingsSectionCard';
 
 export const SettingScreenTabAdmin = () => {
-  const { user } = useAuthStore(); // Obtener el usuario autenticado
+  const { user } = useAuthStore(); 
   const logout = useAuthStore((state) => state.logout);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { openComposer } from 'react-native-email-link';
 import { MainLayout } from '../../layouts/MainLayout';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
 export const SuggestProductScreen = () => {
   const [productName, setProductName] = useState('');
@@ -9,10 +10,19 @@ export const SuggestProductScreen = () => {
   const [company, setCompany] = useState('');
   const [city, setCity] = useState('');
   const [department, setDepartment] = useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+  };
 
   const handleSubmit = () => {
     if (!productName || !productCode || !company || !city || !department) {
-      Alert.alert('Error', 'Por favor, completa todos los campos.');
+      setAlertTitle('Error');
+      setAlertMessage('Por favor, completa todos los campos.');
+      setAlertVisible(true);
       return;
     }
 
@@ -29,8 +39,16 @@ export const SuggestProductScreen = () => {
       subject: 'Sugerencia de Producto',
       body: emailContent,
     })
-      .then(() => Alert.alert('Éxito', 'Sugerencia enviada correctamente.'))
-      .catch((error) => Alert.alert('Error', 'No se pudo enviar el correo.'));
+      .then(() => {
+        setAlertTitle('Éxito');
+        setAlertMessage('Sugerencia enviada correctamente.');
+        setAlertVisible(true);
+      })
+      .catch((error) => {
+        setAlertTitle('Error');
+        setAlertMessage('No se pudo enviar el correo.');
+        setAlertVisible(true);
+      });
   };
 
   return (
@@ -69,6 +87,13 @@ export const SuggestProductScreen = () => {
         />
         <Button title="Enviar Sugerencia" onPress={handleSubmit} />
       </View>
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onConfirm={handleAlertConfirm}
+        confirmText="Aceptar"
+      />
     </MainLayout>
   );
 };

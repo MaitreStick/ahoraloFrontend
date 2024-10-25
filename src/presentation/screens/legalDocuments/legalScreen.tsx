@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions } from 'react-native';
 import { Card } from '@ui-kitten/components';
 import { MainLayout } from '../../layouts/MainLayout';
 import { colors, styles } from '../../../config/theme/ColorsTheme';

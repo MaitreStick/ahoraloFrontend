@@ -64,7 +64,6 @@ export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
     );
   }
 
-  // Ordenar y preparar los datos
   const sortedData = [...data].sort((a, b) => a.lowestPrice - b.lowestPrice);
   const lowestPrice = sortedData[0].lowestPrice;
 

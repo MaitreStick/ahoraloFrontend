@@ -9,7 +9,6 @@ import { CompanyScreenAdmin } from '../screens/company/CompanyScreenAdmin';
 import { BottomTabNavigator } from './BottomTabNavigator';
 import { useAuthStore } from '../store/auth/useAuthStore';
 import { useOnboardingStore } from '../store/onboarding/useOnboardingStore';
-import { ProfileScreen } from '../screens/settings/ProfileScreen';
 import { DevelopersScreen } from '../screens/developers/DevelopersScreen';
 import { ComingSoonScreen } from '../components/ui/ComingSoonScreen';
 import { ProductScreen } from '../screens/product/ProductScreen';
@@ -33,7 +32,6 @@ export type RootStackParams = {
   ProductScreen: { prodcomcity: Prodcomcity };
   CityScreenAdmin: { cityId: string };
   CompanyScreenAdmin: { companyId: string };
-  ProfileScreen: undefined;
   DevelopersScreen: undefined;
   LegalScreen: undefined;
   ComingSoonScreen: undefined;
@@ -42,12 +40,14 @@ export type RootStackParams = {
   SuggestCompanyScreen: undefined;
   AuditLogsScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
-  MapScreen: { warehouse: {
+  MapScreen: {
+    warehouse: {
       companyId: string;
       companyName: string;
       name: string;
-      id: string; latitude: number; longitude: number 
-} };
+      id: string; latitude: number; longitude: number
+    }
+  };
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -97,7 +97,6 @@ export const StackNavigator = () => {
             <Stack.Screen name="ProductScreenAdmin" component={ProductScreenAdmin} />
             <Stack.Screen name="CityScreenAdmin" component={CityScreenAdmin} />
             <Stack.Screen name="CompanyScreenAdmin" component={CompanyScreenAdmin} />
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="LegalScreen" component={LegalScreen} />

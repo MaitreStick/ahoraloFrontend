@@ -19,6 +19,7 @@ import { deleteProdcomcityById } from "../../../actions/products/delete-prodcomc
 import { useNavigation } from "@react-navigation/native";
 import { CustomAlert } from "../../components/ui/CustomAlert";
 import { requestStoragePermission } from "../../../actions/permissions/storage";
+import { Toast } from "../../components/ui/Toast";
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreenAdmin'> { }
 
@@ -27,6 +28,7 @@ export const ProductScreenAdmin = ({ route }: Props) => {
     const comcityIdRef = useRef(route.params.comcityId);
     const queryClient = useQueryClient();
     const { height } = Dimensions.get('window');
+    const [toastVisible, setToastVisible] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertTitle, setAlertTitle] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
@@ -36,6 +38,14 @@ export const ProductScreenAdmin = ({ route }: Props) => {
     const animatedValue = useRef(new Animated.Value(0)).current;
 
     const isNewProduct = productIdRef.current === 'new' && comcityIdRef.current === 'new';
+
+    const showToast = () => {
+        setToastVisible(true);
+    };
+
+    const hideToast = () => {
+        setToastVisible(false);
+    };
 
     const handleAlertConfirm = () => {
         setAlertVisible(false);
@@ -61,6 +71,8 @@ export const ProductScreenAdmin = ({ route }: Props) => {
         onSuccess(data: Prodcomcity) {
 
             try {
+                showToast();
+
                 queryClient.invalidateQueries({
                     queryKey: ['prodcomcities', 'infinite'],
                     exact: false,
@@ -160,10 +172,9 @@ export const ProductScreenAdmin = ({ route }: Props) => {
                         const permissionStatus = await requestStoragePermission();
 
                         if (permissionStatus !== 'granted') {
-                            Alert.alert(
-                                'Permiso denegado',
-                                'No se pudo obtener el permiso para acceder al almacenamiento del dispositivo.',
-                            );
+                            setAlertTitle('Permiso denegado');
+                            setAlertMessage('No se pudo obtener el permiso para acceder al almacenamiento del dispositivo.');
+                            setAlertVisible(true);
                             return;
                         }
                         const photos = await CameraAdapter.getPicturesFromLibrary();
@@ -270,6 +281,11 @@ export const ProductScreenAdmin = ({ route }: Props) => {
                         message={alertMessage}
                         onConfirm={handleAlertConfirm}
                         confirmText="Aceptar"
+                    />
+                    <Toast
+                        visible={toastVisible}
+                        message="Proceso Exitoso"
+                        onHide={hideToast}
                     />
 
                 </MainLayout>

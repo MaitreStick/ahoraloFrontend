@@ -59,20 +59,20 @@ export const ProductScreen = ({ route }: Props) => {
                             <FadeInImage
                                 key={index}
                                 uri={imageUri}
-                                style={{ width, height: 300}}
+                                style={{ width, height: 300 }}
                             />
                         ))
                     ) : (
                         <Image
                             source={require('../../../assets/no-product-image.png')}
-                            style={{ width, height: 300 }} 
+                            style={{ width, height: 300 }}
                         />
                     )}
 
                 </Layout >
             </ScrollView>
-            <Layout style={{ flex:1.5 }}>
-            <TopTabNavigator prodcomcity={prodcomcity} />
+            <Layout style={{ flex: 1.5 }}>
+                <TopTabNavigator prodcomcity={prodcomcity} />
             </Layout>
         </MainLayout>
     );

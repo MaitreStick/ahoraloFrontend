@@ -15,6 +15,7 @@ import { useCityStore } from '../../store/location/useCityStore';
 import { getCurrentLocation, reverseGeocodeLocation } from '../../../actions/location/location';
 import { fetchAllCities } from '../../../actions/cities/fetch-all-cities';
 import { City } from '../../../domain/entities/city';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
 
 export const HomeScreenTab = () => {
@@ -24,6 +25,9 @@ export const HomeScreenTab = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [selectedCompanyName, setSelectedCompanyName] = useState('Empresa');
   const [searchProduct, setSearchProduct] = useState<string | null>(null);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   const queryClient = useQueryClient();
   const { requestLocationPermission } = usePermissionStore();
@@ -33,6 +37,10 @@ export const HomeScreenTab = () => {
   const highlightAnim = useRef(new Animated.Value(0)).current;
 
   const [isCityLoaded, setIsCityLoaded] = useState(false);
+
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+  };
 
   useEffect(() => {
     const loadCity = async () => {
@@ -76,10 +84,9 @@ export const HomeScreenTab = () => {
       const permissionStatus = await requestLocationPermission();
 
       if (permissionStatus !== 'granted') {
-        Alert.alert(
-          'Permiso denegado',
-          'No se pudo obtener el permiso para acceder a la ubicación. Por favor, selecciona tu ciudad manualmente.',
-        );
+        setAlertTitle('Permiso denegado');
+        setAlertMessage('No se pudo obtener el permiso para acceder a la ubicación. Por favor, selecciona tu ciudad manualmente.');
+        setAlertVisible(true);
         return;
       }
 
@@ -88,10 +95,9 @@ export const HomeScreenTab = () => {
       const cityName = await reverseGeocodeLocation(location);
 
       if (!cityName) {
-        Alert.alert(
-          'No se pudo determinar la ciudad',
-          'No se pudo obtener la ciudad a partir de tu ubicación. Por favor, selecciona tu ciudad manualmente.',
-        );
+        setAlertTitle('No se pudo determinar la ciudad');
+        setAlertMessage('No se pudo obtener la ciudad a partir de tu ubicación. Por favor, selecciona tu ciudad manualmente.');
+        setAlertVisible(true);
         return;
       }
 
@@ -104,17 +110,15 @@ export const HomeScreenTab = () => {
           exact: false,
         });
       } else {
-        Alert.alert(
-          'Ciudad no encontrada',
-          `No pudimos encontrar la ciudad "${cityName}" en nuestra base de datos. Por favor, selecciona tu ciudad manualmente.`,
-        );
+        setAlertTitle('Ciudad no encontrada');
+        setAlertMessage('No pudimos encontrar la ciudad "${cityName}" en nuestra base de datos. Por favor, selecciona tu ciudad manualmente.');
+        setAlertVisible(true);
       }
     } catch (error) {
       console.error('Error en la selección automática de ciudad:', error);
-      Alert.alert(
-        'Error',
-        'Ocurrió un error al obtener tu ubicación. Por favor, selecciona tu ciudad manualmente.',
-      );
+      setAlertTitle('Error');
+      setAlertMessage('Ocurrió un error al obtener tu ubicación. Por favor, selecciona tu ciudad manualmente.');
+      setAlertVisible(true);
     }
   };
 
@@ -125,7 +129,7 @@ export const HomeScreenTab = () => {
 
       const citiesData = await fetchAllCities(0, 1000, '');
 
-      const cities = citiesData.flat(); 
+      const cities = citiesData.flat();
 
       const normalizedCities = cities.map(city => ({
         ...city,
@@ -170,8 +174,8 @@ export const HomeScreenTab = () => {
 
   const normalizeString = (str: string): string => {
     return str
-      .normalize('NFD') 
-      .replace(/[\u0300-\u036f]/g, '') 
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
   };
 
@@ -278,6 +282,13 @@ export const HomeScreenTab = () => {
           isLoading={isLoading}
           showCityHighlight={showCityHighlight}
           highlightAnim={highlightAnim}
+        />
+        <CustomAlert
+          visible={alertVisible}
+          title={alertTitle}
+          message={alertMessage}
+          onConfirm={handleAlertConfirm}
+          confirmText="Aceptar"
         />
       </MainLayout>
     </>

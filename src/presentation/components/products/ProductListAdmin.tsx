@@ -7,7 +7,6 @@ import { ActivityIndicator, Modal, StyleSheet, TouchableOpacity, TouchableWithou
 import { MyIcon } from "../ui/MyIcon";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
-import { FullScreenLoader } from "../ui/FullScreenLoader";
 import { fetchAllCompanies } from "../../../actions/companies/fetch-all-companies";
 import { Company } from "../../../domain/entities/company";
 import { fetchAllCities } from "../../../actions/cities/fetch-all-cities";

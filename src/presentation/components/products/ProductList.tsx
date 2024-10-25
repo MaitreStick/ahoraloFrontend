@@ -17,6 +17,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigation/StackNavigator";
 import { useCityStore } from "../../store/location/useCityStore";
 import { requestCameraPermission } from "../../../actions/permissions/camera";
+import { CustomAlert } from "../ui/CustomAlert";
 
 
 interface Props {
@@ -55,11 +56,18 @@ export const ProductList = ({
   const [isCompanyModalVisible, setCompanyModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const { selectedCityId, selectedCityName } = useCityStore();
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   const queryClient = useQueryClient();
 
   const { width } = useWindowDimensions();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+  };
 
   const toggleCityModal = useCallback(() => {
     setCityModalVisible((prev) => !prev);
@@ -153,16 +161,17 @@ export const ProductList = ({
   const handleOcrClick = async () => {
 
     if (!selectedCityId) {
-      Alert.alert('Selecciona una ciudad', 'Por favor selecciona una ciudad antes de escanear la factura');
+      setAlertTitle('Selecciona una ciudad');
+      setAlertMessage('Por favor selecciona una ciudad antes de escanear la factura');
+      setAlertVisible(true);
       return;
     }
     const permissionStatus = await requestCameraPermission();
 
     if (permissionStatus !== 'granted') {
-      Alert.alert(
-        'Permiso denegado',
-        'No se pudo obtener el permiso para acceder a la cámara del dispositivo.',
-      );
+      setAlertTitle('Permiso denegado');
+      setAlertMessage('No se pudo obtener el permiso para acceder a la cámara del dispositivo.');
+      setAlertVisible(true);
       return;
     }
     const picture = await CameraAdapter.takePicture();
@@ -361,6 +370,13 @@ export const ProductList = ({
         refreshControl={
           <RefreshControl refreshing={isFetching || isRefreshing} onRefresh={onPullToRefresh} />
         }
+      />
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onConfirm={handleAlertConfirm}
+        confirmText="Aceptar"
       />
     </>
   );

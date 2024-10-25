@@ -65,7 +65,6 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
             };
           });
 
-          // Ordenar los almacenes por distancia
           warehousesWithDistance.sort((a, b) => a.distance - b.distance);
 
           setWarehousesWithDistance(warehousesWithDistance);
@@ -104,7 +103,6 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
     );
   }
 
-  // Identificar el almacén más cercano
   const nearestDistance = warehousesWithDistance[0].distance;
 
   const renderItem = ({ item }: { item: WarehouseWithDistance }) => {

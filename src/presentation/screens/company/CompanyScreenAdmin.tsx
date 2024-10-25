@@ -13,6 +13,7 @@ import { Company } from '../../../domain/entities/company';
 import { updateCreateCompany } from '../../../actions/companies/update-create-company';
 import { deleteCompanyById } from '../../../actions/companies/delete-company';
 import { CustomAlert } from '../../components/ui/CustomAlert';
+import { Toast } from '../../components/ui/Toast';
 
 interface Props extends StackScreenProps<RootStackParams, 'CompanyScreenAdmin'> { }
 
@@ -20,6 +21,7 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
   const companyIdRef = useRef(route.params.companyId);
   const queryClient = useQueryClient();
   const { height } = Dimensions.get('window');
+  const [toastVisible, setToastVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
@@ -29,6 +31,14 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const isNewCompany = companyIdRef.current === 'new';
+
+  const showToast = () => {
+    setToastVisible(true);
+  };
+
+  const hideToast = () => {
+    setToastVisible(false);
+  };
 
   const handleAlertConfirm = () => {
     setAlertVisible(false);
@@ -47,6 +57,8 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
     onSuccess: (data: Company) => {
 
       try {
+        showToast();
+
         queryClient.invalidateQueries({
           queryKey: ['companies', 'infinite'],
           exact: false,
@@ -186,6 +198,11 @@ export const CompanyScreenAdmin = ({ route }: Props) => {
             message={alertMessage}
             onConfirm={handleAlertConfirm}
             confirmText="Aceptar"
+          />
+          <Toast
+            visible={toastVisible}
+            message="Proceso Exitoso"
+            onHide={hideToast}
           />
         </MainLayout>
       )}

@@ -121,7 +121,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
         </Layout>
 
         {/* Information to log in */}
-        <Layout style={[styles.informationText, {height: height * 0.02}]} />
+        <Layout style={[styles.informationText, { height: height * 0.02 }]} />
 
         <Layout style={[styles.layoutQuestion]} >
           <Text>¿Ya tienes cuenta?</Text>
@@ -135,13 +135,13 @@ export const RegisterScreen = ({ navigation }: Props) => {
           </Text>
         </Layout>
       </ScrollView>
-      
+
       <CustomAlert
         visible={alertVisible}
         title={alertTitle}
         message={alertMessage}
         onConfirm={handleAlertConfirm}
-        confirmText="Aceptar" 
+        confirmText="Aceptar"
       />
 
       <Toast
