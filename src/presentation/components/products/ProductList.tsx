@@ -1,23 +1,23 @@
-import { Button, Input, Layout, List, ListItem, Text } from "@ui-kitten/components";
-import { ProductCard } from "./ProductCard";
-import { useCallback, useState } from 'react';
-import { RefreshControl } from "react-native-gesture-handler";
+import { Layout, Text } from "@ui-kitten/components";
+import React, { useCallback, useState } from 'react';
 import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { ActivityIndicator, Alert, Animated, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
-import { MyIcon } from "../ui/MyIcon";
+import { ActivityIndicator, Animated, StyleSheet, useWindowDimensions, View } from "react-native";
 import { City } from "../../../domain/entities/city";
 import debounce from "lodash.debounce";
 import { fetchAllCompanies } from "../../../actions/companies/fetch-all-companies";
 import { Company } from "../../../domain/entities/company";
 import { fetchAllCities } from "../../../actions/cities/fetch-all-cities";
-import { colors } from "../../../config/theme/ColorsTheme";
 import { CameraAdapter } from "../../../config/adapters/camera-adapter";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigation/StackNavigator";
 import { useCityStore } from "../../store/location/useCityStore";
 import { requestCameraPermission } from "../../../actions/permissions/camera";
 import { CustomAlert } from "../ui/CustomAlert";
+import { FilterButtons } from "./FilterButtons";
+import { SelectionModal } from "./SelectionModal";
+import { ProductsListComponent } from "./ProductListComponent";
+import { SearchBar } from "./SearchBar";
 
 
 interface Props {
@@ -209,144 +209,22 @@ export const ProductList = ({
   if (isLoading) {
     return (
       <>
-        <View style={localStyles.searchContainer}>
-          <Input
-            placeholder="Buscar Producto"
-            value={searchTerm}
-            onChangeText={handleSearchTermChange}
-            style={localStyles.searchInput}
-            accessoryRight={() => (
-              <TouchableOpacity onPress={handleSearchClick}>
-                <MyIcon name="search-outline" />
-              </TouchableOpacity>
-            )}
+        <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearchTermChange={handleSearchTermChange}
+            onSearchClick={handleSearchClick}
           />
         </View>
-        <View style={localStyles.buttonContainer}>
-          <Button
-            onPress={toggleCityModal}
-            appearance="filled"
-            status="basic"
-            size="small"
-            accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[
-              localStyles.button,
-              { width: width * 0.25 },
-              showCityHighlight && { backgroundColor: colors.primary, borderColor: colors.primary },
-            ]}
-          >
-            {selectedCityName}
-          </Button>
-          <Button
-            onPress={toggleCompanyModal}
-            appearance="filled"
-            status="basic"
-            size="small"
-            accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
-            {selectedCompanyName}
-          </Button>
-          <Button
-            onPress={handleOcrClick}
-            appearance="filled"
-            status="primary"
-            size="small"
-            accessoryRight={<MyIcon name="camera-outline" white />}
-            style={[localStyles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
-          >
-            Escanear Factura
-          </Button>
-        </View>
-
-        <Modal
-          visible={isCompanyModalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={toggleCompanyModal}
-        >
-          <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-            <View style={localStyles.modalOverlay} />
-          </TouchableWithoutFeedback>
-
-          <View style={localStyles.modalContentContainer}>
-            <View style={localStyles.modalHeader}>
-              <View style={localStyles.dragIndicator} />
-            </View>
-
-            <Input
-              placeholder="Buscar Empresa"
-              onChangeText={debouncedSetCompanySearch}
-              style={localStyles.searchBar}
-              accessoryRight={<MyIcon name="search-outline" />}
-            />
-            {companyNames.length === 0 ? (
-              <Layout style={localStyles.noResultsContainer}>
-                <Text>No se encontraron empresas</Text>
-              </Layout>
-            ) : (
-              <List
-                data={companyNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-companies'}
-                renderItem={({ item }) => (
-                  <ListItem
-                    title={item.displayName}
-                    onPress={() => handleCompanySelect(item)}
-                  />
-                )}
-                onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-                onEndReachedThreshold={0.5}
-              />
-            )}
-          </View>
-        </Modal>
-
-        <Modal
-          visible={isCityModalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={toggleCityModal}
-        >
-          <TouchableWithoutFeedback onPress={toggleCityModal}>
-            <View style={localStyles.modalOverlay} />
-          </TouchableWithoutFeedback>
-
-          <View style={localStyles.modalContentContainer}>
-            <View style={localStyles.modalHeader}>
-              <View style={localStyles.dragIndicator} />
-            </View>
-
-            <Input
-              placeholder="Buscar Ciudad"
-              onChangeText={debouncedSetCitySearch}
-              style={localStyles.searchBar}
-              accessoryRight={<MyIcon name="search-outline" />}
-            />
-            {cityNames.length === 0 ? (
-              <Layout style={localStyles.noResultsContainer}>
-                <Text>No cities found</Text>
-              </Layout>
-            ) : (
-              <List
-                data={cityNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-cities'}
-                renderItem={({ item }) => (
-                  <ListItem
-                    title={item.displayName}
-                    onPress={() => handleCitySelect(item)}
-                  />
-                )}
-                onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
-                onEndReachedThreshold={0.5}
-              />
-            )}
-          </View>
-        </Modal>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <FilterButtons
+          selectedCityName={selectedCityName}
+          selectedCompanyName={selectedCompanyName}
+          showCityHighlight={showCityHighlight}
+          toggleCityModal={toggleCityModal}
+          toggleCompanyModal={toggleCompanyModal}
+          handleOcrClick={handleOcrClick}
+        />
+        <ActivityIndicator size="large" color="#0000ff" style={{ flex: 1, justifyContent: 'center' }} />
       </>
     );
   }
@@ -354,141 +232,21 @@ export const ProductList = ({
   if (prodcomcities.length === 0) {
     return (
       <>
-        <View style={localStyles.searchContainer}>
-          <Input
-            placeholder="Buscar Producto"
-            value={searchTerm}
-            onChangeText={handleSearchTermChange}
-            style={localStyles.searchInput}
-            accessoryRight={() => (
-              <TouchableOpacity onPress={handleSearchClick}>
-                <MyIcon name="search-outline" />
-              </TouchableOpacity>
-            )}
+        <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearchTermChange={handleSearchTermChange}
+            onSearchClick={handleSearchClick}
           />
         </View>
-        <View style={localStyles.buttonContainer}>
-          <Button
-            onPress={toggleCityModal}
-            appearance="filled"
-            status="basic"
-            size="small"
-            accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[
-              localStyles.button,
-              { width: width * 0.25 },
-              showCityHighlight && { backgroundColor: colors.primary, borderColor: colors.primary },
-            ]}
-          >
-            {selectedCityName}
-          </Button>
-          <Button
-            onPress={toggleCompanyModal}
-            appearance="filled"
-            status="basic"
-            size="small"
-            accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
-            {selectedCompanyName}
-          </Button>
-          <Button
-            onPress={handleOcrClick}
-            appearance="filled"
-            status="primary"
-            size="small"
-            accessoryRight={<MyIcon name="camera-outline" white />}
-            style={[localStyles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
-          >
-            Escanear Factura
-          </Button>
-        </View>
-
-        <Modal
-          visible={isCompanyModalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={toggleCompanyModal}
-        >
-          <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-            <View style={localStyles.modalOverlay} />
-          </TouchableWithoutFeedback>
-
-          <View style={localStyles.modalContentContainer}>
-            <View style={localStyles.modalHeader}>
-              <View style={localStyles.dragIndicator} />
-            </View>
-
-            <Input
-              placeholder="Buscar Empresa"
-              onChangeText={debouncedSetCompanySearch}
-              style={localStyles.searchBar}
-              accessoryRight={<MyIcon name="search-outline" />}
-            />
-            {companyNames.length === 0 ? (
-              <Layout style={localStyles.noResultsContainer}>
-                <Text>No se encontraron empresas</Text>
-              </Layout>
-            ) : (
-              <List
-                data={companyNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-companies'}
-                renderItem={({ item }) => (
-                  <ListItem
-                    title={item.displayName}
-                    onPress={() => handleCompanySelect(item)}
-                  />
-                )}
-                onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-                onEndReachedThreshold={0.5}
-              />
-            )}
-          </View>
-        </Modal>
-
-        <Modal
-          visible={isCityModalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={toggleCityModal}
-        >
-          <TouchableWithoutFeedback onPress={toggleCityModal}>
-            <View style={localStyles.modalOverlay} />
-          </TouchableWithoutFeedback>
-
-          <View style={localStyles.modalContentContainer}>
-            <View style={localStyles.modalHeader}>
-              <View style={localStyles.dragIndicator} />
-            </View>
-
-            <Input
-              placeholder="Buscar Ciudad"
-              onChangeText={debouncedSetCitySearch}
-              style={localStyles.searchBar}
-              accessoryRight={<MyIcon name="search-outline" />}
-            />
-            {cityNames.length === 0 ? (
-              <Layout style={localStyles.noResultsContainer}>
-                <Text>No cities found</Text>
-              </Layout>
-            ) : (
-              <List
-                data={cityNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-cities'}
-                renderItem={({ item }) => (
-                  <ListItem
-                    title={item.displayName}
-                    onPress={() => handleCitySelect(item)}
-                  />
-                )}
-                onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
-                onEndReachedThreshold={0.5}
-              />
-            )}
-          </View>
-        </Modal>
+        <FilterButtons
+          selectedCityName={selectedCityName}
+          selectedCompanyName={selectedCompanyName}
+          showCityHighlight={showCityHighlight}
+          toggleCityModal={toggleCityModal}
+          toggleCompanyModal={toggleCompanyModal}
+          handleOcrClick={handleOcrClick}
+        />
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>No se encontraron productos.</Text>
         </Layout>
@@ -498,153 +256,58 @@ export const ProductList = ({
 
   return (
     <>
-      <View style={localStyles.searchContainer}>
-        <Input
-          placeholder="Buscar Producto"
-          value={searchTerm}
-          onChangeText={handleSearchTermChange}
-          style={localStyles.searchInput}
-          accessoryRight={() => (
-            <TouchableOpacity onPress={handleSearchClick}>
-              <MyIcon name="search-outline" />
-            </TouchableOpacity>
-          )}
+      <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearchTermChange={handleSearchTermChange}
+          onSearchClick={handleSearchClick}
         />
       </View>
-      <View style={localStyles.buttonContainer}>
-        <Button
-          onPress={toggleCityModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[
-            localStyles.button,
-            { width: width * 0.25 },
-            showCityHighlight && { backgroundColor: colors.primary, borderColor: colors.primary },
-          ]}
-        >
-          {selectedCityName}
-        </Button>
-        <Button
-          onPress={toggleCompanyModal}
-          appearance="filled"
-          status="basic"
-          size="small"
-          accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button, { width: width * 0.25 }]}
-        >
-          {selectedCompanyName}
-        </Button>
-        <Button
-          onPress={handleOcrClick}
-          appearance="filled"
-          status="primary"
-          size="small"
-          accessoryRight={<MyIcon name="camera-outline" white />}
-          style={[localStyles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
-        >
-          Escanear Factura
-        </Button>
-      </View>
-
-      <Modal
-        visible={isCompanyModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCompanyModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Empresa"
-            onChangeText={debouncedSetCompanySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {companyNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No se encontraron empresas</Text>
-            </Layout>
-          ) : (
-            <List
-              data={companyNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-companies'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCompanySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <Modal
-        visible={isCityModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleCityModal}
-      >
-        <TouchableWithoutFeedback onPress={toggleCityModal}>
-          <View style={localStyles.modalOverlay} />
-        </TouchableWithoutFeedback>
-
-        <View style={localStyles.modalContentContainer}>
-          <View style={localStyles.modalHeader}>
-            <View style={localStyles.dragIndicator} />
-          </View>
-
-          <Input
-            placeholder="Buscar Ciudad"
-            onChangeText={debouncedSetCitySearch}
-            style={localStyles.searchBar}
-            accessoryRight={<MyIcon name="search-outline" />}
-          />
-          {cityNames.length === 0 ? (
-            <Layout style={localStyles.noResultsContainer}>
-              <Text>No cities found</Text>
-            </Layout>
-          ) : (
-            <List
-              data={cityNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-cities'}
-              renderItem={({ item }) => (
-                <ListItem
-                  title={item.displayName}
-                  onPress={() => handleCitySelect(item)}
-                />
-              )}
-              onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
-              onEndReachedThreshold={0.5}
-            />
-          )}
-        </View>
-      </Modal>
-
-      <List
-        data={prodcomcities}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={({ item }) => <ProductCard prodcomcity={item} />}
-        ListFooterComponent={() => <Layout style={{ height: 150 }} />}
-        onEndReached={fetchNextPage}
-        onEndReachedThreshold={0.8}
-        refreshControl={
-          <RefreshControl refreshing={isFetching || isRefreshing} onRefresh={onPullToRefresh} />
-        }
+      <FilterButtons
+        selectedCityName={selectedCityName}
+        selectedCompanyName={selectedCompanyName}
+        showCityHighlight={showCityHighlight}
+        toggleCityModal={toggleCityModal}
+        toggleCompanyModal={toggleCompanyModal}
+        handleOcrClick={handleOcrClick}
       />
+
+      {/* Company Selection Modal */}
+      <SelectionModal
+        visible={isCompanyModalVisible}
+        toggleModal={toggleCompanyModal}
+        searchPlaceholder="Buscar Empresa"
+        onSearchChange={debouncedSetCompanySearch}
+        data={companyNames}
+        onSelect={handleCompanySelect}
+        fetchNextPage={fetchNextCompaniesPage}
+        hasNextPage={hasNextCompaniesPage}
+        isLoading={isFetchingCompanies}
+      />
+
+      {/* City Selection Modal */}
+      <SelectionModal
+        visible={isCityModalVisible}
+        toggleModal={toggleCityModal}
+        searchPlaceholder="Buscar Ciudad"
+        onSearchChange={debouncedSetCitySearch}
+        data={cityNames}
+        onSelect={handleCitySelect}
+        fetchNextPage={fetchNextCitiesPage}
+        hasNextPage={hasNextCitiesPage}
+        isLoading={isFetchingCities}
+      />
+
+      {/* Products List */}
+      <ProductsListComponent
+        data={prodcomcities}
+        fetchNextPage={fetchNextPage}
+        isFetching={isFetching}
+        isRefreshing={isRefreshing}
+        onPullToRefresh={onPullToRefresh}
+      />
+
+      {/* Alert */}
       <CustomAlert
         visible={alertVisible}
         title={alertTitle}
