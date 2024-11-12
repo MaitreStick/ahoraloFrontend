@@ -3,9 +3,9 @@ import { Alert, Animated, Dimensions } from 'react-native';
 import { MainLayout } from "../../layouts/MainLayout"
 import { StackScreenProps } from "@react-navigation/stack"
 import { RootStackParams } from "../../navigation/StackNavigator"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getProdComCityByIds } from "../../../actions/products/get-prodcomcity-by-id"
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { truncateText } from "../../helpers/TruncateText"
 import { FlatList, ScrollView } from "react-native-gesture-handler"
 import { FadeInImage } from "../../components/ui/FadeInImage"
@@ -20,6 +20,11 @@ import { useNavigation } from "@react-navigation/native";
 import { CustomAlert } from "../../components/ui/CustomAlert";
 import { requestStoragePermission } from "../../../actions/permissions/storage";
 import { Toast } from "../../components/ui/Toast";
+import { Company } from "../../../domain/entities/company";
+import { fetchAllCities } from "../../../actions/cities/fetch-all-cities";
+import { fetchAllCompanies } from "../../../actions/companies/fetch-all-companies";
+import { City } from "../../../domain/entities/city";
+import { SelectionProductModal } from "../../components/products/SelectionProductModal";
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreenAdmin'> { }
 
@@ -33,9 +38,12 @@ export const ProductScreenAdmin = ({ route }: Props) => {
     const [alertTitle, setAlertTitle] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const navigation = useNavigation();
-
     const [isFabOpen, setIsFabOpen] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
+    const [isCityModalVisible, setCityModalVisible] = useState(false);
+    const [citySearch, setCitySearch] = useState('');
+    const [isCompanyModalVisible, setCompanyModalVisible] = useState(false);
+    const [companySearch, setCompanySearch] = useState('');
 
     const isNewProduct = productIdRef.current === 'new' && comcityIdRef.current === 'new';
 
@@ -50,6 +58,59 @@ export const ProductScreenAdmin = ({ route }: Props) => {
     const handleAlertConfirm = () => {
         setAlertVisible(false);
     };
+
+    // const { data: companiesData } = useQuery<Company[]>({
+    //     queryKey: ['companies'],
+    //     queryFn: () => fetchAllCompanies(),
+    // });
+
+    const {
+        data: companiesData,
+        // fetchNextPage: fetchNextCitiesPage,
+        // hasNextPage: hasNextCitiesPage,
+        // isFetchingNextPage: isFetchingNextCitiesPage,
+    } = useInfiniteQuery({
+        queryKey: ['cities', companySearch],
+        queryFn: ({ pageParam = 0 }) => fetchAllCompanies(pageParam, 10, companySearch),
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length === 0 ? undefined : allPages.length;
+        },
+        initialPageParam: 0,
+        staleTime: 1000 * 60 * 60,
+    });
+
+    const companiesList = companiesData?.pages.flat() || [];
+
+    const {
+        data: citiesData,
+        // fetchNextPage: fetchNextCitiesPage,
+        // hasNextPage: hasNextCitiesPage,
+        // isFetchingNextPage: isFetchingNextCitiesPage,
+    } = useInfiniteQuery({
+        queryKey: ['cities', citySearch],
+        queryFn: ({ pageParam = 0 }) => fetchAllCities(pageParam, 10, citySearch),
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length === 0 ? undefined : allPages.length;
+        },
+        initialPageParam: 0,
+        staleTime: 1000 * 60 * 60,
+    });
+
+    const citiesList = citiesData?.pages.flat() || [];
+
+    // const [filteredCities, setFilteredCities] = useState<City[]>([]);
+    // const [filteredCompanies, setFilteredCompanies] = useState<Company[]>(companiesData || []);
+
+
+    // useEffect(() => {
+    //     if (companiesData) {
+    //         setFilteredCompanies(
+    //             companiesData.filter((company) =>
+    //                 company.name.toLowerCase().includes(companySearch.toLowerCase())
+    //             )
+    //         );
+    //     }
+    // }, [companySearch, companiesData]);
 
     const { data: prodcomcity } = useQuery({
         queryKey: ['prodcomcity', comcityIdRef.current, productIdRef.current],
@@ -227,22 +288,63 @@ export const ProductScreenAdmin = ({ route }: Props) => {
                                 style={{ marginVertical: 5 }}
                             />
                             <Input
-                                label='Ciudad'
+                                label="Ciudad"
                                 value={values.comcity.city.name}
-                                onChangeText={handleChange('comcity.city.name')}
+                                onFocus={() => setCityModalVisible(true)}
                                 style={{ marginVertical: 5 }}
+                                editable={false}
                             />
+
                             <Input
-                                label='Departamento'
+                                label="Departamento"
                                 value={values.comcity.city.nameDep}
-                                onChangeText={handleChange('comcity.city.nameDep')}
                                 style={{ marginVertical: 5 }}
+                                editable={false}
                             />
+
                             <Input
-                                label='Empresa'
+                                label="Empresa"
                                 value={values.comcity.company.name}
-                                onChangeText={handleChange('comcity.company.name')}
+                                onFocus={() => setCompanyModalVisible(true)}
                                 style={{ marginVertical: 5 }}
+                                editable={false}
+                            />
+
+                            <SelectionProductModal
+                                visible={isCityModalVisible}
+                                onClose={() => setCityModalVisible(false)}
+                                data={citiesList.map((city) => ({
+                                    id: city.id,
+                                    name: `${city.name} - ${city.nameDep}`,
+                                }))}
+                                onSelect={(item) => {
+                                    const selectedCity = citiesList.find((city) => city.id === item.id);
+                                    setFieldValue('comcity.city', selectedCity);
+                                    if (selectedCity) {
+                                        setFieldValue('comcity.city.nameDep', selectedCity.nameDep);
+                                    }
+                                    setCityModalVisible(false);
+                                }}
+                                searchPlaceholder="Buscar Ciudad"
+                                searchValue={citySearch}
+                                onSearchChange={setCitySearch}
+                            />
+
+                            <SelectionProductModal
+                                visible={isCompanyModalVisible}
+                                onClose={() => setCompanyModalVisible(false)}
+                                data={companiesList?.map((company) => ({
+                                    id: company.id,
+                                    name: company.name,
+                                }))}
+                                onSelect={(item) => {
+                                    const selectedCompany = companiesList.find((company) => company.id === item.id);
+                                    setFieldValue('comcity.company', selectedCompany);
+                                    setCompanyModalVisible(false);
+                                }}
+                                searchPlaceholder="Buscar Empresa"
+                                searchValue={companySearch}
+                                onSearchChange={setCompanySearch}
                             />
                         </Layout>
 

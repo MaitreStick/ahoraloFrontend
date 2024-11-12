@@ -20,9 +20,8 @@ export const updateCreateProdcomcity = (prodcomcity: Partial<Prodcomcity>) => {
 
 
 const prepareImages = async (images: string[]) => {
-
-    const fileImages = images.filter(image => image.includes('file://'));
-    const currentImages = images.filter(image => !image.includes('file://'));
+    const fileImages = images.filter((image) => image.includes('file://'));
+    const currentImages = images.filter((image) => !image.includes('file://'));
 
     if (fileImages.length > 0) {
         const uploadPromises = fileImages.map(uploadImage);
@@ -30,26 +29,27 @@ const prepareImages = async (images: string[]) => {
         currentImages.push(...uploadedImages);
     }
 
+    return currentImages;
+};
 
-    return currentImages
-
-}
 
 const uploadImage = async (image: string) => {
     const formData = new FormData();
     formData.append('file', {
         uri: image,
         type: 'image/jpeg',
-        name: image.split('/').pop()
+        name: image.split('/').pop(),
     });
 
-    const { data } = await ahoraloApi.post<string>('/files/upload', formData, {
+    const { data } = await ahoraloApi.post('/files/upload', formData, {
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            'Content-Type': 'multipart/form-data',
+        },
     });
-    return data;
-}
+
+    return data.secure_url;
+};
+
 
 
 const updateProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
@@ -89,14 +89,11 @@ const createProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
     const { id, product, ...rest } = prodcomcity;
 
     const images = product?.images || [];
-    console.log(images)
 
 
     try {
 
         const checkedImages = await prepareImages(images);
-        console.log({ checkedImages })
-
         const { data } = await ahoraloApi.post('/prodcomcity', {
             comcity: {
                 city: {
@@ -115,6 +112,8 @@ const createProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
             date: new Date().toISOString(),
             price: rest.price,
         });
+
+        console.log('Producto actualizado:', data);
 
         return data;
 

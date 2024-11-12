@@ -10,9 +10,12 @@ export const SettingScreenTab = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const handleLogout = async () => {
-    await logout();
-    navigation.navigate('LoginScreen');
-  };
+    await logout(); 
+    navigation.reset({
+        index: 0,
+        routes: [{ name: 'LoginScreen' }],
+    });
+};
 
   const handleSuggestProduct = () => {
     navigation.navigate('SuggestProductScreen');
