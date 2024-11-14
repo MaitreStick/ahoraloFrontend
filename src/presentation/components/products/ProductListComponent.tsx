@@ -1,5 +1,3 @@
-// components/ProductList.tsx
-import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { Layout } from '@ui-kitten/components';
 import { ProductCard } from './ProductCard';
