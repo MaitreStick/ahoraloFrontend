@@ -20,6 +20,7 @@ import { SuggestProductScreen } from '../screens/product/ProductSuggestion';
 import { SuggestCityScreen } from '../screens/city/CitySuggestion';
 import { SuggestCompanyScreen } from '../screens/company/CompanySuggestion';
 import AuditLogsScreen from '../screens/reports/AuditLogScreen';
+import { CameraWithOverlay } from '../components/camera/CameraWithOverlay';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -40,6 +41,10 @@ export type RootStackParams = {
   SuggestCompanyScreen: undefined;
   AuditLogsScreen: undefined;
   OcrScreen: { picture: string[], selectedCityId: string, selectedCityName: string };
+  CameraWithOverlay: {
+    selectedCityId: string;
+    selectedCityName: string;
+  };
   MapScreen: {
     warehouse: {
       companyId: string;
@@ -111,6 +116,12 @@ export const StackNavigator = () => {
             <Stack.Screen name="LegalScreen" component={LegalScreen} />
             <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
             <Stack.Screen name="OcrScreen" component={OcrScreen} />
+            <Stack.Screen
+              name="CameraWithOverlay"
+              component={CameraWithOverlay}
+              options={{ headerShown: false }}
+            />
+
             <Stack.Screen name="SuggestProductScreen" component={SuggestProductScreen} />
             <Stack.Screen name="SuggestCityScreen" component={SuggestCityScreen} />
             <Stack.Screen name="SuggestCompanyScreen" component={SuggestCompanyScreen} />

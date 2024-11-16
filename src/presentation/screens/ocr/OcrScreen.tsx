@@ -7,7 +7,8 @@ import {
     ActivityIndicator,
     FlatList,
     useWindowDimensions,
-    ScrollView,
+    Modal,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import { Layout, Text, Button, Input, List, ListItem } from '@ui-kitten/components';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,7 +18,6 @@ import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { Company } from '../../../domain/entities/company';
 import { fetchAllCompanies } from '../../../actions/companies/fetch-all-companies';
 import debounce from 'lodash.debounce';
-import { Modal, TouchableWithoutFeedback } from 'react-native';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { MainLayout } from '../../layouts/MainLayout';
 import { processImageWithOCR } from '../../../actions/ocr/processImageWithOCR';
@@ -119,6 +119,7 @@ export const OcrScreen = ({ route }: Props) => {
             if (!comcityId) {
                 throw new Error('No se encontró comcity para la ciudad y empresa seleccionadas.');
             }
+            console.log('comcityId:', comcityId);
 
             const ocrData = await processImageWithOCR(picture, comcityId);
 
@@ -135,120 +136,143 @@ export const OcrScreen = ({ route }: Props) => {
         }
     };
 
+    // Funciones para renderizar encabezado y pie de página
+    const renderHeader = () => (
+        <>
+            <Image source={{ uri: picture }} style={styles.image} />
+            <Text category="label" style={styles.label}>
+                Ciudad
+            </Text>
+            <Input value={selectedCityName} disabled style={styles.input} />
+
+            <Text category="label" style={styles.label}>
+                Empresa
+            </Text>
+            <Input
+                style={styles.input}
+                placeholder="Seleccionar Empresa"
+                disabled
+                accessoryRight={() => (
+                    <TouchableOpacity onPress={toggleCompanyModal}>
+                        <MyIcon name="chevron-down-outline" />
+                    </TouchableOpacity>
+                )}
+            >
+                {selectedCompanyName}
+            </Input>
+
+            <Button onPress={handleProcessImage} style={styles.button} disabled={isProcessing}>
+                {isProcessing ? 'Procesando...' : 'Enviar mi aporte'}
+            </Button>
+
+            {isProcessing && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
+            )}
+        </>
+    );
+
+    const renderFooter = () => (
+        <>
+            {ocrResult && (
+                <View style={styles.resultsContainer}>
+                    {ocrResult.products.length > 0 ? (
+                        <>
+                            <Text style={styles.resultsTitle}>Productos actualizados:</Text>
+                            {/* El FlatList se maneja arriba */}
+                        </>
+                    ) : (
+                        <>
+                            <Text style={styles.noProductsText}>ocrResult: {ocrResult.text}</Text>
+                            <Text style={styles.noProductsText}>No se pudo actualizar la información.</Text>
+                        </>
+                    )}
+
+                    <Button onPress={() => navigation.goBack()} style={styles.backButton}>
+                        Volver
+                    </Button>
+
+                    <Layout style={{ flex: 1, height: height * 0.15, backgroundColor: colors.background }} />
+                </View>
+            )}
+
+            <CustomAlert
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                onConfirm={handleAlertConfirm}
+                confirmText="Aceptar"
+            />
+            <Toast visible={toastVisible} message="Gracias por tu aporte" onHide={hideToast} />
+        </>
+    );
+
+    // Datos para el FlatList principal
+    const mainData = ocrResult && ocrResult.products.length > 0 ? ocrResult.products : [];
+
     return (
         <MainLayout title="Escanear Factura">
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <Image source={{ uri: picture }} style={styles.image} />
-                <Text category="label" style={styles.label}>
-                    Ciudad
-                </Text>
-                <Input value={selectedCityName} disabled style={styles.input} />
-
-                <Text category="label" style={styles.label}>
-                    Empresa
-                </Text>
-                <Input
-                    style={styles.input}
-                    placeholder="Seleccionar Empresa"
-                    disabled
-                    accessoryRight={() => (
-                        <TouchableOpacity onPress={toggleCompanyModal}>
-                            <MyIcon name="chevron-down-outline" />
-                        </TouchableOpacity>
-                    )}
-                >
-                    {selectedCompanyName}
-                </Input>
-
-                <Modal
-                    visible={isCompanyModalVisible}
-                    transparent={true}
-                    animationType="slide"
-                    onRequestClose={toggleCompanyModal}
-                >
-                    <TouchableWithoutFeedback onPress={toggleCompanyModal}>
-                        <View style={styles.modalOverlay} />
-                    </TouchableWithoutFeedback>
-
-                    <View style={styles.modalContentContainer}>
-                        <View style={styles.modalHeader}>
-                            <View style={styles.dragIndicator} />
+            <FlatList
+                data={mainData}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.productItem}>
+                        <Text style={styles.productCode}>Código: {item.code}</Text>
+                        <Text style={styles.productPrice}>Precio: ${item.price}</Text>
+                    </View>
+                )}
+                ListHeaderComponent={renderHeader}
+                ListFooterComponent={renderFooter}
+                ListEmptyComponent={
+                    ocrResult && (
+                        <View style={styles.noProductsContainer}>
+                            <Text style={styles.noProductsText}>ocrResult: {ocrResult.text}</Text>
+                            <Text style={styles.noProductsText}>No se pudo actualizar la información.</Text>
                         </View>
+                    )
+                }
+            />
 
-                        <Input
-                            placeholder="Buscar Empresa"
-                            onChangeText={debouncedSetCompanySearch}
-                            style={styles.searchBar}
-                            accessoryRight={<MyIcon name="search-outline" />}
+            {/* Modal para seleccionar empresa */}
+            <Modal
+                visible={isCompanyModalVisible}
+                transparent={true}
+                animationType="slide"
+                onRequestClose={toggleCompanyModal}
+            >
+                <TouchableWithoutFeedback onPress={toggleCompanyModal}>
+                    <View style={styles.modalOverlay} />
+                </TouchableWithoutFeedback>
+
+                <View style={styles.modalContentContainer}>
+                    <View style={styles.modalHeader}>
+                        <View style={styles.dragIndicator} />
+                    </View>
+
+                    <Input
+                        placeholder="Buscar Empresa"
+                        onChangeText={debouncedSetCompanySearch}
+                        style={styles.searchBar}
+                        accessoryRight={<MyIcon name="search-outline" />}
+                    />
+
+                    {companyNames.length === 0 ? (
+                        <Layout style={styles.noResultsContainer}>
+                            <Text>No se encontraron empresas</Text>
+                        </Layout>
+                    ) : (
+                        <List
+                            data={companyNames}
+                            style={{ backgroundColor: 'white' }}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item }) => (
+                                <ListItem title={item.name} onPress={() => handleCompanySelect(item)} />
+                            )}
+                            onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
+                            onEndReachedThreshold={0.5}
                         />
-
-                        {companyNames.length === 0 ? (
-                            <Layout style={styles.noResultsContainer}>
-                                <Text>No se encontraron empresas</Text>
-                            </Layout>
-                        ) : (
-                            <List
-                                data={companyNames}
-                                style={{ backgroundColor: 'white' }}
-                                keyExtractor={(item) => item.id}
-                                renderItem={({ item }) => (
-                                    <ListItem title={item.name} onPress={() => handleCompanySelect(item)} />
-                                )}
-                                onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
-                                onEndReachedThreshold={0.5}
-                            />
-                        )}
-                    </View>
-                </Modal>
-
-                <Button onPress={handleProcessImage} style={styles.button} disabled={isProcessing}>
-                    {isProcessing ? 'Procesando...' : 'Enviar mi aporte'}
-                </Button>
-
-                {isProcessing && (
-                    <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
-                )}
-
-                {ocrResult && (
-                    <View style={styles.resultsContainer}>
-                        {ocrResult.products.length > 0 ? (
-                            <>
-                                <Text style={styles.resultsTitle}>Productos actualizados:</Text>
-                                <FlatList
-                                    data={ocrResult.products}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item }) => (
-                                        <View style={styles.productItem}>
-                                            <Text style={styles.productCode}>Código: {item.code}</Text>
-                                            <Text style={styles.productPrice}>Precio: ${item.price}</Text>
-                                        </View>
-                                    )}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <Text style={styles.noProductsText}>ocrResult: {ocrResult.text}</Text>
-                                <Text style={styles.noProductsText}>No se pudo actualizar la información.</Text>
-                            </>
-                        )}
-
-                        <Button onPress={() => navigation.goBack()} style={styles.backButton}>
-                            Volver
-                        </Button>
-
-                        <Layout style={{ flex: 1, height: height * 0.15, backgroundColor: colors.background }} />
-                    </View>
-                )}
-
-                <CustomAlert
-                    visible={alertVisible}
-                    title={alertTitle}
-                    message={alertMessage}
-                    onConfirm={handleAlertConfirm}
-                    confirmText="Aceptar"
-                />
-                <Toast visible={toastVisible} message="Gracias por tu aporte" onHide={hideToast} />
-            </ScrollView>
+                    )}
+                </View>
+            </Modal>
         </MainLayout>
     );
 };
@@ -301,6 +325,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 10,
     },
+    noProductsContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
     noProductsText: {
         fontSize: 16,
         textAlign: 'center',
@@ -308,6 +337,7 @@ const styles = StyleSheet.create({
     },
     productItem: {
         marginBottom: 10,
+        paddingHorizontal: 16,
     },
     productCode: {
         fontSize: 16,

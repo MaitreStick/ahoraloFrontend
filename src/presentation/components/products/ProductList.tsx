@@ -159,7 +159,6 @@ export const ProductList = ({
   };
 
   const handleOcrClick = async () => {
-
     if (!selectedCityId) {
       setAlertTitle('Selecciona una ciudad');
       setAlertMessage('Por favor selecciona una ciudad antes de escanear la factura');
@@ -167,15 +166,15 @@ export const ProductList = ({
       return;
     }
     const permissionStatus = await requestCameraPermission();
-
+  
     if (permissionStatus !== 'granted') {
       setAlertTitle('Permiso denegado');
       setAlertMessage('No se pudo obtener el permiso para acceder a la cámara del dispositivo.');
       setAlertVisible(true);
       return;
     }
-    const picture = await CameraAdapter.takePicture();
-    navigation.navigate('OcrScreen', { picture, selectedCityId, selectedCityName });
+  
+    navigation.navigate('CameraWithOverlay', { selectedCityId, selectedCityName });
   };
 
   const allCompaniesOption = {
