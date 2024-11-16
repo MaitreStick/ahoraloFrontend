@@ -177,8 +177,6 @@ export const OcrScreen = ({ route }: Props) => {
                 <View style={styles.resultsContainer}>
                     {ocrResult.products.length > 0 ? (
                         <>
-                            <Text style={styles.resultsTitle}>Productos actualizados:</Text>
-                            {/* El FlatList se maneja arriba */}
                         </>
                     ) : (
                         <>
@@ -206,7 +204,6 @@ export const OcrScreen = ({ route }: Props) => {
         </>
     );
 
-    // Datos para el FlatList principal
     const mainData = ocrResult && ocrResult.products.length > 0 ? ocrResult.products : [];
 
     return (
@@ -216,12 +213,14 @@ export const OcrScreen = ({ route }: Props) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.productItem}>
+                         <Text style={styles.resultsTitle}></Text>
+                        <Text style={styles.resultsTitle}>Productos actualizados:</Text>
                         <Text style={styles.productCode}>Código: {item.code}</Text>
                         <Text style={styles.productPrice}>Precio: ${item.price}</Text>
                     </View>
                 )}
-                ListHeaderComponent={renderHeader}
                 ListFooterComponent={renderFooter}
+                ListHeaderComponent={renderHeader}
                 ListEmptyComponent={
                     ocrResult && (
                         <View style={styles.noProductsContainer}>
