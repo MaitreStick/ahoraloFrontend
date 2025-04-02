@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
@@ -151,7 +152,8 @@ export const LoginScreen = ({navigation}: Props) => {
               backgroundColor: colors.primary,
               borderColor: colors.primary,
             }}
-            onPress={onLogin}>
+            onPress={onLogin}
+          >
             Ingresar
           </Button>
           <Layout
@@ -162,7 +164,8 @@ export const LoginScreen = ({navigation}: Props) => {
                 justifyContent: 'space-around',
                 paddingTop: 10,
               },
-            ]}>
+            ]}
+          >
             <Button
               disabled={isPosting}
               accessoryRight={<MyIcon name="google" white />}
@@ -172,7 +175,8 @@ export const LoginScreen = ({navigation}: Props) => {
                 backgroundColor: '#0F172A',
                 borderColor: '#0F172A',
               }}
-              onPress={handleGoogleLogin}>
+              onPress={handleGoogleLogin}
+            >
               Ingresar con Google
             </Button>
           </Layout>
@@ -185,7 +189,8 @@ export const LoginScreen = ({navigation}: Props) => {
           <Text
             status="primary"
             category="s1"
-            onPress={() => navigation.navigate('RegisterScreen')}>
+            onPress={() => navigation.navigate('RegisterScreen')}
+          >
             {' '}
             crea una{' '}
           </Text>

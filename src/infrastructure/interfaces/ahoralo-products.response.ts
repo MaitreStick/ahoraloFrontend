@@ -1,18 +1,18 @@
 export interface AhoraloProduct {
-    id:          string;
-    title:       string;
-    slug:        string;
-    tags:        string[];
-    images:      string[];
-    user:        AhoraloUser;
+  id: string;
+  title: string;
+  slug: string;
+  tags: string[];
+  images: string[];
+  user: AhoraloUser;
 }
 
 export interface AhoraloUser {
-    id:       string;
-    email:    string;
-    fullName: string;
-    isActive: boolean;
-    roles:    string[];
+  id: string;
+  email: string;
+  fullName: string;
+  isActive: boolean;
+  roles: string[];
 }
 
 export interface AhoraloCity {
@@ -27,16 +27,16 @@ export interface AhoraloCompany {
 }
 
 export interface AhoraloComcity {
+  id: string;
+  city: {
     id: string;
-    city: {
-      id: string;
-      name: string;
-      nameDep: string;
-    };
-    company: {
-      id: string;
-      name: string;
-    };
+    name: string;
+    nameDep: string;
+  };
+  company: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface AhoraloProdcomcity {
@@ -55,11 +55,11 @@ export interface AhoraloProdcomcity {
     user: string;
   };
   product: {
-    id:          string;
-    title:       string;
-    slug:        string;
-    tags:        string[];
-    code:        number;
+    id: string;
+    title: string;
+    slug: string;
+    tags: string[];
+    code: number;
     images: {
       id: string;
       url: string;
@@ -72,8 +72,8 @@ export interface AhoraloProdcomcity {
 export interface AhoraloOcrResponse {
   company: string;
   products: {
-      code: number;
-      price: number;
+    code: number;
+    price: number;
   }[];
   text: string;
 }

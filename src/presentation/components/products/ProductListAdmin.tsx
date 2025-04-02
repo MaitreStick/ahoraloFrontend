@@ -1,17 +1,40 @@
-import { Button, Input, Layout, List, ListItem, Text } from "@ui-kitten/components";
-import { useCallback, useState } from 'react';
-import { RefreshControl } from "react-native-gesture-handler";
-import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { ActivityIndicator, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
-import { MyIcon } from "../ui/MyIcon";
-import { City } from "../../../domain/entities/city";
-import debounce from "lodash.debounce";
-import { fetchAllCompanies } from "../../../actions/companies/fetch-all-companies";
-import { Company } from "../../../domain/entities/company";
-import { fetchAllCities } from "../../../actions/cities/fetch-all-cities";
-import { ProductCardAdmin } from "./ProductCardAdmin";
-
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Button,
+  Input,
+  Layout,
+  List,
+  ListItem,
+  Text,
+} from '@ui-kitten/components';
+import {useCallback, useState} from 'react';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {
+  InfiniteData,
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {Prodcomcity} from '../../../domain/entities/prodcomcity';
+import {
+  ActivityIndicator,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {MyIcon} from '../ui/MyIcon';
+import {City} from '../../../domain/entities/city';
+import debounce from 'lodash.debounce';
+import {fetchAllCompanies} from '../../../actions/companies/fetch-all-companies';
+import {Company} from '../../../domain/entities/company';
+import {fetchAllCities} from '../../../actions/cities/fetch-all-cities';
+import {ProductCardAdmin} from './ProductCardAdmin';
 
 interface Props {
   prodcomcities: Prodcomcity[];
@@ -49,14 +72,14 @@ export const ProductListAdmin = ({
 
   const queryClient = useQueryClient();
 
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   const toggleCityModal = useCallback(() => {
-    setCityModalVisible((prev) => !prev);
+    setCityModalVisible(prev => !prev);
   }, []);
 
   const toggleCompanyModal = useCallback(() => {
-    setCompanyModalVisible((prev) => !prev);
+    setCompanyModalVisible(prev => !prev);
   }, []);
 
   const {
@@ -72,7 +95,7 @@ export const ProductListAdmin = ({
     number
   >({
     queryKey: ['companies', companySearch],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({pageParam = 0}) => {
       return await fetchAllCompanies(pageParam, 10, companySearch);
     },
     getNextPageParam: (lastPage: Company[], allPages) => {
@@ -95,7 +118,9 @@ export const ProductListAdmin = ({
     number
   >({
     queryKey: ['cities', citySearch],
-    queryFn: async ({ pageParam = 0 }: QueryFunctionContext<[string, string], number>) => {
+    queryFn: async ({
+      pageParam = 0,
+    }: QueryFunctionContext<[string, string], number>) => {
       return await fetchAllCities(pageParam, 10, citySearch);
     },
     getNextPageParam: (lastPage: City[], allPages: City[][]) => {
@@ -113,13 +138,21 @@ export const ProductListAdmin = ({
     setCitySearch(value);
   }, 500);
 
-  const handleCompanySelect = (company: { id: string | null; name: string; displayName: string }) => {
+  const handleCompanySelect = (company: {
+    id: string | null;
+    name: string;
+    displayName: string;
+  }) => {
     onCompanySelect(company.id, company.name);
     toggleCompanyModal();
     setCompanySearch('');
   };
 
-  const handleCitySelect = (city: { id: string | null; name: string; displayName: string }) => {
+  const handleCitySelect = (city: {
+    id: string | null;
+    name: string;
+    displayName: string;
+  }) => {
     onCitySelect(city.id, city.name);
     toggleCityModal();
     setCitySearch('');
@@ -148,23 +181,31 @@ export const ProductListAdmin = ({
 
   const companyNames = [
     allCompaniesOption,
-    ...(companiesData?.pages.flat().map((company) => ({
+    ...(companiesData?.pages.flat().map(company => ({
       id: company.id,
       name: company.name,
       displayName: company.name,
     })) ?? []),
   ];
 
-  const cityNames = citiesData?.pages.flat().map((city) => ({
-    id: city.id,
-    name: city.name,
-    displayName: `${city.name} - ${city.nameDep}`,
-  })) ?? [];
+  const cityNames =
+    citiesData?.pages.flat().map(city => ({
+      id: city.id,
+      name: city.name,
+      displayName: `${city.name} - ${city.nameDep}`,
+    })) ?? [];
 
   const onPullToRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    queryClient.invalidateQueries({ queryKey: ['prodcomcities', 'infinite', selectedCityId, selectedCompanyId] });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    queryClient.invalidateQueries({
+      queryKey: [
+        'prodcomcities',
+        'infinite',
+        selectedCityId,
+        selectedCompanyId,
+      ],
+    });
     setIsRefreshing(false);
   };
 
@@ -191,8 +232,7 @@ export const ProductListAdmin = ({
             status="basic"
             size="small"
             accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
+            style={[localStyles.button, {width: width * 0.25}]}>
             {selectedCityName}
           </Button>
           <Button
@@ -201,8 +241,7 @@ export const ProductListAdmin = ({
             status="basic"
             size="small"
             accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
+            style={[localStyles.button, {width: width * 0.25}]}>
             {selectedCompanyName}
           </Button>
         </View>
@@ -211,8 +250,7 @@ export const ProductListAdmin = ({
           visible={isCompanyModalVisible}
           transparent={true}
           animationType="slide"
-          onRequestClose={toggleCompanyModal}
-        >
+          onRequestClose={toggleCompanyModal}>
           <TouchableWithoutFeedback onPress={toggleCompanyModal}>
             <View style={localStyles.modalOverlay} />
           </TouchableWithoutFeedback>
@@ -235,15 +273,17 @@ export const ProductListAdmin = ({
             ) : (
               <List
                 data={companyNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-companies'}
-                renderItem={({ item }) => (
+                style={{backgroundColor: 'white'}}
+                keyExtractor={item => item.id ?? 'all-companies'}
+                renderItem={({item}) => (
                   <ListItem
                     title={item.displayName}
                     onPress={() => handleCompanySelect(item)}
                   />
                 )}
-                onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
+                onEndReached={
+                  hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null
+                }
                 onEndReachedThreshold={0.5}
               />
             )}
@@ -254,8 +294,7 @@ export const ProductListAdmin = ({
           visible={isCityModalVisible}
           transparent={true}
           animationType="slide"
-          onRequestClose={toggleCityModal}
-        >
+          onRequestClose={toggleCityModal}>
           <TouchableWithoutFeedback onPress={toggleCityModal}>
             <View style={localStyles.modalOverlay} />
           </TouchableWithoutFeedback>
@@ -278,25 +317,27 @@ export const ProductListAdmin = ({
             ) : (
               <List
                 data={cityNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-cities'}
-                renderItem={({ item }) => (
+                style={{backgroundColor: 'white'}}
+                keyExtractor={item => item.id ?? 'all-cities'}
+                renderItem={({item}) => (
                   <ListItem
                     title={item.displayName}
                     onPress={() => handleCitySelect(item)}
                   />
                 )}
-                onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
+                onEndReached={
+                  hasNextCitiesPage ? () => fetchNextCitiesPage() : null
+                }
                 onEndReachedThreshold={0.5}
               />
             )}
           </View>
         </Modal>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       </>
-    );;
+    );
   }
 
   if (prodcomcities.length === 0) {
@@ -322,8 +363,7 @@ export const ProductListAdmin = ({
             status="basic"
             size="small"
             accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
+            style={[localStyles.button, {width: width * 0.25}]}>
             {selectedCityName}
           </Button>
           <Button
@@ -332,8 +372,7 @@ export const ProductListAdmin = ({
             status="basic"
             size="small"
             accessoryRight={<MyIcon name="chevron-down-outline" />}
-            style={[localStyles.button, { width: width * 0.25 }]}
-          >
+            style={[localStyles.button, {width: width * 0.25}]}>
             {selectedCompanyName}
           </Button>
         </View>
@@ -342,8 +381,7 @@ export const ProductListAdmin = ({
           visible={isCompanyModalVisible}
           transparent={true}
           animationType="slide"
-          onRequestClose={toggleCompanyModal}
-        >
+          onRequestClose={toggleCompanyModal}>
           <TouchableWithoutFeedback onPress={toggleCompanyModal}>
             <View style={localStyles.modalOverlay} />
           </TouchableWithoutFeedback>
@@ -366,15 +404,17 @@ export const ProductListAdmin = ({
             ) : (
               <List
                 data={companyNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-companies'}
-                renderItem={({ item }) => (
+                style={{backgroundColor: 'white'}}
+                keyExtractor={item => item.id ?? 'all-companies'}
+                renderItem={({item}) => (
                   <ListItem
                     title={item.displayName}
                     onPress={() => handleCompanySelect(item)}
                   />
                 )}
-                onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
+                onEndReached={
+                  hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null
+                }
                 onEndReachedThreshold={0.5}
               />
             )}
@@ -385,8 +425,7 @@ export const ProductListAdmin = ({
           visible={isCityModalVisible}
           transparent={true}
           animationType="slide"
-          onRequestClose={toggleCityModal}
-        >
+          onRequestClose={toggleCityModal}>
           <TouchableWithoutFeedback onPress={toggleCityModal}>
             <View style={localStyles.modalOverlay} />
           </TouchableWithoutFeedback>
@@ -409,21 +448,24 @@ export const ProductListAdmin = ({
             ) : (
               <List
                 data={cityNames}
-                style={{ backgroundColor: 'white' }}
-                keyExtractor={(item) => item.id ?? 'all-cities'}
-                renderItem={({ item }) => (
+                style={{backgroundColor: 'white'}}
+                keyExtractor={item => item.id ?? 'all-cities'}
+                renderItem={({item}) => (
                   <ListItem
                     title={item.displayName}
                     onPress={() => handleCitySelect(item)}
                   />
                 )}
-                onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
+                onEndReached={
+                  hasNextCitiesPage ? () => fetchNextCitiesPage() : null
+                }
                 onEndReachedThreshold={0.5}
               />
             )}
           </View>
         </Modal>
-        <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Layout
+          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>No se encontraron productos.</Text>
         </Layout>
       </>
@@ -452,8 +494,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button, { width: width * 0.25 }]}
-        >
+          style={[localStyles.button, {width: width * 0.25}]}>
           {selectedCityName}
         </Button>
         <Button
@@ -462,8 +503,7 @@ export const ProductListAdmin = ({
           status="basic"
           size="small"
           accessoryRight={<MyIcon name="chevron-down-outline" />}
-          style={[localStyles.button, { width: width * 0.25 }]}
-        >
+          style={[localStyles.button, {width: width * 0.25}]}>
           {selectedCompanyName}
         </Button>
       </View>
@@ -472,8 +512,7 @@ export const ProductListAdmin = ({
         visible={isCompanyModalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={toggleCompanyModal}
-      >
+        onRequestClose={toggleCompanyModal}>
         <TouchableWithoutFeedback onPress={toggleCompanyModal}>
           <View style={localStyles.modalOverlay} />
         </TouchableWithoutFeedback>
@@ -496,15 +535,17 @@ export const ProductListAdmin = ({
           ) : (
             <List
               data={companyNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-companies'}
-              renderItem={({ item }) => (
+              style={{backgroundColor: 'white'}}
+              keyExtractor={item => item.id ?? 'all-companies'}
+              renderItem={({item}) => (
                 <ListItem
                   title={item.displayName}
                   onPress={() => handleCompanySelect(item)}
                 />
               )}
-              onEndReached={hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null}
+              onEndReached={
+                hasNextCompaniesPage ? () => fetchNextCompaniesPage() : null
+              }
               onEndReachedThreshold={0.5}
             />
           )}
@@ -515,8 +556,7 @@ export const ProductListAdmin = ({
         visible={isCityModalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={toggleCityModal}
-      >
+        onRequestClose={toggleCityModal}>
         <TouchableWithoutFeedback onPress={toggleCityModal}>
           <View style={localStyles.modalOverlay} />
         </TouchableWithoutFeedback>
@@ -539,15 +579,17 @@ export const ProductListAdmin = ({
           ) : (
             <List
               data={cityNames}
-              style={{ backgroundColor: 'white' }}
-              keyExtractor={(item) => item.id ?? 'all-cities'}
-              renderItem={({ item }) => (
+              style={{backgroundColor: 'white'}}
+              keyExtractor={item => item.id ?? 'all-cities'}
+              renderItem={({item}) => (
                 <ListItem
                   title={item.displayName}
                   onPress={() => handleCitySelect(item)}
                 />
               )}
-              onEndReached={hasNextCitiesPage ? () => fetchNextCitiesPage() : null}
+              onEndReached={
+                hasNextCitiesPage ? () => fetchNextCitiesPage() : null
+              }
               onEndReachedThreshold={0.5}
             />
           )}
@@ -557,12 +599,15 @@ export const ProductListAdmin = ({
       <List
         data={prodcomcities}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={({ item }) => <ProductCardAdmin prodcomcity={item} />}
-        ListFooterComponent={() => <Layout style={{ height: 150 }} />}
+        renderItem={({item}) => <ProductCardAdmin prodcomcity={item} />}
+        ListFooterComponent={() => <Layout style={{height: 150}} />}
         onEndReached={fetchNextPage}
         onEndReachedThreshold={0.8}
         refreshControl={
-          <RefreshControl refreshing={isFetching || isRefreshing} onRefresh={onPullToRefresh} />
+          <RefreshControl
+            refreshing={isFetching || isRefreshing}
+            onRefresh={onPullToRefresh}
+          />
         }
       />
     </>

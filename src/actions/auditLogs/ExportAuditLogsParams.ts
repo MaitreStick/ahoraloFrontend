@@ -1,5 +1,5 @@
-import { ahoraloApi } from "../../config/api/ahoraloApi";
-import { openComposer } from 'react-native-email-link';
+import {ahoraloApi} from '../../config/api/ahoraloApi';
+import {openComposer} from 'react-native-email-link';
 
 interface ExportAuditLogsParams {
   format: 'csv' | 'json';
@@ -13,8 +13,8 @@ export const exportAuditLogs = async ({
   action = '',
 }: ExportAuditLogsParams): Promise<void> => {
   try {
-    const { data } = await ahoraloApi.get(`/audit-logs/export`, {
-      params: { format, user, action },
+    const {data} = await ahoraloApi.get('/audit-logs/export', {
+      params: {format, user, action},
     });
 
     let emailBody = '';

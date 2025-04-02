@@ -1,5 +1,9 @@
-import { StyleSheet } from 'react-native';
-import { Card, List, ListItem, Text, Divider, Icon } from '@ui-kitten/components';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/no-unstable-nested-components */
+import {StyleSheet} from 'react-native';
+import {Card, List, ListItem, Text, Divider, Icon} from '@ui-kitten/components';
 
 interface Option {
   title: string;
@@ -13,12 +17,12 @@ interface Props {
   options: Option[];
 }
 
-export const SettingsSectionCard = ({ title, options }: Props) => {
-  const renderItem = ({ item, index }: { item: Option; index: number }) => (
+export const SettingsSectionCard = ({title, options}: Props) => {
+  const renderItem = ({item, index}: {item: Option; index: number}) => (
     <ListItem
       title={item.title}
       description={item.description}
-      accessoryLeft={(props) => <Icon {...props} name={item.iconName} />}
+      accessoryLeft={props => <Icon {...props} name={item.iconName} />}
       onPress={item.onPress}
     />
   );

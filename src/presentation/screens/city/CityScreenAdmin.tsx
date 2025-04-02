@@ -1,26 +1,35 @@
-import { Input, Layout, Text } from '@ui-kitten/components';
-import { Alert, Animated, Dimensions, ScrollView, StyleSheet } from 'react-native';
-import { MainLayout } from '../../layouts/MainLayout';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParams } from '../../navigation/StackNavigator';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getCityById } from '../../../actions/cities/get-city-by-id';
-import { useRef, useState } from 'react';
-import { Formik } from 'formik';
-import { City } from '../../../domain/entities/city';
-import { updateCreateCity } from '../../../actions/cities/update-create-city';
-import { FAB } from '../../components/ui/FAB';
-import { useNavigation } from '@react-navigation/native';
-import { deleteCityById } from '../../../actions/cities/delete-city';
-import { CustomAlert } from '../../components/ui/CustomAlert';
-import { Toast } from '../../components/ui/Toast';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/react-in-jsx-scope */
+import {Input, Layout, Text} from '@ui-kitten/components';
+import {
+  Alert,
+  Animated,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
+import {MainLayout} from '../../layouts/MainLayout';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParams} from '../../navigation/StackNavigator';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {getCityById} from '../../../actions/cities/get-city-by-id';
+import {useRef, useState} from 'react';
+import {Formik} from 'formik';
+import {City} from '../../../domain/entities/city';
+import {updateCreateCity} from '../../../actions/cities/update-create-city';
+import {FAB} from '../../components/ui/FAB';
+import {useNavigation} from '@react-navigation/native';
+import {deleteCityById} from '../../../actions/cities/delete-city';
+import {CustomAlert} from '../../components/ui/CustomAlert';
+import {Toast} from '../../components/ui/Toast';
 
-interface Props extends StackScreenProps<RootStackParams, 'CityScreenAdmin'> { }
+interface Props extends StackScreenProps<RootStackParams, 'CityScreenAdmin'> {}
 
-export const CityScreenAdmin = ({ route }: Props) => {
+export const CityScreenAdmin = ({route}: Props) => {
   const cityIdRef = useRef(route.params.cityId);
   const queryClient = useQueryClient();
-  const { height } = Dimensions.get('window');
+  const {height} = Dimensions.get('window');
   const [toastVisible, setToastVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
@@ -31,7 +40,7 @@ export const CityScreenAdmin = ({ route }: Props) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const isNewCity = cityIdRef.current === 'new';
-  
+
   const showToast = () => {
     setToastVisible(true);
   };
@@ -44,18 +53,18 @@ export const CityScreenAdmin = ({ route }: Props) => {
     setAlertVisible(false);
   };
 
-  const { data: city } = useQuery({
+  const {data: city} = useQuery({
     queryKey: ['city', cityIdRef.current],
-    queryFn: () => getCityById(cityIdRef.current)
+    queryFn: () => getCityById(cityIdRef.current),
   });
 
   const mutation = useMutation({
-    mutationFn: (data: City) => updateCreateCity({
-      ...data,
-      id: cityIdRef.current,
-    }),
+    mutationFn: (data: City) =>
+      updateCreateCity({
+        ...data,
+        id: cityIdRef.current,
+      }),
     onSuccess: (data: City) => {
-
       try {
         showToast();
 
@@ -64,12 +73,11 @@ export const CityScreenAdmin = ({ route }: Props) => {
           exact: false,
         });
         queryClient.invalidateQueries({
-          queryKey: ['city', data.id]
+          queryKey: ['city', data.id],
         });
       } catch (error) {
         console.error('Error in onSuccess handler:', error);
       }
-
     },
     onError: () => {
       setAlertTitle('Error');
@@ -137,45 +145,46 @@ export const CityScreenAdmin = ({ route }: Props) => {
       'Confirmar eliminación',
       '¿Estás seguro de que deseas eliminar esta ciudad?',
       [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Eliminar', style: 'destructive', onPress: () => deleteMutation.mutate(city.id) },
+        {text: 'Cancelar', style: 'cancel'},
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: () => deleteMutation.mutate(city.id),
+        },
       ],
-      { cancelable: true }
+      {cancelable: true},
     );
   };
 
   return (
-    <Formik
-      initialValues={city}
-      onSubmit={mutation.mutate}
-    >
-      {({ handleChange, handleSubmit, values }) => (
+    <Formik initialValues={city} onSubmit={mutation.mutate}>
+      {({handleChange, handleSubmit, values}) => (
         <MainLayout
           title={`${values.name} - ${values.nameDep}`}
           subTitle="Ciudad - Departamento"
         >
-          <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
-            <Layout style={{ marginVertical: 5, marginHorizontal: 10 }}>
+          <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
+            <Layout style={{marginVertical: 5, marginHorizontal: 10}}>
               <Input
                 label="Ciudad"
                 value={values.name}
                 onChangeText={handleChange('name')}
-                style={{ marginVertical: 5 }}
+                style={{marginVertical: 5}}
               />
               <Input
                 label="Departamento"
                 value={values.nameDep}
                 onChangeText={handleChange('nameDep')}
-                style={{ marginVertical: 5 }}
+                style={{marginVertical: 5}}
               />
             </Layout>
-            <Layout style={{ height: 200 }} />
+            <Layout style={{height: 200}} />
           </ScrollView>
 
           <FAB
             iconName={isFabOpen ? 'close-outline' : 'plus-outline'}
             onPress={toggleFab}
-            style={[styles.fabMain, { bottom: height * 0.05 }]}
+            style={[styles.fabMain, {bottom: height * 0.05}]}
           />
 
           <Animated.View style={[fabSaveStyle]}>

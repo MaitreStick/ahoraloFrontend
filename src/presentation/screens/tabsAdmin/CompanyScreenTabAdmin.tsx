@@ -1,40 +1,45 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { useInfiniteQuery, QueryFunctionContext, InfiniteData } from '@tanstack/react-query';
-import { MainLayout } from '../../layouts/MainLayout';
-import { Company } from '../../../domain/entities/company';
-import { FAB } from '../../components/ui/FAB';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParams } from '../../navigation/StackNavigator';
-import { getCompaniesByPage } from '../../../actions/companies/get-companies-by-page';
-import { CompanyList } from '../../components/companies/CompaniesList';
+import {StyleSheet} from 'react-native';
+import {
+  useInfiniteQuery,
+  QueryFunctionContext,
+  InfiniteData,
+} from '@tanstack/react-query';
+import {MainLayout} from '../../layouts/MainLayout';
+import {Company} from '../../../domain/entities/company';
+import {FAB} from '../../components/ui/FAB';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../navigation/StackNavigator';
+import {getCompaniesByPage} from '../../../actions/companies/get-companies-by-page';
+import {CompanyList} from '../../components/companies/CompaniesList';
 
 export const CompanyScreenTabAdmin = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const navigateToCreateCompany = () => {
-    navigation.navigate('CompanyScreenAdmin', { companyId: 'new' });
+    navigation.navigate('CompanyScreenAdmin', {companyId: 'new'});
   };
 
-  
-  const {
-    isLoading,
-    data,
-    fetchNextPage,
-    isFetching,
-  } = useInfiniteQuery<
-  Company[],
-  Error,
-  InfiniteData<Company[]>,
-  [string, string],
-  number
+  const {isLoading, data, fetchNextPage, isFetching} = useInfiniteQuery<
+    Company[],
+    Error,
+    InfiniteData<Company[]>,
+    [string, string],
+    number
   >({
     queryKey: ['companies', 'infinite'],
-    queryFn: async ({ pageParam = 0 }: QueryFunctionContext<[string, string], number>): Promise<Company[]> => {
+    queryFn: async ({
+      pageParam = 0,
+    }: QueryFunctionContext<[string, string], number>): Promise<Company[]> => {
       return await getCompaniesByPage(pageParam);
     },
-    getNextPageParam: (lastPage: Company[], allPages: InfiniteData<Company[]>['pages']) => {
+    getNextPageParam: (
+      lastPage: Company[],
+      allPages: InfiniteData<Company[]>['pages'],
+    ) => {
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
@@ -43,7 +48,11 @@ export const CompanyScreenTabAdmin = () => {
 
   return (
     <>
-      <MainLayout title="Ahoralo - Empresas" subTitle="Panel Administrativo" showBackAction={false}>
+      <MainLayout
+        title="Ahoralo - Empresas"
+        subTitle="Panel Administrativo"
+        showBackAction={false}
+      >
         <CompanyList
           companies={data?.pages.flat() ?? []}
           fetchNextPage={fetchNextPage}
@@ -51,13 +60,15 @@ export const CompanyScreenTabAdmin = () => {
           isLoading={isLoading}
         />
       </MainLayout>
-      
+
       <FAB
         iconName={'briefcase-outline'}
         onPress={navigateToCreateCompany}
-        style={[styles.fabMain, { backgroundColor: '#d4603b', borderColor: '#d4603b' }]}
+        style={[
+          styles.fabMain,
+          {backgroundColor: '#d4603b', borderColor: '#d4603b'},
+        ]}
       />
-
     </>
   );
 };

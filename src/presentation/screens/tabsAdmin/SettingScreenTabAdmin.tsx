@@ -1,13 +1,15 @@
-import { MainLayout } from '../../layouts/MainLayout';
-import { useAuthStore } from '../../store/auth/useAuthStore';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParams } from '../../navigation/StackNavigator';
-import { SettingsSectionCard } from '../../components/settings/SettingsSectionCard';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/react-in-jsx-scope */
+import {MainLayout} from '../../layouts/MainLayout';
+import {useAuthStore} from '../../store/auth/useAuthStore';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../navigation/StackNavigator';
+import {SettingsSectionCard} from '../../components/settings/SettingsSectionCard';
 
 export const SettingScreenTabAdmin = () => {
-  const { user } = useAuthStore(); 
-  const logout = useAuthStore((state) => state.logout);
+  const {user} = useAuthStore();
+  const logout = useAuthStore(state => state.logout);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const handleLogout = async () => {
@@ -28,14 +30,16 @@ export const SettingScreenTabAdmin = () => {
   };
 
   const settingsOptions = [
-    ...(user?.roles.includes('super-user') ? [
-      {
-        title: 'Reporte Auditoría',
-        description: 'Generar un reporte de auditoría',
-        iconName: 'file-text-outline',
-        onPress: generateReport,
-      },
-    ] : []),
+    ...(user?.roles.includes('super-user')
+      ? [
+          {
+            title: 'Reporte Auditoría',
+            description: 'Generar un reporte de auditoría',
+            iconName: 'file-text-outline',
+            onPress: generateReport,
+          },
+        ]
+      : []),
     {
       title: 'Cerrar Sesión',
       description: 'Salir de tu cuenta',
@@ -60,9 +64,13 @@ export const SettingScreenTabAdmin = () => {
   ];
 
   return (
-    <MainLayout title="Más" subTitle="Panel Administrativo" showBackAction={false}>
-        <SettingsSectionCard title="Configuración" options={settingsOptions} />
-        <SettingsSectionCard title="Acerca de" options={aboutOptions} />
+    <MainLayout
+      title="Más"
+      subTitle="Panel Administrativo"
+      showBackAction={false}
+    >
+      <SettingsSectionCard title="Configuración" options={settingsOptions} />
+      <SettingsSectionCard title="Acerca de" options={aboutOptions} />
     </MainLayout>
   );
 };

@@ -1,15 +1,24 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions } from 'react-native';
-import { Card } from '@ui-kitten/components';
-import { MainLayout } from '../../layouts/MainLayout';
-import { colors, styles } from '../../../config/theme/ColorsTheme';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/react-in-jsx-scope */
+import {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+} from 'react-native';
+import {Card} from '@ui-kitten/components';
+import {MainLayout} from '../../layouts/MainLayout';
+import {colors, styles} from '../../../config/theme/ColorsTheme';
 
 interface CustomAccordionProps {
   title: string;
   children: React.ReactNode;
 }
 
-const CustomAccordion: React.FC<CustomAccordionProps> = ({ title, children }) => {
+const CustomAccordion: React.FC<CustomAccordionProps> = ({title, children}) => {
   const [expanded, setExpanded] = useState(false);
 
   const handlePress = () => {
@@ -18,7 +27,10 @@ const CustomAccordion: React.FC<CustomAccordionProps> = ({ title, children }) =>
 
   return (
     <View style={localStyles.accordionContainer}>
-      <TouchableOpacity onPress={handlePress} style={localStyles.accordionHeader}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={localStyles.accordionHeader}
+      >
         <Text style={localStyles.accordionTitle}>{title}</Text>
       </TouchableOpacity>
       {expanded && <View style={localStyles.accordionContent}>{children}</View>}
@@ -27,40 +39,41 @@ const CustomAccordion: React.FC<CustomAccordionProps> = ({ title, children }) =>
 };
 
 export const LegalScreen = () => {
-
-  const { width, height } = useWindowDimensions();
+  const {width, height} = useWindowDimensions();
 
   return (
-    <MainLayout title='Documentos Legales'>
-        <Image
-          source={require('../../../assets/termsAndConditions.png')}
-          style={[styles.Image, { width: width * 1, height: height * 0.35 }]}
-        />
-        <Card style={localStyles.card}>
-          <CustomAccordion title="Acuerdo de Usuario">
-            <Text style={localStyles.content}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam interdum, nisi id
-              fermentum sagittis, justo mi aliquet eros, a placerat lectus turpis non odio. Integer
-              non justo ut ipsum suscipit interdum.
-            </Text>
-          </CustomAccordion>
+    <MainLayout title="Documentos Legales">
+      <Image
+        source={require('../../../assets/termsAndConditions.png')}
+        style={[styles.Image, {width: width * 1, height: height * 0.35}]}
+      />
+      <Card style={localStyles.card}>
+        <CustomAccordion title="Acuerdo de Usuario">
+          <Text style={localStyles.content}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            interdum, nisi id fermentum sagittis, justo mi aliquet eros, a
+            placerat lectus turpis non odio. Integer non justo ut ipsum suscipit
+            interdum.
+          </Text>
+        </CustomAccordion>
 
-          <CustomAccordion title="Acuerdo de Licencia">
-            <Text style={localStyles.content}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et consequat felis, sed
-              sagittis mi. In vel nisl bibendum, tincidunt augue et, dignissim nisl. Proin nec eros at
-              ligula ullamcorper tincidunt.
-            </Text>
-          </CustomAccordion>
+        <CustomAccordion title="Acuerdo de Licencia">
+          <Text style={localStyles.content}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et
+            consequat felis, sed sagittis mi. In vel nisl bibendum, tincidunt
+            augue et, dignissim nisl. Proin nec eros at ligula ullamcorper
+            tincidunt.
+          </Text>
+        </CustomAccordion>
 
-          <CustomAccordion title="Política de Privacidad">
-            <Text style={localStyles.content}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet ligula in mi
-              placerat sagittis. Cras gravida ligula ac ligula sodales auctor. Integer et orci in
-              magna interdum aliquet.
-            </Text>
-          </CustomAccordion>
-        </Card>
+        <CustomAccordion title="Política de Privacidad">
+          <Text style={localStyles.content}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+            sit amet ligula in mi placerat sagittis. Cras gravida ligula ac
+            ligula sodales auctor. Integer et orci in magna interdum aliquet.
+          </Text>
+        </CustomAccordion>
+      </Card>
     </MainLayout>
   );
 };

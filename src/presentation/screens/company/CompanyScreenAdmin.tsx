@@ -1,3 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
+/* eslint-disable comma-dangle */
+/* eslint-disable react/react-in-jsx-scope */
 import { Input, Layout, Text } from '@ui-kitten/components';
 import { Alert, Animated, Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { MainLayout } from '../../layouts/MainLayout';

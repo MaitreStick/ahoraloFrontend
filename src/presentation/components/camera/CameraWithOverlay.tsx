@@ -1,19 +1,25 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
-import { RNCamera } from 'react-native-camera';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { RootStackParams } from '../../navigation/StackNavigator';
+import React, {useRef} from 'react';
+import {View, StyleSheet, TouchableOpacity, Text, Platform} from 'react-native';
+import {RNCamera} from 'react-native-camera';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
+import {RootStackParams} from '../../navigation/StackNavigator';
 
-type CameraWithOverlayRouteProp = RouteProp<RootStackParams, 'CameraWithOverlay'>;
+type CameraWithOverlayRouteProp = RouteProp<
+  RootStackParams,
+  'CameraWithOverlay'
+>;
 
 interface CameraWithOverlayProps {
   route: CameraWithOverlayRouteProp;
   navigation: NavigationProp<RootStackParams>;
 }
 
-export const CameraWithOverlay = ({ route, navigation }: CameraWithOverlayProps) => {
+export const CameraWithOverlay = ({
+  route,
+  navigation,
+}: CameraWithOverlayProps) => {
   const cameraRef = useRef<RNCamera | null>(null);
-  const { selectedCityId, selectedCityName } = route.params;
+  const {selectedCityId, selectedCityName} = route.params;
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -30,7 +36,10 @@ export const CameraWithOverlay = ({ route, navigation }: CameraWithOverlayProps)
         const data = await cameraRef.current.takePictureAsync(options);
         console.log('Foto tomada:', data.uri);
 
-        const imageUri = Platform.OS === 'android' ? data.uri : data.uri.replace('file://', '');
+        const imageUri =
+          Platform.OS === 'android'
+            ? data.uri
+            : data.uri.replace('file://', '');
 
         navigation.navigate('OcrScreen', {
           picture: [imageUri],
@@ -43,22 +52,22 @@ export const CameraWithOverlay = ({ route, navigation }: CameraWithOverlayProps)
     }
   };
 
-
   return (
     <View style={styles.container}>
       <RNCamera
         ref={cameraRef}
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
-        captureAudio={false}
-      >
+        captureAudio={false}>
         {/* Superposición de bounding boxes */}
         <View style={styles.overlay}>
           <View style={styles.topOverlay} />
           <View style={styles.middleRow}>
             <View style={styles.sideOverlay} />
             <View style={styles.boundingBox}>
-              <Text style={styles.instructionsText}>Alinea la factura aquí</Text>
+              <Text style={styles.instructionsText}>
+                Alinea la factura aquí
+              </Text>
             </View>
             <View style={styles.sideOverlay} />
           </View>
@@ -66,7 +75,10 @@ export const CameraWithOverlay = ({ route, navigation }: CameraWithOverlayProps)
         </View>
         {/* Botón de captura */}
         <View style={styles.captureButtonContainer}>
-          <TouchableOpacity onPress={takePicture} style={styles.captureButton} />
+          <TouchableOpacity
+            onPress={takePicture}
+            style={styles.captureButton}
+          />
         </View>
       </RNCamera>
     </View>

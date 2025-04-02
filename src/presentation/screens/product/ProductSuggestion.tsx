@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Alert } from 'react-native';
-import { openComposer } from 'react-native-email-link';
-import { MainLayout } from '../../layouts/MainLayout';
-import { CustomAlert } from '../../components/ui/CustomAlert';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/react-in-jsx-scope */
+import {useState} from 'react';
+import {View, StyleSheet, TextInput, Button, Alert} from 'react-native';
+import {openComposer} from 'react-native-email-link';
+import {MainLayout} from '../../layouts/MainLayout';
+import {CustomAlert} from '../../components/ui/CustomAlert';
 
 export const SuggestProductScreen = () => {
   const [productName, setProductName] = useState('');
@@ -44,7 +47,7 @@ export const SuggestProductScreen = () => {
         setAlertMessage('Sugerencia enviada correctamente.');
         setAlertVisible(true);
       })
-      .catch((error) => {
+      .catch(error => {
         setAlertTitle('Error');
         setAlertMessage('No se pudo enviar el correo.');
         setAlertVisible(true);

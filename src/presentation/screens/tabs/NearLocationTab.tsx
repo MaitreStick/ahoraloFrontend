@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Text, List, Card, Spinner, Icon } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
-import { useLocationStore } from '../../store/location/useLocationStore';
-import { LowestPriceByTag } from '../../../infrastructure/interfaces/ahoralo-products.response';
-import { WarehouseWithDistance } from '../../../infrastructure/interfaces/WarehouseWithDistance';
-import { getDistance } from 'geolib';
-import { fetchWarehousesByCompanyIds } from '../../../actions/warehouses/fetchWarehousesByCompanyIds';
-import { Linking } from 'react-native';
-import { MyIcon } from '../../components/ui/MyIcon';
-import { colors } from '../../../config/theme/ColorsTheme';
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable prettier/prettier */
+import React, {useEffect, useState} from 'react';
+import {Layout, Text, List, Card, Spinner} from '@ui-kitten/components';
+import {StyleSheet} from 'react-native';
+import {useLocationStore} from '../../store/location/useLocationStore';
+import {LowestPriceByTag} from '../../../infrastructure/interfaces/ahoralo-products.response';
+import {WarehouseWithDistance} from '../../../infrastructure/interfaces/WarehouseWithDistance';
+import {getDistance} from 'geolib';
+import {fetchWarehousesByCompanyIds} from '../../../actions/warehouses/fetchWarehousesByCompanyIds';
+import {Linking} from 'react-native';
+import {MyIcon} from '../../components/ui/MyIcon';
+import {colors} from '../../../config/theme/ColorsTheme';
 
 interface Props {
   lowestPriceData: LowestPriceByTag[];
 }
 
-export const NearLocationTab = ({ lowestPriceData }: Props) => {
-  const { lastKnownLocation, getLocation } = useLocationStore();
+export const NearLocationTab = ({lowestPriceData}: Props) => {
+  const {lastKnownLocation, getLocation} = useLocationStore();
 
-  const [warehousesWithDistance, setWarehousesWithDistance] = useState<WarehouseWithDistance[]>([]);
+  const [warehousesWithDistance, setWarehousesWithDistance] = useState<
+    WarehouseWithDistance[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [noCompanies, setNoCompanies] = useState(false);
 
@@ -25,19 +29,19 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
     if (!lastKnownLocation) {
       getLocation();
     }
-  }, []);
+  }, [getLocation, lastKnownLocation]);
 
   useEffect(() => {
-    if (
-      lastKnownLocation &&
-      lowestPriceData &&
-      lowestPriceData.length > 0
-    ) {
+    if (lastKnownLocation && lowestPriceData && lowestPriceData.length > 0) {
       const loadWarehouses = async () => {
-        const companyIds = Array.from(new Set(lowestPriceData.map(item => item.companyId))).filter(Boolean);
+        const companyIds = Array.from(
+          new Set(lowestPriceData.map(item => item.companyId)),
+        ).filter(Boolean);
 
         if (companyIds.length === 0) {
-          console.log('No hay company IDs disponibles, no se cargan los almacenes');
+          console.log(
+            'No hay company IDs disponibles, no se cargan los almacenes',
+          );
           setIsLoading(false);
           setNoCompanies(true);
           return;
@@ -47,7 +51,7 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
 
         try {
           const warehousesData = await fetchWarehousesByCompanyIds(companyIds);
-          const warehousesWithDistance = warehousesData.map((warehouse) => {
+          const warehousesWithDistance = warehousesData.map(warehouse => {
             const distance = getDistance(
               {
                 latitude: lastKnownLocation.latitude,
@@ -56,7 +60,7 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
               {
                 latitude: warehouse.latitude,
                 longitude: warehouse.longitude,
-              }
+              },
             );
 
             return {
@@ -105,7 +109,7 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
 
   const nearestDistance = warehousesWithDistance[0].distance;
 
-  const renderItem = ({ item }: { item: WarehouseWithDistance }) => {
+  const renderItem = ({item}: {item: WarehouseWithDistance}) => {
     const isNearest = item.distance === nearestDistance;
     const distanceDifference = item.distance - nearestDistance;
     const distanceDifferenceText = isNearest
@@ -124,7 +128,7 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
       const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
 
       Linking.canOpenURL(url)
-        .then((supported) => {
+        .then(supported => {
           if (!supported) {
             console.warn('No se puede abrir Google Maps');
           } else {
@@ -141,7 +145,7 @@ export const NearLocationTab = ({ lowestPriceData }: Props) => {
         onPress={handleOpenGoogleMaps}
       >
         <Layout style={styles.cardContent}>
-          <MyIcon name='map-outline' />
+          <MyIcon name="map-outline" />
           <Layout style={styles.textContainer}>
             <Text category="s1" style={isNearest && styles.highlightedText}>
               {item.companyName}

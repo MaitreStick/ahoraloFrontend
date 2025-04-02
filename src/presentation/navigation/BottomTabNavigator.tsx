@@ -1,16 +1,20 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CityScreenTabAdmin } from '../screens/tabsAdmin/CityScreenTabAdmin';
-import { CompanyScreenTabAdmin } from '../screens/tabsAdmin/CompanyScreenTabAdmin';
-import { HomeScreenTabAdmin } from '../screens/tabsAdmin/HomeScreenTabAdmin';
-import { colors } from '../../config/theme/ColorsTheme';
-import { MyIcon } from '../components/ui/MyIcon';
-import { SettingScreenTabAdmin } from '../screens/tabsAdmin/SettingScreenTabAdmin';
-import { useAuthStore } from '../store/auth/useAuthStore';
-import { useEffect, useState } from 'react';
-import { LoadingScreen } from '../screens/loading/LoadingScreen';
-import { HomeScreenTab } from '../screens/tabs/HomeScreenTab';
-import { SettingScreenTab } from '../screens/tabs/SettingsScreenTab';
-import { BasketScreenTab } from '../screens/tabs/BasketScreenTab';
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/react-in-jsx-scope */
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {CityScreenTabAdmin} from '../screens/tabsAdmin/CityScreenTabAdmin';
+import {CompanyScreenTabAdmin} from '../screens/tabsAdmin/CompanyScreenTabAdmin';
+import {HomeScreenTabAdmin} from '../screens/tabsAdmin/HomeScreenTabAdmin';
+import {colors} from '../../config/theme/ColorsTheme';
+import {MyIcon} from '../components/ui/MyIcon';
+import {SettingScreenTabAdmin} from '../screens/tabsAdmin/SettingScreenTabAdmin';
+import {useAuthStore} from '../store/auth/useAuthStore';
+import {useEffect, useState} from 'react';
+import {LoadingScreen} from '../screens/loading/LoadingScreen';
+import {HomeScreenTab} from '../screens/tabs/HomeScreenTab';
+import {SettingScreenTab} from '../screens/tabs/SettingsScreenTab';
+import {BasketScreenTab} from '../screens/tabs/BasketScreenTab';
 
 export type RootTabParams = {
   HomeScreenTabAdmin: undefined;
@@ -25,8 +29,7 @@ export type RootTabParams = {
 const Tab = createBottomTabNavigator<RootTabParams>();
 
 export const BottomTabNavigator = () => {
-
-  const { checkStatus, status, user } = useAuthStore();
+  const {checkStatus, status, user} = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -34,24 +37,28 @@ export const BottomTabNavigator = () => {
     setIsLoading(false);
   }, []);
 
-  if (isLoading || status === 'checking' || (status === 'authenticated' && !user)) {
-    return <LoadingScreen/>; 
+  if (
+    isLoading ||
+    status === 'checking' ||
+    (status === 'authenticated' && !user)
+  ) {
+    return <LoadingScreen />;
   }
-
-
 
   return (
     <Tab.Navigator
-    sceneContainerStyle={{backgroundColor: colors.background}}
-    screenOptions={{
+      sceneContainerStyle={{backgroundColor: colors.background}}
+      screenOptions={{
         headerShown: false,
         tabBarLabelStyle: {
-            marginBottom: 5,
-            fontSize: 12,
+          marginBottom: 5,
+          fontSize: 12,
         },
-    }}
+      }}
     >
-     {user && user.roles && (user.roles.includes('admin') || user.roles.includes('super-user')) ? (
+      {user &&
+      user.roles &&
+      (user.roles.includes('admin') || user.roles.includes('super-user')) ? (
         // Tabs para administradores
         <>
           <Tab.Screen
@@ -118,4 +125,4 @@ export const BottomTabNavigator = () => {
       )}
     </Tab.Navigator>
   );
-}
+};

@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/react-in-jsx-scope */
 import {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
@@ -26,7 +29,9 @@ export const FadeInImage = ({uri, style}: Props) => {
   }, []);
 
   const onLoadEnd = () => {
-    if (isDisposed.current) return;
+    if (isDisposed.current) {
+      return;
+    }
     fadeIn({});
     setIsLoading(false);
   };

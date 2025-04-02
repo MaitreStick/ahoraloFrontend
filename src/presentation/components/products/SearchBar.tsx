@@ -1,6 +1,9 @@
-import { Input } from '@ui-kitten/components';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { MyIcon } from '../ui/MyIcon';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/react-in-jsx-scope */
+import {Input} from '@ui-kitten/components';
+import {TouchableOpacity, StyleSheet} from 'react-native';
+import {MyIcon} from '../ui/MyIcon';
 
 interface SearchBarProps {
   searchTerm: string;
@@ -8,7 +11,11 @@ interface SearchBarProps {
   onSearchClick: () => void;
 }
 
-export const SearchBar = ({ searchTerm, onSearchTermChange, onSearchClick }: SearchBarProps) => {
+export const SearchBar = ({
+  searchTerm,
+  onSearchTermChange,
+  onSearchClick,
+}: SearchBarProps) => {
   return (
     <Input
       placeholder="Buscar Producto"

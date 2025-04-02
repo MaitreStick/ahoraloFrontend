@@ -1,15 +1,9 @@
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-
-
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export class CameraAdapter {
-
-
   static async takePicture(): Promise<string[]> {
-
     const response = await launchCamera({
-      mediaType: "photo",
+      mediaType: 'photo',
       quality: 1,
       cameraType: 'back',
     });
@@ -19,12 +13,9 @@ export class CameraAdapter {
     }
 
     return [];
-
   }
 
-
   static async getPicturesFromLibrary(): Promise<string[]> {
-
     const response = await launchImageLibrary({
       mediaType: 'photo',
       quality: 1,
@@ -35,10 +26,6 @@ export class CameraAdapter {
       return response.assets.map(asset => asset.uri!);
     }
 
-
-
     return [];
   }
-
-
 }

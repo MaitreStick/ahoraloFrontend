@@ -1,8 +1,9 @@
-import { View, StyleSheet, Animated } from 'react-native';
-import { Button } from '@ui-kitten/components';
-import { useWindowDimensions } from 'react-native';
-import { MyIcon } from '../ui/MyIcon';
-import { colors } from '../../../config/theme/ColorsTheme';
+/* eslint-disable react/react-in-jsx-scope */
+import {View, StyleSheet} from 'react-native';
+import {Button} from '@ui-kitten/components';
+import {useWindowDimensions} from 'react-native';
+import {MyIcon} from '../ui/MyIcon';
+import {colors} from '../../../config/theme/ColorsTheme';
 
 interface FilterButtonsProps {
   selectedCityName: string;
@@ -21,7 +22,7 @@ export const FilterButtons = ({
   toggleCompanyModal,
   handleOcrClick,
 }: FilterButtonsProps) => {
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   return (
     <View style={styles.buttonContainer}>
@@ -33,10 +34,12 @@ export const FilterButtons = ({
         accessoryRight={<MyIcon name="chevron-down-outline" />}
         style={[
           styles.button,
-          { width: width * 0.25 },
-          showCityHighlight && { backgroundColor: colors.primary, borderColor: colors.primary },
-        ]}
-      >
+          {width: width * 0.25},
+          showCityHighlight && {
+            backgroundColor: colors.primary,
+            borderColor: colors.primary,
+          },
+        ]}>
         {selectedCityName}
       </Button>
       <Button
@@ -45,8 +48,7 @@ export const FilterButtons = ({
         status="basic"
         size="small"
         accessoryRight={<MyIcon name="chevron-down-outline" />}
-        style={[styles.button, { width: width * 0.25 }]}
-      >
+        style={[styles.button, {width: width * 0.25}]}>
         {selectedCompanyName}
       </Button>
       <Button
@@ -55,8 +57,10 @@ export const FilterButtons = ({
         status="primary"
         size="small"
         accessoryRight={<MyIcon name="camera-outline" white />}
-        style={[styles.buttonOCR, { backgroundColor: colors.primary, borderColor: colors.primary }]}
-      >
+        style={[
+          styles.buttonOCR,
+          {backgroundColor: colors.primary, borderColor: colors.primary},
+        ]}>
         Escanear Factura
       </Button>
     </View>

@@ -1,30 +1,31 @@
-import { create } from "zustand";
-import { PermissionStatus } from "../../../infrastructure/interfaces/permissions";
-import { checkLocationPermission, requestLocationPermission } from '../../../actions/permissions/location';
-
-
+/* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
+import {create} from 'zustand';
+import {PermissionStatus} from "../../../infrastructure/interfaces/permissions";
+import {
+  checkLocationPermission,
+  requestLocationPermission,
+} from '../../../actions/permissions/location';
 
 interface PermissionState {
-    locationStatus: PermissionStatus;
+  locationStatus: PermissionStatus;
 
-
-    requestLocationPermission: () => Promise<PermissionStatus>;
-    checkLocationPermission: () => Promise<PermissionStatus>;
+  requestLocationPermission: () => Promise<PermissionStatus>;
+  checkLocationPermission: () => Promise<PermissionStatus>;
 }
 
-
 export const usePermissionStore = create<PermissionState>()(set => ({
-    locationStatus: 'undetermined',
+  locationStatus: 'undetermined',
 
-    requestLocationPermission: async () => {
-        const status = await requestLocationPermission();
-        set({ locationStatus: status });
-        return status;
-    },
+  requestLocationPermission: async () => {
+    const status = await requestLocationPermission();
+    set({locationStatus: status});
+    return status;
+  },
 
-    checkLocationPermission: async () => {
-        const status = await checkLocationPermission();
-        set({ locationStatus: status });
-        return status;
-    }
-}))
+  checkLocationPermission: async () => {
+    const status = await checkLocationPermission();
+    set({locationStatus: status});
+    return status;
+  },
+}));

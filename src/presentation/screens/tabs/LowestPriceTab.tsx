@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Layout, Text, Spinner, ListItem, List } from '@ui-kitten/components';
-import { fetchLowestPricesByTags } from '../../../actions/products/fetch-lowest-prices-by-tags';
-import { Prodcomcity } from '../../../domain/entities/prodcomcity';
-import { LowestPriceByTag } from '../../../infrastructure/interfaces/ahoralo-products.response';
-import { StyleSheet, Dimensions } from 'react-native';
-import { MyIcon } from '../../components/ui/MyIcon';
-import { BarChart } from 'react-native-chart-kit';
-import { colors } from '../../../config/theme/ColorsTheme';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect} from 'react';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {Layout, Text, Spinner, ListItem, List} from '@ui-kitten/components';
+import {fetchLowestPricesByTags} from '../../../actions/products/fetch-lowest-prices-by-tags';
+import {Prodcomcity} from '../../../domain/entities/prodcomcity';
+import {LowestPriceByTag} from '../../../infrastructure/interfaces/ahoralo-products.response';
+import {StyleSheet, Dimensions} from 'react-native';
+import {MyIcon} from '../../components/ui/MyIcon';
+import {BarChart} from 'react-native-chart-kit';
+import {colors} from '../../../config/theme/ColorsTheme';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -16,13 +19,13 @@ interface Props {
   onDataLoaded: (data: LowestPriceByTag[]) => void;
 }
 
-export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
+export const LowestPriceTab = ({prodcomcity, onDataLoaded}: Props) => {
   const tags = prodcomcity.product.tags;
   const cityId = prodcomcity.comcity.city.id;
 
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error } = useQuery<LowestPriceByTag[], Error>({
+  const {data, isLoading, error} = useQuery<LowestPriceByTag[], Error>({
     queryKey: ['lowestPricesByTags', tags],
     queryFn: () => fetchLowestPricesByTags(tags, cityId),
     enabled: !!tags && tags.length > 0,
@@ -35,9 +38,8 @@ export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
   }, [data, onDataLoaded]);
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['lowestPricesByTags', tags] });
+    queryClient.invalidateQueries({queryKey: ['lowestPricesByTags', tags]});
   }, [tags, queryClient]);
-
 
   if (isLoading) {
     return (
@@ -67,7 +69,7 @@ export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
   const sortedData = [...data].sort((a, b) => a.lowestPrice - b.lowestPrice);
   const lowestPrice = sortedData[0].lowestPrice;
 
-  const renderItem = ({ item }: { item: LowestPriceByTag }) => {
+  const renderItem = ({item}: {item: LowestPriceByTag}) => {
     const isLowestPrice = item.lowestPrice === lowestPrice;
     const priceDifference = item.lowestPrice - lowestPrice;
     const priceDifferenceText = isLowestPrice
@@ -78,27 +80,40 @@ export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
       <ListItem
         style={styles.listItem}
         title={() => (
-          <Text style={[styles.listItemTitle, isLowestPrice && styles.highlightedText]}>
+          <Text
+            style={[
+              styles.listItemTitle,
+              isLowestPrice && styles.highlightedText,
+            ]}
+          >
             {item.companyName}
           </Text>
         )}
         description={() => (
-          <Text style={[styles.listItemDescription, isLowestPrice && styles.highlightedText]}>
+          <Text
+            style={[
+              styles.listItemDescription,
+              isLowestPrice && styles.highlightedText,
+            ]}
+          >
             Precio: ${item.lowestPrice.toFixed(2)} ({priceDifferenceText})
           </Text>
         )}
         accessoryLeft={() => (
-          <MyIcon name="briefcase-outline" fill={isLowestPrice ? '#4CAF50' : undefined} />
+          <MyIcon
+            name="briefcase-outline"
+            fill={isLowestPrice ? '#4CAF50' : undefined}
+          />
         )}
       />
     );
   };
 
   const chartData = {
-    labels: sortedData.map((item) => item.companyName),
+    labels: sortedData.map(item => item.companyName),
     datasets: [
       {
-        data: sortedData.map((item) => item.lowestPrice),
+        data: sortedData.map(item => item.lowestPrice),
       },
     ],
   };
@@ -108,7 +123,7 @@ export const LowestPriceTab = ({ prodcomcity, onDataLoaded }: Props) => {
       data={sortedData}
       renderItem={renderItem}
       ListHeaderComponent={
-          <Text style={styles.label}>Empresas y sus precios:</Text>
+        <Text style={styles.label}>Empresas y sus precios:</Text>
       }
       ListFooterComponent={
         <>

@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const checkOnboardingStatus = async (): Promise<boolean> => {

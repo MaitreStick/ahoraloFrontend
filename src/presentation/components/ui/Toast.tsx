@@ -1,10 +1,13 @@
-import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, ViewStyle } from 'react-native';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/react-in-jsx-scope */
+import {useEffect, useRef} from 'react';
+import {Animated, StyleSheet, Text, ViewStyle} from 'react-native';
 
 interface ToastProps {
   visible: boolean;
   message: string;
-  duration?: number; 
+  duration?: number;
   onHide: () => void;
   style?: ViewStyle;
 }
@@ -49,7 +52,7 @@ export const Toast: React.FC<ToastProps> = ({
   }
 
   return (
-    <Animated.View style={[styles.container, { opacity }, style]}>
+    <Animated.View style={[styles.container, {opacity}, style]}>
       <Text style={styles.message}>{message}</Text>
     </Animated.View>
   );

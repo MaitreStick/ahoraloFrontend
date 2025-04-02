@@ -1,5 +1,5 @@
-import { ahoraloApi } from "../../config/api/ahoraloApi";
-import { AuditLog } from "../../infrastructure/interfaces/audit.response";
+import {ahoraloApi} from '../../config/api/ahoraloApi';
+import {AuditLog} from '../../infrastructure/interfaces/audit.response';
 
 interface FetchAuditLogsParams {
   user?: string;
@@ -16,8 +16,8 @@ export const fetchAuditLogs = async ({
 }: FetchAuditLogsParams): Promise<AuditLog[]> => {
   try {
     const offset = page * limit;
-    const { data } = await ahoraloApi.get<AuditLog[]>('/audit-logs', {
-      params: { user, action, offset, limit },
+    const {data} = await ahoraloApi.get<AuditLog[]>('/audit-logs', {
+      params: {user, action, offset, limit},
     });
     return data;
   } catch (error) {

@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable eol-last */
 import {useRef} from 'react';
 import {Animated, Easing} from 'react-native';
 

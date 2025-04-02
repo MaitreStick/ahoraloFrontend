@@ -1,7 +1,5 @@
-import { ahoraloApi } from "../../config/api/ahoraloApi";
-import { Company } from "../../domain/entities/company";
-
-
+import {ahoraloApi} from '../../config/api/ahoraloApi';
+import {Company} from '../../domain/entities/company';
 
 export const fetchAllCompanies = async (
   page: number = 0,
@@ -10,7 +8,7 @@ export const fetchAllCompanies = async (
 ): Promise<Company[]> => {
   try {
     const offset = page * limit;
-    const { data } = await ahoraloApi.get<Company[]>('/companies/search', {
+    const {data} = await ahoraloApi.get<Company[]>('/companies/search', {
       params: {
         name: search,
         offset,

@@ -1,6 +1,12 @@
-import { check, openSettings, PERMISSIONS, request, PermissionStatus as RNPermissionStatus } from "react-native-permissions";
-import type { PermissionStatus } from "../../infrastructure/interfaces/permissions";
-import { Platform } from "react-native";
+import {
+  check,
+  openSettings,
+  PERMISSIONS,
+  request,
+  PermissionStatus as RNPermissionStatus,
+} from 'react-native-permissions';
+import type {PermissionStatus} from '../../infrastructure/interfaces/permissions';
+import {Platform} from 'react-native';
 
 export const requestStoragePermission = async (): Promise<PermissionStatus> => {
   let status: RNPermissionStatus = 'unavailable';

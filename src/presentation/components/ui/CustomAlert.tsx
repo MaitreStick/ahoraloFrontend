@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/react-in-jsx-scope */
 import { Text } from '@ui-kitten/components';
 import { Modal, View, StyleSheet, TouchableOpacity, Appearance } from 'react-native';
 

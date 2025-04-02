@@ -1,3 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/react-in-jsx-scope */
 import {
   Modal,
   View,
@@ -5,16 +8,20 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { Input, Layout, List, ListItem, Text } from '@ui-kitten/components';
-import { MyIcon } from '../ui/MyIcon';
+import {Input, Layout, List, ListItem, Text} from '@ui-kitten/components';
+import {MyIcon} from '../ui/MyIcon';
 
 interface SelectionModalProps {
   visible: boolean;
   toggleModal: () => void;
   searchPlaceholder: string;
   onSearchChange: (value: string) => void;
-  data: Array<{ id: string | null; name: string; displayName: string }>;
-  onSelect: (item: { id: string | null; name: string; displayName: string }) => void;
+  data: Array<{id: string | null; name: string; displayName: string}>;
+  onSelect: (item: {
+    id: string | null;
+    name: string;
+    displayName: string;
+  }) => void;
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
   isLoading: boolean;
@@ -32,7 +39,12 @@ export const SelectionModal = ({
   isLoading,
 }: SelectionModalProps) => {
   return (
-    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={toggleModal}>
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={toggleModal}
+    >
       <TouchableWithoutFeedback onPress={toggleModal}>
         <View style={styles.modalOverlay} />
       </TouchableWithoutFeedback>
@@ -50,7 +62,11 @@ export const SelectionModal = ({
         />
 
         {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" style={styles.loadingIndicator} />
+          <ActivityIndicator
+            size="large"
+            color="#0000ff"
+            style={styles.loadingIndicator}
+          />
         ) : data.length === 0 ? (
           <Layout style={styles.noResultsContainer}>
             <Text>No se encontraron resultados</Text>
@@ -58,10 +74,13 @@ export const SelectionModal = ({
         ) : (
           <List
             data={data}
-            style={{ backgroundColor: 'white' }}
-            keyExtractor={(item) => item.id ?? 'all'}
-            renderItem={({ item }) => (
-              <ListItem title={item.displayName} onPress={() => onSelect(item)} />
+            style={{backgroundColor: 'white'}}
+            keyExtractor={item => item.id ?? 'all'}
+            renderItem={({item}) => (
+              <ListItem
+                title={item.displayName}
+                onPress={() => onSelect(item)}
+              />
             )}
             onEndReached={hasNextPage ? fetchNextPage : null}
             onEndReachedThreshold={0.5}

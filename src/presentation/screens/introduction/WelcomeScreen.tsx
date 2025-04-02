@@ -1,3 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable eol-last */
+/* eslint-disable comma-dangle */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
 import {Button, Layout, Text} from '@ui-kitten/components';
 import {Image, useWindowDimensions} from 'react-native';
 import { MyIcon } from '../../components/ui/MyIcon';

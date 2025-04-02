@@ -1,24 +1,35 @@
-import { Layout, Text } from "@ui-kitten/components";
-import React, { useCallback, useState } from 'react';
-import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Prodcomcity } from "../../../domain/entities/prodcomcity";
-import { ActivityIndicator, Animated, StyleSheet, useWindowDimensions, View } from "react-native";
-import { City } from "../../../domain/entities/city";
-import debounce from "lodash.debounce";
-import { fetchAllCompanies } from "../../../actions/companies/fetch-all-companies";
-import { Company } from "../../../domain/entities/company";
-import { fetchAllCities } from "../../../actions/cities/fetch-all-cities";
-import { CameraAdapter } from "../../../config/adapters/camera-adapter";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParams } from "../../navigation/StackNavigator";
-import { useCityStore } from "../../store/location/useCityStore";
-import { requestCameraPermission } from "../../../actions/permissions/camera";
-import { CustomAlert } from "../ui/CustomAlert";
-import { FilterButtons } from "./FilterButtons";
-import { SelectionModal } from "./SelectionModal";
-import { ProductsListComponent } from "./ProductListComponent";
-import { SearchBar } from "./SearchBar";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-native/no-inline-styles */
+import {Layout, Text} from '@ui-kitten/components';
+import React, {useCallback, useState} from 'react';
+import {
+  InfiniteData,
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {Prodcomcity} from '../../../domain/entities/prodcomcity';
+import {
+  ActivityIndicator,
+  Animated,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {City} from '../../../domain/entities/city';
+import debounce from 'lodash.debounce';
+import {fetchAllCompanies} from '../../../actions/companies/fetch-all-companies';
+import {Company} from '../../../domain/entities/company';
+import {fetchAllCities} from '../../../actions/cities/fetch-all-cities';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParams} from '../../navigation/StackNavigator';
+import {useCityStore} from '../../store/location/useCityStore';
+import {requestCameraPermission} from '../../../actions/permissions/camera';
+import {CustomAlert} from '../ui/CustomAlert';
+import {FilterButtons} from './FilterButtons';
+import {SelectionModal} from './SelectionModal';
+import {ProductsListComponent} from './ProductListComponent';
+import {SearchBar} from './SearchBar';
 
 interface Props {
   prodcomcities: Prodcomcity[];
@@ -47,7 +58,6 @@ export const ProductList = ({
   isFetching,
   isLoading,
   showCityHighlight,
-  highlightAnim,
 }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [citySearch, setCitySearch] = useState<string>('');
@@ -55,14 +65,14 @@ export const ProductList = ({
   const [isCityModalVisible, setCityModalVisible] = useState(false);
   const [isCompanyModalVisible, setCompanyModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const { selectedCityId, selectedCityName } = useCityStore();
+  const {selectedCityId, selectedCityName} = useCityStore();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
 
   const queryClient = useQueryClient();
 
-  const { width } = useWindowDimensions();
+  useWindowDimensions();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const handleAlertConfirm = () => {
@@ -70,11 +80,11 @@ export const ProductList = ({
   };
 
   const toggleCityModal = useCallback(() => {
-    setCityModalVisible((prev) => !prev);
+    setCityModalVisible(prev => !prev);
   }, []);
 
   const toggleCompanyModal = useCallback(() => {
-    setCompanyModalVisible((prev) => !prev);
+    setCompanyModalVisible(prev => !prev);
   }, []);
 
   const {
@@ -90,7 +100,7 @@ export const ProductList = ({
     number
   >({
     queryKey: ['companies', companySearch],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({pageParam = 0}) => {
       return await fetchAllCompanies(pageParam, 10, companySearch);
     },
     getNextPageParam: (lastPage: Company[], allPages) => {
@@ -113,7 +123,9 @@ export const ProductList = ({
     number
   >({
     queryKey: ['cities', citySearch],
-    queryFn: async ({ pageParam = 0 }: QueryFunctionContext<[string, string], number>) => {
+    queryFn: async ({
+      pageParam = 0,
+    }: QueryFunctionContext<[string, string], number>) => {
       return await fetchAllCities(pageParam, 10, citySearch);
     },
     getNextPageParam: (lastPage: City[], allPages: City[][]) => {
@@ -131,13 +143,21 @@ export const ProductList = ({
     setCitySearch(value);
   }, 500);
 
-  const handleCompanySelect = (company: { id: string | null; name: string; displayName: string }) => {
+  const handleCompanySelect = (company: {
+    id: string | null;
+    name: string;
+    displayName: string;
+  }) => {
     onCompanySelect(company.id, company.name);
     toggleCompanyModal();
     setCompanySearch('');
   };
 
-  const handleCitySelect = (city: { id: string | null; name: string; displayName: string }) => {
+  const handleCitySelect = (city: {
+    id: string | null;
+    name: string;
+    displayName: string;
+  }) => {
     onCitySelect(city.id, city.name);
     toggleCityModal();
     setCitySearch('');
@@ -161,20 +181,27 @@ export const ProductList = ({
   const handleOcrClick = async () => {
     if (!selectedCityId) {
       setAlertTitle('Selecciona una ciudad');
-      setAlertMessage('Por favor selecciona una ciudad antes de escanear la factura');
+      setAlertMessage(
+        'Por favor selecciona una ciudad antes de escanear la factura',
+      );
       setAlertVisible(true);
       return;
     }
     const permissionStatus = await requestCameraPermission();
-  
+
     if (permissionStatus !== 'granted') {
       setAlertTitle('Permiso denegado');
-      setAlertMessage('No se pudo obtener el permiso para acceder a la cámara del dispositivo.');
+      setAlertMessage(
+        'No se pudo obtener el permiso para acceder a la cámara del dispositivo.',
+      );
       setAlertVisible(true);
       return;
     }
-  
-    navigation.navigate('CameraWithOverlay', { selectedCityId, selectedCityName });
+
+    navigation.navigate('CameraWithOverlay', {
+      selectedCityId,
+      selectedCityName,
+    });
   };
 
   const allCompaniesOption = {
@@ -185,30 +212,43 @@ export const ProductList = ({
 
   const companyNames = [
     allCompaniesOption,
-    ...(companiesData?.pages.flat().map((company) => ({
+    ...(companiesData?.pages.flat().map(company => ({
       id: company.id,
       name: company.name,
       displayName: company.name,
     })) ?? []),
   ];
 
-  const cityNames = citiesData?.pages.flat().map((city) => ({
-    id: city.id,
-    name: city.name,
-    displayName: `${city.name} - ${city.nameDep}`,
-  })) ?? [];
+  const cityNames =
+    citiesData?.pages.flat().map(city => ({
+      id: city.id,
+      name: city.name,
+      displayName: `${city.name} - ${city.nameDep}`,
+    })) ?? [];
 
   const onPullToRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    queryClient.invalidateQueries({ queryKey: ['prodcomcities', 'infinite', selectedCityId, selectedCompanyId] });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    queryClient.invalidateQueries({
+      queryKey: [
+        'prodcomcities',
+        'infinite',
+        selectedCityId,
+        selectedCompanyId,
+      ],
+    });
     setIsRefreshing(false);
   };
 
   if (isLoading) {
     return (
       <>
-        <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+        <View
+          style={{
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            backgroundColor: 'white',
+          }}>
           <SearchBar
             searchTerm={searchTerm}
             onSearchTermChange={handleSearchTermChange}
@@ -223,7 +263,11 @@ export const ProductList = ({
           toggleCompanyModal={toggleCompanyModal}
           handleOcrClick={handleOcrClick}
         />
-        <ActivityIndicator size="large" color="#0000ff" style={{ flex: 1, justifyContent: 'center' }} />
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={{flex: 1, justifyContent: 'center'}}
+        />
       </>
     );
   }
@@ -231,7 +275,12 @@ export const ProductList = ({
   if (prodcomcities.length === 0) {
     return (
       <>
-        <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+        <View
+          style={{
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            backgroundColor: 'white',
+          }}>
           <SearchBar
             searchTerm={searchTerm}
             onSearchTermChange={handleSearchTermChange}
@@ -246,7 +295,8 @@ export const ProductList = ({
           toggleCompanyModal={toggleCompanyModal}
           handleOcrClick={handleOcrClick}
         />
-        <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Layout
+          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>No se encontraron productos.</Text>
         </Layout>
       </>
@@ -255,7 +305,12 @@ export const ProductList = ({
 
   return (
     <>
-      <View style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: 'white' }}>
+      <View
+        style={{
+          paddingHorizontal: 16,
+          paddingVertical: 8,
+          backgroundColor: 'white',
+        }}>
         <SearchBar
           searchTerm={searchTerm}
           onSearchTermChange={handleSearchTermChange}

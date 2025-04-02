@@ -1,6 +1,8 @@
-import { StyleSheet, View, Image, Linking } from 'react-native';
-import { Text, Card, Button, Icon } from '@ui-kitten/components';
-import { MyIcon } from '../ui/MyIcon';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {StyleSheet, View, Image, Linking} from 'react-native';
+import {Text, Card, Button, Icon} from '@ui-kitten/components';
+import {MyIcon} from '../ui/MyIcon';
 
 interface Developer {
   name: string;
@@ -13,7 +15,7 @@ interface DeveloperCardProps {
   developer: Developer;
 }
 
-export const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer }) => {
+export const DeveloperCard: React.FC<DeveloperCardProps> = ({developer}) => {
   const handlePress = (url: string) => {
     Linking.openURL(url);
   };
@@ -21,7 +23,7 @@ export const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer }) => {
   return (
     <Card style={styles.card}>
       <View style={styles.container}>
-        <Image source={{ uri: developer.image }} style={styles.avatar} />
+        <Image source={{uri: developer.image}} style={styles.avatar} />
         <Text category="h6" style={styles.name}>
           {developer.name}
         </Text>
@@ -32,7 +34,7 @@ export const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer }) => {
               style={styles.button}
               size="small"
               appearance="ghost"
-              accessoryLeft={ <MyIcon name="github-outline" />}
+              accessoryLeft={<MyIcon name="github-outline" />}
               onPress={() => developer.github && handlePress(developer.github)}
             />
           )}

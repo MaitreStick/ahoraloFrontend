@@ -1,23 +1,19 @@
-import { isAxiosError } from "axios";
-import { ahoraloApi } from "../../config/api/ahoraloApi";
-import { Company } from "../../domain/entities/company";
+import {isAxiosError} from 'axios';
+import {ahoraloApi} from '../../config/api/ahoraloApi';
+import {Company} from '../../domain/entities/company';
 
-
-
-export const updateCreateCompany =  (company: Partial<Company>) => {
-  
-    if (company.id && company.id !== 'new') {
-      return  updateCompany(company);
-    }
-    return  createCompany(company);
-  
+export const updateCreateCompany = (company: Partial<Company>) => {
+  if (company.id && company.id !== 'new') {
+    return updateCompany(company);
+  }
+  return createCompany(company);
 };
 
 const updateCompany = async (company: Partial<Company>) => {
-  const { id, ...rest } = company;
+  const {id, ...rest} = company;
 
   try {
-    const { data } = await ahoraloApi.patch(`/companies/${id}`, rest);
+    const {data} = await ahoraloApi.patch(`/companies/${id}`, rest);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -29,10 +25,11 @@ const updateCompany = async (company: Partial<Company>) => {
 };
 
 const createCompany = async (company: Partial<Company>) => {
-  const { id, ...rest } = company;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {id, ...rest} = company;
 
   try {
-    const { data } = await ahoraloApi.post('/companies', rest);
+    const {data} = await ahoraloApi.post('/companies', rest);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {

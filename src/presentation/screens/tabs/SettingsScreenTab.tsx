@@ -1,88 +1,90 @@
-import { MainLayout } from '../../layouts/MainLayout';
-import { useAuthStore } from '../../store/auth/useAuthStore';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParams } from '../../navigation/StackNavigator';
-import { SettingsSectionCard } from '../../components/settings/SettingsSectionCard';
+/* eslint-disable quotes */
+/* eslint-disable react/react-in-jsx-scope */
+import {MainLayout} from "../../layouts/MainLayout";
+import {useAuthStore} from "../../store/auth/useAuthStore";
+import {useNavigation} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParams} from "../../navigation/StackNavigator";
+import {SettingsSectionCard} from "../../components/settings/SettingsSectionCard";
 
 export const SettingScreenTab = () => {
-  const logout = useAuthStore((state) => state.logout);
+  const logout = useAuthStore(state => state.logout);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const handleLogout = async () => {
-    await logout(); 
+    await logout();
     navigation.reset({
-        index: 0,
-        routes: [{ name: 'LoginScreen' }],
+      index: 0,
+      routes: [{name: "LoginScreen"}],
     });
-};
+  };
 
   const handleSuggestProduct = () => {
-    navigation.navigate('SuggestProductScreen');
+    navigation.navigate("SuggestProductScreen");
   };
 
   const handleSuggestCity = () => {
-    navigation.navigate('SuggestCityScreen');
+    navigation.navigate("SuggestCityScreen");
   };
 
   const handleSuggestCompany = () => {
-    navigation.navigate('SuggestCompanyScreen');
-  };  
+    navigation.navigate("SuggestCompanyScreen");
+  };
 
   const handleLegalDocuments = () => {
-    navigation.navigate('LegalScreen');
+    navigation.navigate("LegalScreen");
   };
 
   const handleDevelopers = () => {
-    navigation.navigate('DevelopersScreen');
+    navigation.navigate("DevelopersScreen");
   };
 
   const settingsOptions = [
     {
-      title: 'Sugerir Producto',
-      description: 'Sugerir un producto para agregar',
-      iconName: 'cube-outline',
+      title: "Sugerir Producto",
+      description: "Sugerir un producto para agregar",
+      iconName: "cube-outline",
       onPress: handleSuggestProduct,
     },
     {
-      title: 'Sugerir Ciudad',
-      description: 'Sugerir una ciudad para agregar',
-      iconName: 'map-outline',
+      title: "Sugerir Ciudad",
+      description: "Sugerir una ciudad para agregar",
+      iconName: "map-outline",
       onPress: handleSuggestCity,
     },
     {
-      title: 'Sugerir Comercio',
-      description: 'Sugerir un comercio para agregar',
-      iconName: 'briefcase-outline',
+      title: "Sugerir Comercio",
+      description: "Sugerir un comercio para agregar",
+      iconName: "briefcase-outline",
       onPress: handleSuggestCompany,
     },
     {
-      title: 'Cerrar Sesión',
-      description: 'Salir de tu cuenta',
-      iconName: 'log-out-outline',
+      title: "Cerrar Sesión",
+      description: "Salir de tu cuenta",
+      iconName: "log-out-outline",
       onPress: handleLogout,
     },
   ];
 
   const aboutOptions = [
     {
-      title: 'Documentos Legales',
-      description: 'Términos y condiciones',
-      iconName: 'file-text-outline',
+      title: "Documentos Legales",
+      description: "Términos y condiciones",
+      iconName: "file-text-outline",
       onPress: handleLegalDocuments,
     },
     {
-      title: 'Desarrolladores',
-      description: 'Información sobre los desarrolladores',
-      iconName: 'code-outline',
+      title: "Desarrolladores",
+      description: "Información sobre los desarrolladores",
+      iconName: "code-outline",
       onPress: handleDevelopers,
     },
   ];
 
   return (
     <MainLayout title="Más" showBackAction={false}>
-        <SettingsSectionCard title="Configuración" options={settingsOptions} />
-        <SettingsSectionCard title="Acerca de" options={aboutOptions} />
+      <SettingsSectionCard title="Configuración" options={settingsOptions} />
+      <SettingsSectionCard title="Acerca de" options={aboutOptions} />
     </MainLayout>
   );
 };
