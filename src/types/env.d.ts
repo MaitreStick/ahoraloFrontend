@@ -1,5 +1,4 @@
-/* eslint-disable quotes */
-declare module "@env" {
+declare module '@env' {
   export const STAGE: string;
   export const API_URL: string;
   export const API_URL_IOS: string;

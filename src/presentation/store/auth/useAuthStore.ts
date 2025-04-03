@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {create} from 'zustand';
 import {User} from '../../../domain/entities/user';
 import type {AuthStatus} from '../../../infrastructure/interfaces/auth.status';

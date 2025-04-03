@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {PropsWithChildren, useEffect} from 'react';
 import {AppState} from 'react-native';
 import {usePermissionStore} from '../presentation/store/permissions/usePermissionStore';
