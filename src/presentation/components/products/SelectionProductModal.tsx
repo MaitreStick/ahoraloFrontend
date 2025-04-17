@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import {Modal, TouchableWithoutFeedback, View, StyleSheet} from 'react-native';
 import {Input, List, ListItem} from '@ui-kitten/components';
 import {MyIcon} from '../ui/MyIcon';

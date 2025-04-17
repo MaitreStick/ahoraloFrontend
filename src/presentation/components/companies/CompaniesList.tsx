@@ -47,13 +47,11 @@ export const CompanyList: React.FC<Props> = ({
   return (
     <List
       data={companyNames}
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{backgroundColor: colors.background, borderRadius: 20}}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       renderItem={({item}: {item: Company}) => (
         <ListItem
           title={`${item.name}`}
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{padding: 10}}
           onPress={() =>
             navigation.navigate('CompanyScreenAdmin', {companyId: item.id})
@@ -61,10 +59,8 @@ export const CompanyList: React.FC<Props> = ({
         />
       )}
       onEndReached={fetchNextPage}
-      // eslint-disable-next-line react/no-unstable-nested-components
       ListFooterComponent={() => (
         <Layout
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             height: 150,
             borderEndEndRadius: 20,

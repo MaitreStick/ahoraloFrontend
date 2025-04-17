@@ -42,23 +42,18 @@ export const CityList: React.FC<Props> = ({
   };
 
   if (isLoading) {
-    // eslint-disable-next-line react/react-in-jsx-scope
     return <FullScreenLoader />;
   }
 
   return (
-    // eslint-disable-next-line react/react-in-jsx-scope
     <List
       data={cityNames}
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{backgroundColor: colors.background, borderRadius: 20}}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       renderItem={({item}: {item: City}) => (
-        // eslint-disable-next-line react/react-in-jsx-scope
         <ListItem
           title={`${item.name}`}
           description={`${item.nameDep}`}
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{padding: 10}}
           onPress={() =>
             navigation.navigate('CityScreenAdmin', {cityId: item.id})
@@ -67,9 +62,7 @@ export const CityList: React.FC<Props> = ({
       )}
       onEndReached={fetchNextPage}
       ListFooterComponent={
-        // eslint-disable-next-line react/react-in-jsx-scope
         <Layout
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             height: 150,
             borderEndEndRadius: 20,
@@ -79,7 +72,6 @@ export const CityList: React.FC<Props> = ({
       }
       onEndReachedThreshold={0.8}
       refreshControl={
-        // eslint-disable-next-line react/react-in-jsx-scope
         <RefreshControl
           refreshing={isFetching || isRefreshing}
           onRefresh={onPullToRefresh}

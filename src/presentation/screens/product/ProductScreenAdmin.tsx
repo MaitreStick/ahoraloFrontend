@@ -1,8 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
 import {Input, Layout, Text} from '@ui-kitten/components';
 import {Alert, Animated, Dimensions} from 'react-native';
 import {MainLayout} from '../../layouts/MainLayout';
@@ -82,7 +77,7 @@ export const ProductScreenAdmin = ({route}: Props) => {
     // hasNextPage: hasNextCitiesPage,
     // isFetchingNextPage: isFetchingNextCitiesPage,
   } = useInfiniteQuery({
-    queryKey: ['cities', companySearch],
+    queryKey: ['companies', companySearch],
     queryFn: ({pageParam = 0}) =>
       fetchAllCompanies(pageParam, 10, companySearch),
     getNextPageParam: (lastPage, allPages) => {
