@@ -1,11 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Button } from 'react-native';
 import { openComposer } from 'react-native-email-link';
 import { MainLayout } from '../../layouts/MainLayout';
 import { CustomAlert } from '../../components/ui/CustomAlert';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { fetchAllCities } from '../../../actions/cities/fetch-all-cities';
+
+import { SelectionProductModal } from '../../components/products/SelectionProductModal';
 
 export const SuggestCompanyScreen = () => {
   const [companyName, setCompanyName] = useState('');
@@ -14,6 +16,25 @@ export const SuggestCompanyScreen = () => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+
+  const [isCityModalVisible, setCityModalVisible] = useState(false);
+  const [citySearch, setCitySearch] = useState('');
+
+  const {
+    data: citiesData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['cities', citySearch],
+    queryFn: ({ pageParam = 0 }) => fetchAllCities(pageParam, 10, citySearch),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === 0 ? undefined : allPages.length;
+    },
+    initialPageParam: 0,
+    staleTime: 1000 * 60 * 60,
+  });
+
+  const citiesList = citiesData?.pages.flat() || [];
 
   const handleAlertConfirm = () => {
     setAlertVisible(false);
@@ -59,26 +80,50 @@ export const SuggestCompanyScreen = () => {
           value={companyName}
           onChangeText={setCompanyName}
         />
+
         <TextInput
           style={styles.input}
           placeholder="Ciudad"
           value={city}
-          onChangeText={setCity}
+          onFocus={() => setCityModalVisible(true)}
         />
+
         <TextInput
           style={styles.input}
           placeholder="Departamento"
           value={department}
-          onChangeText={setDepartment}
+          editable={false}
         />
+
         <Button title="Enviar Sugerencia" onPress={handleSubmit} />
       </View>
+
       <CustomAlert
         visible={alertVisible}
         title={alertTitle}
         message={alertMessage}
         onConfirm={handleAlertConfirm}
         confirmText="Aceptar"
+      />
+
+      <SelectionProductModal
+        visible={isCityModalVisible}
+        onClose={() => setCityModalVisible(false)}
+        data={citiesList.map(cityItem => ({
+          id: cityItem.id,
+          name: `${cityItem.name} - ${cityItem.nameDep}`,
+        }))}
+        onSelect={item => {
+          const selectedCity = citiesList.find(c => c.id === item.id);
+          if (selectedCity) {
+            setCity(selectedCity.name);
+            setDepartment(selectedCity.nameDep);
+          }
+          setCityModalVisible(false);
+        }}
+        searchPlaceholder="Buscar Ciudad"
+        searchValue={citySearch}
+        onSearchChange={setCitySearch}
       />
     </MainLayout>
   );

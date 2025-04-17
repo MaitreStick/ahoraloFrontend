@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import {MainLayout} from '../../layouts/MainLayout';
 import {useAuthStore} from '../../store/auth/useAuthStore';
 import {useNavigation} from '@react-navigation/native';

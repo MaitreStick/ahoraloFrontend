@@ -66,16 +66,8 @@ export const ProductScreenAdmin = ({route}: Props) => {
     setAlertVisible(false);
   };
 
-  // const { data: companiesData } = useQuery<Company[]>({
-  //     queryKey: ['companies'],
-  //     queryFn: () => fetchAllCompanies(),
-  // });
-
   const {
     data: companiesData,
-    // fetchNextPage: fetchNextCitiesPage,
-    // hasNextPage: hasNextCitiesPage,
-    // isFetchingNextPage: isFetchingNextCitiesPage,
   } = useInfiniteQuery({
     queryKey: ['companies', companySearch],
     queryFn: ({pageParam = 0}) =>
@@ -91,9 +83,6 @@ export const ProductScreenAdmin = ({route}: Props) => {
 
   const {
     data: citiesData,
-    // fetchNextPage: fetchNextCitiesPage,
-    // hasNextPage: hasNextCitiesPage,
-    // isFetchingNextPage: isFetchingNextCitiesPage,
   } = useInfiniteQuery({
     queryKey: ['cities', citySearch],
     queryFn: ({pageParam = 0}) => fetchAllCities(pageParam, 10, citySearch),
@@ -105,19 +94,6 @@ export const ProductScreenAdmin = ({route}: Props) => {
   });
 
   const citiesList = citiesData?.pages.flat() || [];
-
-  // const [filteredCities, setFilteredCities] = useState<City[]>([]);
-  // const [filteredCompanies, setFilteredCompanies] = useState<Company[]>(companiesData || []);
-
-  // useEffect(() => {
-  //     if (companiesData) {
-  //         setFilteredCompanies(
-  //             companiesData.filter((company) =>
-  //                 company.name.toLowerCase().includes(companySearch.toLowerCase())
-  //             )
-  //         );
-  //     }
-  // }, [companySearch, companiesData]);
 
   const {data: prodcomcity} = useQuery({
     queryKey: ['prodcomcity', comcityIdRef.current, productIdRef.current],

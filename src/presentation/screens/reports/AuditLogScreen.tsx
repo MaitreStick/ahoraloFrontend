@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
 import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,

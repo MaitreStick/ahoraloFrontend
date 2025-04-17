@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/react-in-jsx-scope */
 import {useState} from 'react';
 import {View, StyleSheet, TextInput, Button, Alert} from 'react-native';
 import {openComposer} from 'react-native-email-link';
