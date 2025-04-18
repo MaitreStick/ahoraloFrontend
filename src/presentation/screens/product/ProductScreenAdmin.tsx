@@ -76,7 +76,7 @@ export const ProductScreenAdmin = ({route}: Props) => {
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   const companiesList = companiesData?.pages.flat() || [];
@@ -111,7 +111,6 @@ export const ProductScreenAdmin = ({route}: Props) => {
         },
         comcity: {
           ...data.comcity,
-          id: comcityIdRef.current,
         },
       }),
     onSuccess(data: Prodcomcity) {

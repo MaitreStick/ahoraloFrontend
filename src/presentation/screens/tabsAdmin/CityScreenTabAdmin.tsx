@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Animated, StyleSheet} from 'react-native';
+import {Animated, StyleSheet, TextInput, View} from 'react-native';
 import {
   useInfiniteQuery,
   QueryFunctionContext,
@@ -17,6 +17,8 @@ import {CityList} from '../../components/cities/CitiesList';
 
 export const CityScreenTabAdmin = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const navigateToCreateCity = () => {
     navigation.navigate('CityScreenAdmin', {cityId: 'new'});
@@ -45,6 +47,12 @@ export const CityScreenTabAdmin = () => {
     staleTime: 1000 * 60 * 60,
   });
 
+  const allCities = data?.pages.flat() ?? [];
+
+  const filteredCities = allCities.filter(city =>
+    city.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   return (
     <>
       <MainLayout
@@ -52,8 +60,17 @@ export const CityScreenTabAdmin = () => {
         subTitle="Panel Administrativo"
         showBackAction={false}
       >
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar ciudad..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+
         <CityList
-          cities={data?.pages.flat() ?? []}
+          cities={filteredCities}
           fetchNextPage={fetchNextPage}
           isFetching={isFetching}
           isLoading={isLoading}
@@ -61,7 +78,7 @@ export const CityScreenTabAdmin = () => {
       </MainLayout>
 
       <FAB
-        iconName={'map-outline'}
+        iconName="map-outline"
         onPress={navigateToCreateCity}
         style={[
           styles.fabMain,
@@ -73,6 +90,19 @@ export const CityScreenTabAdmin = () => {
 };
 
 const styles = StyleSheet.create({
+  searchContainer: {
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  searchInput: {
+    height: 40,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+  },
   fabMain: {
     position: 'absolute',
     right: 20,

@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
@@ -46,6 +44,15 @@ export const CompanyScreenTabAdmin = () => {
     staleTime: 1000 * 60 * 60,
   });
 
+  const allCompanies = data?.pages.flat() ?? [];
+  const uniqueCompaniesMap = new Map<string, Company>();
+
+  for (const company of allCompanies) {
+    uniqueCompaniesMap.set(company.id, company);
+  }
+
+  const uniqueCompanies = Array.from(uniqueCompaniesMap.values());
+
   return (
     <>
       <MainLayout
@@ -54,7 +61,7 @@ export const CompanyScreenTabAdmin = () => {
         showBackAction={false}
       >
         <CompanyList
-          companies={data?.pages.flat() ?? []}
+          companies={uniqueCompanies}
           fetchNextPage={fetchNextPage}
           isFetching={isFetching}
           isLoading={isLoading}

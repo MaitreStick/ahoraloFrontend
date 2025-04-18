@@ -80,7 +80,6 @@ const updateProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
 };
 
 const createProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {id, product, ...rest} = prodcomcity;
 
   const images = product?.images || [];

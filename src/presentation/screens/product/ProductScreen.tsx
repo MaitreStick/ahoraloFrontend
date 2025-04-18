@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react-native/no-inline-styles */
 import {
   Dimensions,
   Image,

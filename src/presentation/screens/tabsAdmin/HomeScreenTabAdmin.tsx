@@ -1,7 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable @typescript-eslint/no-shadow */
 import {
   InfiniteData,
   QueryFunctionContext,
@@ -108,7 +104,7 @@ export const HomeScreenTabAdmin = () => {
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   return (
