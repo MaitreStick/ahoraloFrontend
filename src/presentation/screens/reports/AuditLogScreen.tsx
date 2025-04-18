@@ -66,11 +66,11 @@ export const AuditLogsScreen = () => {
     setShowActionModal(false);
   };
 
-  const handleExport = async (format: 'csv' | 'json') => {
-    await exportAuditLogs({format, ...filters});
+  const handleExport = async (p0: string) => {
+    await exportAuditLogs({ format: 'csv', user: filters.user, action: filters.action });
     setAlertTitle('Éxito');
     setAlertMessage(
-      'Registros exportados en formato ${format.toUpperCase()} y enviados por correo.',
+      `Registros exportados en formato ${p0.toUpperCase()} y compartidos. El usuario puede elegir la app de correo.`
     );
     setAlertVisible(true);
   };
@@ -130,15 +130,9 @@ export const AuditLogsScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleExport('csv')}
+          onPress={() => handleExport('html')}
         >
           <Text style={styles.buttonText}>Exportar CSV por Correo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleExport('json')}
-        >
-          <Text style={styles.buttonText}>Exportar JSON por Correo</Text>
         </TouchableOpacity>
       </View>
 

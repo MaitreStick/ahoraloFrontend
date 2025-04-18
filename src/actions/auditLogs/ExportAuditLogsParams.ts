@@ -1,8 +1,9 @@
-import {ahoraloApi} from '../../config/api/ahoraloApi';
-import {openComposer} from 'react-native-email-link';
+import RNFS from 'react-native-fs';
+import Share from 'react-native-share';
+import { ahoraloApi } from '../../config/api/ahoraloApi';
 
 interface ExportAuditLogsParams {
-  format: 'csv' | 'json';
+  format: 'html' | 'csv' | 'json';
   user?: string;
   action?: string;
 }
@@ -13,21 +14,27 @@ export const exportAuditLogs = async ({
   action = '',
 }: ExportAuditLogsParams): Promise<void> => {
   try {
-    const {data} = await ahoraloApi.get('/audit-logs/export', {
-      params: {format, user, action},
+    const response = await ahoraloApi.get('/audit-logs/export', {
+      params: { format, user, action },
     });
 
-    let emailBody = '';
-    if (format === 'csv') {
-      emailBody = `ID,Usuario,Acción,IP,Fecha\n${data}`;
-    } else if (format === 'json') {
-      emailBody = JSON.stringify(data, null, 2);
+    const csvString = response.data;
+    if (typeof csvString !== 'string' || !csvString.includes(',')) {
+      console.error('No parece ser un CSV válido:', csvString);
+      return;
     }
 
-    await openComposer({
-      to: 'test@gmail.com',
-      subject: `Registros de auditoría (${format.toUpperCase()})`,
-      body: `Registros de auditoría en formato ${format.toUpperCase()}:\n\n${emailBody}`,
+    const fileName = 'audit-report.csv';
+    const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+    await RNFS.writeFile(filePath, csvString, 'utf8');
+
+    await Share.open({
+      title: 'Enviar Informe de Auditoría',
+      message: 'Te comparto el informe de auditoría en formato CSV',
+      url: 'file://' + filePath,
+      type: 'text/csv',
+      subject: 'Informe de Auditoría',
     });
   } catch (error) {
     console.error('Error exporting audit logs:', error);

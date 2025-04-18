@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import React, {useRef, useState} from 'react';
 import {Animated, StyleSheet} from 'react-native';
 import {

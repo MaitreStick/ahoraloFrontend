@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import {Image, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -13,16 +11,16 @@ import {colors, styles} from '../../../config/theme/ColorsTheme';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
-import {GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID} from '@env';
+// import {GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID} from '@env';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {CustomAlert} from '../../components/ui/CustomAlert';
 import {Toast} from '../../components/ui/Toast';
 
-GoogleSignin.configure({
-  webClientId: GOOGLE_WEB_CLIENT_ID,
-  iosClientId: GOOGLE_IOS_CLIENT_ID,
-  scopes: ['profile', 'email'],
-});
+// GoogleSignin.configure({
+//   webClientId: GOOGLE_WEB_CLIENT_ID,
+//   iosClientId: GOOGLE_IOS_CLIENT_ID,
+//   scopes: ['profile', 'email'],
+// });
 
 const GoogleLogin = async () => {
   await GoogleSignin.hasPlayServices();

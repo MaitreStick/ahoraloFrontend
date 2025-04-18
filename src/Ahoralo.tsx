@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -14,47 +13,50 @@ import { ActivityIndicator, View } from 'react-native';
 import { useOnboardingStore } from './presentation/store/onboarding/useOnboardingStore';
 import { PermissionsChecker } from './providers/PermissionChecker';
 
-const queryClient = new QueryClient()
+import { GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '@env';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: GOOGLE_WEB_CLIENT_ID,
+  iosClientId: GOOGLE_IOS_CLIENT_ID,
+  scopes: ['profile', 'email'],
+});
+
+const queryClient = new QueryClient();
 
 export const Ahoralo = () => {
+  const { status, checkStatus } = useAuthStore();
+  const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
+  const [loading, setLoading] = useState(true);
 
-    const { status, checkStatus } = useAuthStore();
-    const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
-    const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const initializeApp = async () => {
+      await checkStatus();
+      const completed = await checkOnboardingStatus();
+      setHasCompletedOnboarding(completed);
+      setLoading(false);
+    };
+    initializeApp();
+  }, []);
 
-    useEffect(() => {
-        const initializeApp = async () => {
-            await checkStatus();
-            const completed = await checkOnboardingStatus();
-            setHasCompletedOnboarding(completed);
-            setLoading(false);
-        };
-        initializeApp();
-    }, []);
-
-    if (loading || status === 'checking' || hasCompletedOnboarding === null) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
-    }
-
-
+  if (loading || status === 'checking' || hasCompletedOnboarding === null) {
     return (
-        <QueryClientProvider client={queryClient}>
-            <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider
-                {...eva} theme={eva.light}
-            >
-                <NavigationContainer>
-                    <PermissionsChecker>
-                        <StackNavigator />
-                    </PermissionsChecker>
-                </NavigationContainer>
-            </ApplicationProvider>
-        </QueryClientProvider>
-    )
-}
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
-
+  return (
+    <QueryClientProvider client={queryClient}>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <NavigationContainer>
+          <PermissionsChecker>
+            <StackNavigator />
+          </PermissionsChecker>
+        </NavigationContainer>
+      </ApplicationProvider>
+    </QueryClientProvider>
+  );
+};
