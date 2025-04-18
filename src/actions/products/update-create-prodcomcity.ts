@@ -55,21 +55,34 @@ const uploadImage = async (image: string) => {
 
 const updateProdcomcity = async (prodcomcity: Partial<Prodcomcity>) => {
   const {id, product, ...rest} = prodcomcity;
+  console.log('prodcomcity', prodcomcity);
+
   const images = product?.images || [];
 
   try {
     const checkedImages = await prepareImages(images);
-    const {data} = await ahoraloApi.patch(`/prodcomcity/${id}`, {
-      comcity: rest.comcity?.id,
+
+    const requestBody = {
+      comcity: {
+        city: {
+          name: rest.comcity?.city?.name,
+          nameDep: rest.comcity?.city?.nameDep,
+        },
+        company: {
+          name: rest.comcity?.company?.name,
+        },
+      },
       product: {
         id: product?.id,
         title: product?.title,
         code: product?.code,
         images: checkedImages,
       },
-      date: new Date().toISOString(),
+      date: rest.date ? rest.date : new Date().toISOString(),
       price: rest.price,
-    });
+    };
+
+    const {data} = await ahoraloApi.patch(`/prodcomcity/${id}`, requestBody);
     return data.prodcomcity;
   } catch (error) {
     if (isAxiosError(error)) {

@@ -110,7 +110,7 @@ export const ProductScreenAdmin = ({route}: Props) => {
           id: productIdRef.current,
         },
         comcity: {
-          ...data.comcity,
+          ...data.comcity
         },
       }),
     onSuccess(data: Prodcomcity) {
