@@ -25,7 +25,6 @@ const updateCompany = async (company: Partial<Company>) => {
 };
 
 const createCompany = async (company: Partial<Company>) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {id, ...rest} = company;
 
   try {

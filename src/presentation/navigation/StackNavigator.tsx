@@ -1,6 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import {
   StackCardStyleInterpolator,
   createStackNavigator,
@@ -27,6 +24,8 @@ import {SuggestCityScreen} from '../screens/city/CitySuggestion';
 import {SuggestCompanyScreen} from '../screens/company/CompanySuggestion';
 import AuditLogsScreen from '../screens/reports/AuditLogScreen';
 import {CameraWithOverlay} from '../components/camera/CameraWithOverlay';
+import {CompanyScreenTabAdmin} from '../screens/tabsAdmin/CompanyScreenTabAdmin';
+import {WarehouseScreenAdmin} from '../screens/warehouse/WarehouseScreenAdmin';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -39,6 +38,8 @@ export type RootStackParams = {
   ProductScreen: {prodcomcity: Prodcomcity};
   CityScreenAdmin: {cityId: string};
   CompanyScreenAdmin: {companyId: string};
+  CompanyScreenTabAdmin: undefined;
+  WarehouseScreenAdmin: {warehouseId: string};
   DevelopersScreen: undefined;
   LegalScreen: undefined;
   ComingSoonScreen: undefined;
@@ -118,14 +119,26 @@ export const StackNavigator = () => {
               component={BottomTabNavigator}
             />
             <Stack.Screen
-              name="ProductScreenAdmin"
-              component={ProductScreenAdmin}
+              name="CompanyScreenTabAdmin"
+              component={CompanyScreenTabAdmin}
             />
-            <Stack.Screen name="CityScreenAdmin" component={CityScreenAdmin} />
             <Stack.Screen
               name="CompanyScreenAdmin"
               component={CompanyScreenAdmin}
             />
+            <Stack.Screen
+              name="WarehouseScreenAdmin"
+              component={WarehouseScreenAdmin}
+            />
+            <Stack.Screen
+              name="ProductScreenAdmin"
+              component={ProductScreenAdmin}
+            />
+            <Stack.Screen name="CityScreenAdmin" component={CityScreenAdmin} />
+            {/* <Stack.Screen
+              name="CompanyScreenAdmin"
+              component={CompanyScreenAdmin}
+            /> */}
             <Stack.Screen
               name="DevelopersScreen"
               component={DevelopersScreen}

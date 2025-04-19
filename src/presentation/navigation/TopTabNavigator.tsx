@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {ProductInformationTab} from '../screens/tabs/ProductInformationTab';
 import {LowestPriceTab} from '../screens/tabs/LowestPriceTab';
