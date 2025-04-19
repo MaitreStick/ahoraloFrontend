@@ -29,6 +29,7 @@ export const HomeScreenTabAdmin = () => {
   );
   const [selectedCompanyName, setSelectedCompanyName] = useState('Empresa');
   const [searchProduct, setSearchProduct] = useState<string | null>(null);
+  const PAGE_SIZE = 20;
 
   const navigateToCreateProduct = () => {
     navigation.navigate('ProductScreenAdmin', {
@@ -97,13 +98,16 @@ export const HomeScreenTabAdmin = () => {
         return await getProdcomcityByPage(pageParam);
       }
     },
-    getNextPageParam: (
-      lastPage: Prodcomcity[],
-      allPages: InfiniteData<Prodcomcity[]>['pages'],
-    ) => {
-      return lastPage.length === 0 ? undefined : allPages.length;
-    },
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length,
     initialPageParam: 0,
+    // getNextPageParam: (
+    //   lastPage: Prodcomcity[],
+    //   allPages: InfiniteData<Prodcomcity[]>['pages'],
+    // ) => {
+    //   return lastPage.length === 0 ? undefined : allPages.length;
+    // },
+    // initialPageParam: 0,
     // staleTime: 1000 * 60 * 60,
   });
 

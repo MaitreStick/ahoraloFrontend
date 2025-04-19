@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import {Layout, Text} from '@ui-kitten/components';
 import React, {useCallback, useState} from 'react';
 import {
@@ -107,7 +105,7 @@ export const ProductList = ({
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   const {
@@ -132,7 +130,7 @@ export const ProductList = ({
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   const debouncedSetCompanySearch = debounce((value: string) => {
@@ -240,119 +238,36 @@ export const ProductList = ({
     setIsRefreshing(false);
   };
 
-  if (isLoading) {
-    return (
-      <>
-        <View
-          style={{
-            paddingHorizontal: 16,
-            paddingVertical: 8,
-            backgroundColor: 'white',
-          }}>
-          <SearchBar
-            searchTerm={searchTerm}
-            onSearchTermChange={handleSearchTermChange}
-            onSearchClick={handleSearchClick}
-          />
-        </View>
-        <FilterButtons
-          selectedCityName={selectedCityName}
-          selectedCompanyName={selectedCompanyName}
-          showCityHighlight={showCityHighlight}
-          toggleCityModal={toggleCityModal}
-          toggleCompanyModal={toggleCompanyModal}
-          handleOcrClick={handleOcrClick}
-        />
-        <ActivityIndicator
-          size="large"
-          color="#0000ff"
-          style={{flex: 1, justifyContent: 'center'}}
-        />
-      </>
-    );
-  }
-
-  if (prodcomcities.length === 0) {
-    return (
-      <>
-        <View
-          style={{
-            paddingHorizontal: 16,
-            paddingVertical: 8,
-            backgroundColor: 'white',
-          }}>
-          <SearchBar
-            searchTerm={searchTerm}
-            onSearchTermChange={handleSearchTermChange}
-            onSearchClick={handleSearchClick}
-          />
-        </View>
-        <FilterButtons
-          selectedCityName={selectedCityName}
-          selectedCompanyName={selectedCompanyName}
-          showCityHighlight={showCityHighlight}
-          toggleCityModal={toggleCityModal}
-          toggleCompanyModal={toggleCompanyModal}
-          handleOcrClick={handleOcrClick}
-        />
-        <Layout
-          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>No se encontraron productos.</Text>
-        </Layout>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <View
-        style={{
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          backgroundColor: 'white',
-        }}>
-        <SearchBar
-          searchTerm={searchTerm}
-          onSearchTermChange={handleSearchTermChange}
-          onSearchClick={handleSearchClick}
-        />
-      </View>
-      <FilterButtons
-        selectedCityName={selectedCityName}
-        selectedCompanyName={selectedCompanyName}
-        showCityHighlight={showCityHighlight}
-        toggleCityModal={toggleCityModal}
-        toggleCompanyModal={toggleCompanyModal}
-        handleOcrClick={handleOcrClick}
+return (
+  <>
+    <View style={localStyles.searchWrapper}>
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchTermChange={handleSearchTermChange}
+        onSearchClick={handleSearchClick}
       />
+    </View>
 
-      {/* Company Selection Modal */}
-      <SelectionModal
-        visible={isCompanyModalVisible}
-        toggleModal={toggleCompanyModal}
-        searchPlaceholder="Buscar Empresa"
-        onSearchChange={debouncedSetCompanySearch}
-        data={companyNames}
-        onSelect={handleCompanySelect}
-        fetchNextPage={fetchNextCompaniesPage}
-        hasNextPage={hasNextCompaniesPage}
-        isLoading={isFetchingCompanies}
+    <FilterButtons
+      selectedCityName={selectedCityName}
+      selectedCompanyName={selectedCompanyName}
+      showCityHighlight={showCityHighlight}
+      toggleCityModal={toggleCityModal}
+      toggleCompanyModal={toggleCompanyModal}
+      handleOcrClick={handleOcrClick}
+    />
+
+    {isLoading ? (
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        style={{ flex: 1, justifyContent: 'center' }}
       />
-
-      {/* City Selection Modal */}
-      <SelectionModal
-        visible={isCityModalVisible}
-        toggleModal={toggleCityModal}
-        searchPlaceholder="Buscar Ciudad"
-        onSearchChange={debouncedSetCitySearch}
-        data={cityNames}
-        onSelect={handleCitySelect}
-        fetchNextPage={fetchNextCitiesPage}
-        hasNextPage={hasNextCitiesPage}
-        isLoading={isFetchingCities}
-      />
-
-      {/* Products List */}
+    ) : prodcomcities.length === 0 ? (
+      <Layout style={localStyles.emptyContainer}>
+        <Text category="s1">No se encontraron productos.</Text>
+      </Layout>
+    ) : (
       <ProductsListComponent
         data={prodcomcities}
         fetchNextPage={fetchNextPage}
@@ -360,20 +275,56 @@ export const ProductList = ({
         isRefreshing={isRefreshing}
         onPullToRefresh={onPullToRefresh}
       />
+    )}
 
-      {/* Alert */}
-      <CustomAlert
-        visible={alertVisible}
-        title={alertTitle}
-        message={alertMessage}
-        onConfirm={handleAlertConfirm}
-        confirmText="Aceptar"
-      />
-    </>
-  );
+    <SelectionModal
+      visible={isCompanyModalVisible}
+      toggleModal={toggleCompanyModal}
+      searchPlaceholder="Buscar Empresa"
+      onSearchChange={debouncedSetCompanySearch}
+      data={companyNames}
+      onSelect={handleCompanySelect}
+      fetchNextPage={fetchNextCompaniesPage}
+      hasNextPage={hasNextCompaniesPage}
+      isLoading={isFetchingCompanies}
+    />
+
+    <SelectionModal
+      visible={isCityModalVisible}
+      toggleModal={toggleCityModal}
+      searchPlaceholder="Buscar Ciudad"
+      onSearchChange={debouncedSetCitySearch}
+      data={cityNames}
+      onSelect={handleCitySelect}
+      fetchNextPage={fetchNextCitiesPage}
+      hasNextPage={hasNextCitiesPage}
+      isLoading={isFetchingCities}
+    />
+
+    {/* 4. Alert */}
+    <CustomAlert
+      visible={alertVisible}
+      title={alertTitle}
+      message={alertMessage}
+      onConfirm={handleAlertConfirm}
+      confirmText="Aceptar"
+    />
+  </>
+);
 };
 
+
 const localStyles = StyleSheet.create({
+  searchWrapper: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: 'white',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
     flexDirection: 'row',
     paddingRight: 8,

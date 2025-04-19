@@ -1,8 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react/react-in-jsx-scope */
 import {
   InfiniteData,
   QueryFunctionContext,
@@ -59,6 +54,7 @@ export const HomeScreenTab = () => {
   const highlightAnim = useRef(new Animated.Value(0)).current;
 
   const [isCityLoaded, setIsCityLoaded] = useState(false);
+  const PAGE_SIZE = 20;
 
   const handleAlertConfirm = () => {
     setAlertVisible(false);
@@ -265,14 +261,9 @@ export const HomeScreenTab = () => {
         return await getProdcomcityByPage(pageParam);
       }
     },
-    getNextPageParam: (
-      lastPage: Prodcomcity[],
-      allPages: InfiniteData<Prodcomcity[]>["pages"],
-    ) => {
-      return lastPage.length === 0 ? undefined : allPages.length;
-    },
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length,
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
   });
 
   if (!isCityLoaded) {

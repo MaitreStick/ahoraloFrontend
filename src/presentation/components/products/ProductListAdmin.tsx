@@ -102,7 +102,7 @@ export const ProductListAdmin = ({
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   const {
@@ -127,7 +127,7 @@ export const ProductListAdmin = ({
       return lastPage.length === 0 ? undefined : allPages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 
   const debouncedSetCompanySearch = debounce((value: string) => {
