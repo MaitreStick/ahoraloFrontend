@@ -1,7 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/react-in-jsx-scope */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CityScreenTabAdmin} from '../screens/tabsAdmin/CityScreenTabAdmin';
 import {CompanyScreenTabAdmin} from '../screens/tabsAdmin/CompanyScreenTabAdmin';

@@ -85,3 +85,12 @@ export interface LowestPriceByTag {
   productTitle: string;
   lowestPrice: number;
 }
+
+export interface AhoraloWarehouse {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  comcityId: string;
+  companyName: string;
+}

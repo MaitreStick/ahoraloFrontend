@@ -32,7 +32,7 @@ export const WarehousesTabScreen = () => {
       getNextPageParam: (lastPage, allPages) =>
         lastPage.length === 0 ? undefined : allPages.length,
       initialPageParam: 0,
-      staleTime: 1000 * 60 * 60,
+      // staleTime: 1000 * 60 * 60,
     });
 
   const warehouses = Array.from(

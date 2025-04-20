@@ -12,7 +12,7 @@ export const updateCreateWarehouse = (warehouse: Partial<Warehouse>) => {
 const updateWarehouse = async (warehouse: Partial<Warehouse>) => {
   const { id, ...rest } = warehouse;
   try {
-    const { data } = await ahoraloApi.patch(`/warehouses/${id}`, rest);
+    const { data } = await ahoraloApi.patch(`/comcity/warehouses/${id}`, rest);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -26,9 +26,10 @@ const updateWarehouse = async (warehouse: Partial<Warehouse>) => {
 const createWarehouse = async (warehouse: Partial<Warehouse>) => {
   const { id, ...rest } = warehouse;
   try {
-    const { data } = await ahoraloApi.post('/warehouses', rest);
+    const { data } = await ahoraloApi.post('/comcity/warehouses', rest);
     return data;
   } catch (error) {
+    console.error('[WAREHOUSE ERROR]', error);        
     if (isAxiosError(error)) {
       console.log('Error status:', error.response?.status);
       console.log('Error data:', error.response?.data);

@@ -3,6 +3,6 @@ export interface Warehouse {
   name: string;
   latitude: number;
   longitude: number;
-  companyId: string;
+  comcityId: string;
   companyName: string;
 }
